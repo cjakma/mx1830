@@ -1,0 +1,4957 @@
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 1
+
+
+   1               		.file	"ps2main.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__  = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+   8               		.section	.debug_abbrev,"",@progbits
+   9               	.Ldebug_abbrev0:
+  10               		.section	.debug_info,"",@progbits
+  11               	.Ldebug_info0:
+  12               		.section	.debug_line,"",@progbits
+  13               	.Ldebug_line0:
+  14               		.text
+  15               	.Ltext0:
+  16               	.global	push
+  17               		.type	push, @function
+  18               	push:
+  19               	.LFB7:
+  20               	.LM1:
+  21               	.LVL0:
+  22               	/* prologue: function */
+  23               	/* frame size = 0 */
+  24 0000 282F      		mov r18,r24
+  25               	.LM2:
+  26 0002 8F3F      		cpi r24,lo8(-1)
+  27 0004 01F4      		brne .L2
+  28               	.LM3:
+  29 0006 1092 0000 		sts lastMAKE_SIZE,__zero_reg__
+  30               	.LM4:
+  31 000a 81E0      		ldi r24,lo8(1)
+  32               	.LVL1:
+  33 000c 8093 0000 		sts record.1872,r24
+  34 0010 0895      		ret
+  35               	.LVL2:
+  36               	.L2:
+  37               	.LM5:
+  38 0012 8E3F      		cpi r24,lo8(-2)
+  39 0014 01F0      		breq .L11
+  40               	.L4:
+  41               	.LM6:
+  42 0016 8D3F      		cpi r24,lo8(-3)
+  43 0018 01F4      		brne .L5
+  44               	.LM7:
+  45 001a 1092 0000 		sts lastMAKE_SIZE,__zero_reg__
+  46               	.L11:
+  47               	.LM8:
+  48 001e 1092 0000 		sts record.1872,__zero_reg__
+  49 0022 0895      		ret
+  50               	.L5:
+  51               	.LM9:
+  52 0024 8091 0000 		lds r24,record.1872
+  53               	.LVL3:
+  54 0028 8823      		tst r24
+  55 002a 01F0      		breq .L6
+  56               	.LM10:
+  57 002c 8091 0000 		lds r24,lastMAKE_SIZE
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 2
+
+
+  58 0030 E82F      		mov r30,r24
+  59 0032 F0E0      		ldi r31,lo8(0)
+  60 0034 E050      		subi r30,lo8(-(lastMAKE))
+  61 0036 F040      		sbci r31,hi8(-(lastMAKE))
+  62 0038 2083      		st Z,r18
+  63 003a 8F5F      		subi r24,lo8(-(1))
+  64 003c 8093 0000 		sts lastMAKE_SIZE,r24
+  65               	.L6:
+  66               	.LM11:
+  67 0040 8091 0000 		lds r24,rear
+  68 0044 9091 0000 		lds r25,(rear)+1
+  69 0048 0196      		adiw r24,1
+  70 004a 68EC      		ldi r22,lo8(200)
+  71 004c 70E0      		ldi r23,hi8(200)
+  72 004e 0E94 0000 		call __divmodhi4
+  73 0052 FC01      		movw r30,r24
+  74 0054 9093 0000 		sts (rear)+1,r25
+  75 0058 8093 0000 		sts rear,r24
+  76               	.LM12:
+  77 005c 8091 0000 		lds r24,front
+  78 0060 9091 0000 		lds r25,(front)+1
+  79 0064 8E17      		cp r24,r30
+  80 0066 9F07      		cpc r25,r31
+  81 0068 01F4      		brne .L7
+  82               	.LM13:
+  83 006a 0097      		sbiw r24,0
+  84 006c 01F4      		brne .L8
+  85 006e 87EC      		ldi r24,lo8(199)
+  86 0070 90E0      		ldi r25,hi8(199)
+  87 0072 00C0      		rjmp .L9
+  88               	.L8:
+  89 0074 0197      		sbiw r24,1
+  90               	.L9:
+  91 0076 9093 0000 		sts (rear)+1,r25
+  92 007a 8093 0000 		sts rear,r24
+  93 007e 0895      		ret
+  94               	.L7:
+  95               	.LM14:
+  96 0080 E050      		subi r30,lo8(-(QUEUE))
+  97 0082 F040      		sbci r31,hi8(-(QUEUE))
+  98 0084 2083      		st Z,r18
+  99 0086 0895      		ret
+ 100               	.LFE7:
+ 101               		.size	push, .-push
+ 102               	.global	pop
+ 103               		.type	pop, @function
+ 104               	pop:
+ 105               	.LFB8:
+ 106               	.LM15:
+ 107               	/* prologue: function */
+ 108               	/* frame size = 0 */
+ 109               	.LM16:
+ 110 0088 2091 0000 		lds r18,front
+ 111 008c 3091 0000 		lds r19,(front)+1
+ 112 0090 8091 0000 		lds r24,rear
+ 113 0094 9091 0000 		lds r25,(rear)+1
+ 114 0098 2817      		cp r18,r24
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 3
+
+
+ 115 009a 3907      		cpc r19,r25
+ 116 009c 01F4      		brne .L13
+ 117 009e 80E0      		ldi r24,lo8(0)
+ 118 00a0 0895      		ret
+ 119               	.L13:
+ 120               	.LM17:
+ 121 00a2 C901      		movw r24,r18
+ 122 00a4 0196      		adiw r24,1
+ 123 00a6 68EC      		ldi r22,lo8(200)
+ 124 00a8 70E0      		ldi r23,hi8(200)
+ 125 00aa 0E94 0000 		call __divmodhi4
+ 126 00ae FC01      		movw r30,r24
+ 127 00b0 9093 0000 		sts (front)+1,r25
+ 128 00b4 8093 0000 		sts front,r24
+ 129               	.LM18:
+ 130 00b8 E050      		subi r30,lo8(-(QUEUE))
+ 131 00ba F040      		sbci r31,hi8(-(QUEUE))
+ 132 00bc 8081      		ld r24,Z
+ 133               	.LM19:
+ 134 00be 0895      		ret
+ 135               	.LFE8:
+ 136               		.size	pop, .-pop
+ 137               	.global	isEmpty
+ 138               		.type	isEmpty, @function
+ 139               	isEmpty:
+ 140               	.LFB9:
+ 141               	.LM20:
+ 142               	/* prologue: function */
+ 143               	/* frame size = 0 */
+ 144               	.LM21:
+ 145 00c0 40E0      		ldi r20,lo8(0)
+ 146 00c2 2091 0000 		lds r18,front
+ 147 00c6 3091 0000 		lds r19,(front)+1
+ 148 00ca 8091 0000 		lds r24,rear
+ 149 00ce 9091 0000 		lds r25,(rear)+1
+ 150 00d2 2817      		cp r18,r24
+ 151 00d4 3907      		cpc r19,r25
+ 152 00d6 01F4      		brne .L17
+ 153 00d8 41E0      		ldi r20,lo8(1)
+ 154               	.L17:
+ 155               	.LM22:
+ 156 00da 842F      		mov r24,r20
+ 157               	/* epilogue start */
+ 158 00dc 0895      		ret
+ 159               	.LFE9:
+ 160               		.size	isEmpty, .-isEmpty
+ 161               	.global	clear
+ 162               		.type	clear, @function
+ 163               	clear:
+ 164               	.LFB10:
+ 165               	.LM23:
+ 166               	/* prologue: function */
+ 167               	/* frame size = 0 */
+ 168               	.LM24:
+ 169 00de 1092 0000 		sts (front)+1,__zero_reg__
+ 170 00e2 1092 0000 		sts front,__zero_reg__
+ 171 00e6 1092 0000 		sts (rear)+1,__zero_reg__
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 4
+
+
+ 172 00ea 1092 0000 		sts rear,__zero_reg__
+ 173               	.LM25:
+ 174 00ee 1092 0000 		sts lastMAKE_SIZE,__zero_reg__
+ 175               	.LM26:
+ 176 00f2 1092 0000 		sts lastMAKE_IDX,__zero_reg__
+ 177               	.LM27:
+ 178 00f6 1092 0000 		sts loopCnt,__zero_reg__
+ 179 00fa 1092 0000 		sts (loopCnt)+1,__zero_reg__
+ 180 00fe 1092 0000 		sts (loopCnt)+2,__zero_reg__
+ 181 0102 1092 0000 		sts (loopCnt)+3,__zero_reg__
+ 182 0106 E0E0      		ldi r30,lo8(MATRIX)
+ 183 0108 F0E0      		ldi r31,hi8(MATRIX)
+ 184               	.L20:
+ 185               	.LM28:
+ 186 010a 1192      		st Z+,__zero_reg__
+ 187               	.LM29:
+ 188 010c 80E0      		ldi r24,hi8(MATRIX+17)
+ 189 010e E030      		cpi r30,lo8(MATRIX+17)
+ 190 0110 F807      		cpc r31,r24
+ 191 0112 01F4      		brne .L20
+ 192               	/* epilogue start */
+ 193               	.LM30:
+ 194 0114 0895      		ret
+ 195               	.LFE10:
+ 196               		.size	clear, .-clear
+ 197               	.global	putKey
+ 198               		.type	putKey, @function
+ 199               	putKey:
+ 200               	.LFB12:
+ 201               	.LM31:
+ 202               	.LVL4:
+ 203 0116 1F93      		push r17
+ 204 0118 CF93      		push r28
+ 205 011a DF93      		push r29
+ 206               	/* prologue: function */
+ 207               	/* frame size = 0 */
+ 208 011c 982F      		mov r25,r24
+ 209               	.LBB8:
+ 210               	.LM32:
+ 211 011e 282F      		mov r18,r24
+ 212 0120 30E0      		ldi r19,lo8(0)
+ 213               	.LVL5:
+ 214 0122 F901      		movw r30,r18
+ 215 0124 E050      		subi r30,lo8(-(keycode_set2))
+ 216 0126 F040      		sbci r31,hi8(-(keycode_set2))
+ 217               	/* #APP */
+ 218               	 ;  153 "ps2main.c" 1
+ 219 0128 1491      		lpm r17, Z
+ 220               		
+ 221               	 ;  0 "" 2
+ 222               	.LVL6:
+ 223               	/* #NOAPP */
+ 224               	.LBE8:
+ 225               	.LM33:
+ 226 012a 6623      		tst r22
+ 227 012c 01F4      		brne .+2
+ 228 012e 00C0      		rjmp .L24
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 5
+
+
+ 229               	.LVL7:
+ 230               	.LM34:
+ 231 0130 8093 0000 		sts lastMAKE_keyidx,r24
+ 232               	.LM35:
+ 233 0134 1092 0000 		sts loopCnt,__zero_reg__
+ 234 0138 1092 0000 		sts (loopCnt)+1,__zero_reg__
+ 235 013c 1092 0000 		sts (loopCnt)+2,__zero_reg__
+ 236 0140 1092 0000 		sts (loopCnt)+3,__zero_reg__
+ 237               	.LM36:
+ 238 0144 1092 0000 		sts m_state,__zero_reg__
+ 239               	.LM37:
+ 240 0148 E901      		movw r28,r18
+ 241 014a C050      		subi r28,lo8(-(KFLA))
+ 242 014c D040      		sbci r29,hi8(-(KFLA))
+ 243 014e 8881      		ld r24,Y
+ 244 0150 81FF      		sbrs r24,1
+ 245 0152 00C0      		rjmp .L25
+ 246               	.LM38:
+ 247 0154 9634      		cpi r25,lo8(70)
+ 248 0156 01F0      		breq .L27
+ 249               	.LVL8:
+ 250 0158 9834      		cpi r25,lo8(72)
+ 251 015a 01F0      		breq .+2
+ 252 015c 00C0      		rjmp .L34
+ 253 015e 00C0      		rjmp .L37
+ 254               	.L27:
+ 255               	.LM39:
+ 256 0160 8FEF      		ldi r24,lo8(-1)
+ 257 0162 0E94 0000 		call push
+ 258               	.LVL9:
+ 259               	.LM40:
+ 260 0166 80EE      		ldi r24,lo8(-32)
+ 261 0168 0E94 0000 		call push
+ 262               	.LM41:
+ 263 016c 82E1      		ldi r24,lo8(18)
+ 264 016e 0E94 0000 		call push
+ 265               	.LM42:
+ 266 0172 80EE      		ldi r24,lo8(-32)
+ 267 0174 0E94 0000 		call push
+ 268               	.LM43:
+ 269 0178 8CE7      		ldi r24,lo8(124)
+ 270 017a 00C0      		rjmp .L36
+ 271               	.LVL10:
+ 272               	.L37:
+ 273               	.LM44:
+ 274 017c 8DEF      		ldi r24,lo8(-3)
+ 275 017e 0E94 0000 		call push
+ 276               	.LVL11:
+ 277               	.LM45:
+ 278 0182 81EE      		ldi r24,lo8(-31)
+ 279 0184 0E94 0000 		call push
+ 280               	.LM46:
+ 281 0188 84E1      		ldi r24,lo8(20)
+ 282 018a 0E94 0000 		call push
+ 283               	.LM47:
+ 284 018e 87E7      		ldi r24,lo8(119)
+ 285 0190 0E94 0000 		call push
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 6
+
+
+ 286               	.LM48:
+ 287 0194 81EE      		ldi r24,lo8(-31)
+ 288 0196 0E94 0000 		call push
+ 289               	.LM49:
+ 290 019a 80EF      		ldi r24,lo8(-16)
+ 291 019c 0E94 0000 		call push
+ 292               	.LM50:
+ 293 01a0 84E1      		ldi r24,lo8(20)
+ 294 01a2 0E94 0000 		call push
+ 295               	.LM51:
+ 296 01a6 80EF      		ldi r24,lo8(-16)
+ 297 01a8 0E94 0000 		call push
+ 298               	.LM52:
+ 299 01ac 87E7      		ldi r24,lo8(119)
+ 300 01ae 00C0      		rjmp .L35
+ 301               	.LVL12:
+ 302               	.L25:
+ 303               	.LM53:
+ 304 01b0 8FEF      		ldi r24,lo8(-1)
+ 305 01b2 0E94 0000 		call push
+ 306               	.LVL13:
+ 307               	.LM54:
+ 308 01b6 8881      		ld r24,Y
+ 309 01b8 80FF      		sbrs r24,0
+ 310 01ba 00C0      		rjmp .L29
+ 311               	.LM55:
+ 312 01bc 80EE      		ldi r24,lo8(-32)
+ 313 01be 0E94 0000 		call push
+ 314               	.L29:
+ 315               	.LM56:
+ 316 01c2 812F      		mov r24,r17
+ 317               	.L36:
+ 318 01c4 0E94 0000 		call push
+ 319               	.LM57:
+ 320 01c8 8EEF      		ldi r24,lo8(-2)
+ 321 01ca 00C0      		rjmp .L35
+ 322               	.LVL14:
+ 323               	.L24:
+ 324               	.LM58:
+ 325 01cc 8091 0000 		lds r24,lastMAKE_keyidx
+ 326 01d0 8917      		cp r24,r25
+ 327 01d2 01F4      		brne .L30
+ 328               	.LVL15:
+ 329               	.LM59:
+ 330 01d4 1092 0000 		sts lastMAKE_SIZE,__zero_reg__
+ 331               	.L30:
+ 332               	.LM60:
+ 333 01d8 E92F      		mov r30,r25
+ 334 01da F0E0      		ldi r31,lo8(0)
+ 335               	.LVL16:
+ 336 01dc E050      		subi r30,lo8(-(KFLA))
+ 337 01de F040      		sbci r31,hi8(-(KFLA))
+ 338               	.LVL17:
+ 339 01e0 8081      		ld r24,Z
+ 340 01e2 81FF      		sbrs r24,1
+ 341 01e4 00C0      		rjmp .L31
+ 342               	.LM61:
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 7
+
+
+ 343 01e6 9634      		cpi r25,lo8(70)
+ 344 01e8 01F4      		brne .L34
+ 345               	.LVL18:
+ 346               	.LM62:
+ 347 01ea 80EE      		ldi r24,lo8(-32)
+ 348 01ec 0E94 0000 		call push
+ 349               	.LVL19:
+ 350               	.LM63:
+ 351 01f0 80EF      		ldi r24,lo8(-16)
+ 352 01f2 0E94 0000 		call push
+ 353               	.LM64:
+ 354 01f6 8CE7      		ldi r24,lo8(124)
+ 355 01f8 0E94 0000 		call push
+ 356               	.LM65:
+ 357 01fc 80EE      		ldi r24,lo8(-32)
+ 358 01fe 0E94 0000 		call push
+ 359               	.LM66:
+ 360 0202 80EF      		ldi r24,lo8(-16)
+ 361 0204 0E94 0000 		call push
+ 362               	.LM67:
+ 363 0208 82E1      		ldi r24,lo8(18)
+ 364 020a 00C0      		rjmp .L35
+ 365               	.LVL20:
+ 366               	.L31:
+ 367               	.LM68:
+ 368 020c 80FF      		sbrs r24,0
+ 369 020e 00C0      		rjmp .L33
+ 370               	.LM69:
+ 371 0210 80EE      		ldi r24,lo8(-32)
+ 372 0212 0E94 0000 		call push
+ 373               	.LVL21:
+ 374               	.L33:
+ 375               	.LM70:
+ 376 0216 80EF      		ldi r24,lo8(-16)
+ 377 0218 0E94 0000 		call push
+ 378               	.LVL22:
+ 379               	.LM71:
+ 380 021c 812F      		mov r24,r17
+ 381               	.L35:
+ 382 021e 0E94 0000 		call push
+ 383               	.LM72:
+ 384 0222 8CEF      		ldi r24,lo8(-4)
+ 385 0224 0E94 0000 		call push
+ 386               	.LVL23:
+ 387               	.L34:
+ 388               	/* epilogue start */
+ 389               	.LM73:
+ 390 0228 DF91      		pop r29
+ 391 022a CF91      		pop r28
+ 392 022c 1F91      		pop r17
+ 393               	.LVL24:
+ 394 022e 0895      		ret
+ 395               	.LFE12:
+ 396               		.size	putKey, .-putKey
+ 397               	.global	tx_state
+ 398               		.type	tx_state, @function
+ 399               	tx_state:
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 8
+
+
+ 400               	.LFB11:
+ 401               	.LM74:
+ 402               	.LVL25:
+ 403 0230 1F93      		push r17
+ 404               	/* prologue: function */
+ 405               	/* frame size = 0 */
+ 406 0232 162F      		mov r17,r22
+ 407               	.LM75:
+ 408 0234 8E3F      		cpi r24,lo8(-2)
+ 409 0236 01F0      		breq .L39
+ 410               	.LVL26:
+ 411               	.LM76:
+ 412 0238 8093 0000 		sts lastSent,r24
+ 413               	.L39:
+ 414               	.LM77:
+ 415 023c 0E94 0000 		call kbd_set_tx
+ 416               	.LVL27:
+ 417               	.LM78:
+ 418 0240 1093 0000 		sts m_state,r17
+ 419               	/* epilogue start */
+ 420               	.LM79:
+ 421 0244 1F91      		pop r17
+ 422               	.LVL28:
+ 423 0246 0895      		ret
+ 424               	.LFE11:
+ 425               		.size	tx_state, .-tx_state
+ 426               	.global	processTX
+ 427               		.type	processTX, @function
+ 428               	processTX:
+ 429               	.LFB14:
+ 430               	.LM80:
+ 431 0248 EF92      		push r14
+ 432 024a FF92      		push r15
+ 433 024c 0F93      		push r16
+ 434 024e 1F93      		push r17
+ 435               	/* prologue: function */
+ 436               	/* frame size = 0 */
+ 437               	.LM81:
+ 438 0250 8091 0000 		lds r24,m_state
+ 439 0254 8430      		cpi r24,lo8(4)
+ 440 0256 01F4      		brne .+2
+ 441 0258 00C0      		rjmp .L45
+ 442 025a 8530      		cpi r24,lo8(5)
+ 443 025c 00F4      		brsh .L49
+ 444 025e 8823      		tst r24
+ 445 0260 01F0      		breq .L43
+ 446 0262 8330      		cpi r24,lo8(3)
+ 447 0264 01F0      		breq .+2
+ 448 0266 00C0      		rjmp .L60
+ 449 0268 00C0      		rjmp .L63
+ 450               	.L49:
+ 451 026a 8830      		cpi r24,lo8(8)
+ 452 026c 01F4      		brne .+2
+ 453 026e 00C0      		rjmp .L47
+ 454 0270 8C30      		cpi r24,lo8(12)
+ 455 0272 01F4      		brne .+2
+ 456 0274 00C0      		rjmp .L48
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 9
+
+
+ 457 0276 8530      		cpi r24,lo8(5)
+ 458 0278 01F0      		breq .+2
+ 459 027a 00C0      		rjmp .L60
+ 460 027c 00C0      		rjmp .L46
+ 461               	.L43:
+ 462               	.LBB9:
+ 463               	.LBB10:
+ 464               	.LM82:
+ 465 027e 2091 0000 		lds r18,front
+ 466 0282 3091 0000 		lds r19,(front)+1
+ 467 0286 8091 0000 		lds r24,rear
+ 468 028a 9091 0000 		lds r25,(rear)+1
+ 469 028e 2817      		cp r18,r24
+ 470 0290 3907      		cpc r19,r25
+ 471 0292 01F4      		brne .L51
+ 472               	.LBE10:
+ 473               	.LBE9:
+ 474               	.LM83:
+ 475 0294 0E94 0000 		call scankey
+ 476               	.L51:
+ 477               	.LM84:
+ 478 0298 0E94 0000 		call pop
+ 479 029c 182F      		mov r17,r24
+ 480               	.LVL29:
+ 481               	.LM85:
+ 482 029e 8C3F      		cpi r24,lo8(-4)
+ 483 02a0 01F4      		brne .+2
+ 484 02a2 00C0      		rjmp .L50
+ 485               	.LVL30:
+ 486               	.LM86:
+ 487 02a4 8823      		tst r24
+ 488 02a6 01F0      		breq .L52
+ 489               	.LM87:
+ 490 02a8 60E0      		ldi r22,lo8(0)
+ 491 02aa 0E94 0000 		call tx_state
+ 492               	.LVL31:
+ 493               	.LM88:
+ 494 02ae 1092 0000 		sts loopCnt,__zero_reg__
+ 495 02b2 1092 0000 		sts (loopCnt)+1,__zero_reg__
+ 496 02b6 1092 0000 		sts (loopCnt)+2,__zero_reg__
+ 497 02ba 1092 0000 		sts (loopCnt)+3,__zero_reg__
+ 498 02be 00C0      		rjmp .L50
+ 499               	.LVL32:
+ 500               	.L52:
+ 501               	.LM89:
+ 502 02c0 8091 0000 		lds r24,lastMAKE_SIZE
+ 503               	.LVL33:
+ 504 02c4 8823      		tst r24
+ 505 02c6 01F4      		brne .+2
+ 506 02c8 00C0      		rjmp .L50
+ 507               	.LM90:
+ 508 02ca 8091 0000 		lds r24,loopCnt
+ 509 02ce 9091 0000 		lds r25,(loopCnt)+1
+ 510 02d2 A091 0000 		lds r26,(loopCnt)+2
+ 511 02d6 B091 0000 		lds r27,(loopCnt)+3
+ 512 02da 0196      		adiw r24,1
+ 513 02dc A11D      		adc r26,__zero_reg__
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 10
+
+
+ 514 02de B11D      		adc r27,__zero_reg__
+ 515 02e0 8093 0000 		sts loopCnt,r24
+ 516 02e4 9093 0000 		sts (loopCnt)+1,r25
+ 517 02e8 A093 0000 		sts (loopCnt)+2,r26
+ 518 02ec B093 0000 		sts (loopCnt)+3,r27
+ 519               	.LM91:
+ 520 02f0 2091 0000 		lds r18,TYPEMATIC_DELAY
+ 521 02f4 66E9      		ldi r22,lo8(-106)
+ 522 02f6 269F      		mul r18,r22
+ 523 02f8 9001      		movw r18,r0
+ 524 02fa 1124      		clr r1
+ 525 02fc 2A51      		subi r18,lo8(-(230))
+ 526 02fe 3F4F      		sbci r19,hi8(-(230))
+ 527 0300 4427      		clr r20
+ 528 0302 37FD      		sbrc r19,7
+ 529 0304 4095      		com r20
+ 530 0306 542F      		mov r21,r20
+ 531 0308 8217      		cp r24,r18
+ 532 030a 9307      		cpc r25,r19
+ 533 030c A407      		cpc r26,r20
+ 534 030e B507      		cpc r27,r21
+ 535 0310 04F4      		brge .+2
+ 536 0312 00C0      		rjmp .L50
+ 537               	.LM92:
+ 538 0314 1092 0000 		sts loopCnt,__zero_reg__
+ 539 0318 1092 0000 		sts (loopCnt)+1,__zero_reg__
+ 540 031c 1092 0000 		sts (loopCnt)+2,__zero_reg__
+ 541 0320 1092 0000 		sts (loopCnt)+3,__zero_reg__
+ 542               	.LM93:
+ 543 0324 1092 0000 		sts lastMAKE_IDX,__zero_reg__
+ 544               	.LM94:
+ 545 0328 8CE0      		ldi r24,lo8(12)
+ 546 032a 8093 0000 		sts m_state,r24
+ 547 032e 00C0      		rjmp .L50
+ 548               	.LVL34:
+ 549               	.L48:
+ 550               	.LM95:
+ 551 0330 8091 0000 		lds r24,lastMAKE_IDX
+ 552 0334 8823      		tst r24
+ 553 0336 01F4      		brne .L53
+ 554               	.LM96:
+ 555 0338 0E94 0000 		call scankey
+ 556               	.L53:
+ 557               	.LM97:
+ 558 033c 8091 0000 		lds r24,lastMAKE_SIZE
+ 559 0340 8823      		tst r24
+ 560 0342 01F0      		breq .L54
+ 561               	.LBB11:
+ 562               	.LBB12:
+ 563               	.LM98:
+ 564 0344 2091 0000 		lds r18,front
+ 565 0348 3091 0000 		lds r19,(front)+1
+ 566 034c 8091 0000 		lds r24,rear
+ 567 0350 9091 0000 		lds r25,(rear)+1
+ 568 0354 2817      		cp r18,r24
+ 569 0356 3907      		cpc r19,r25
+ 570 0358 01F4      		brne .L54
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 11
+
+
+ 571               	.LBE12:
+ 572               	.LBE11:
+ 573               	.LM99:
+ 574 035a 8091 0000 		lds r24,loopCnt
+ 575 035e 9091 0000 		lds r25,(loopCnt)+1
+ 576 0362 A091 0000 		lds r26,(loopCnt)+2
+ 577 0366 B091 0000 		lds r27,(loopCnt)+3
+ 578 036a 0197      		sbiw r24,1
+ 579 036c A105      		cpc r26,__zero_reg__
+ 580 036e B105      		cpc r27,__zero_reg__
+ 581 0370 01F4      		brne .L59
+ 582 0372 00C0      		rjmp .L55
+ 583               	.L54:
+ 584               	.LM100:
+ 585 0374 1092 0000 		sts m_state,__zero_reg__
+ 586               	.LM101:
+ 587 0378 1092 0000 		sts loopCnt,__zero_reg__
+ 588 037c 1092 0000 		sts (loopCnt)+1,__zero_reg__
+ 589 0380 1092 0000 		sts (loopCnt)+2,__zero_reg__
+ 590 0384 1092 0000 		sts (loopCnt)+3,__zero_reg__
+ 591 0388 00C0      		rjmp .L60
+ 592               	.L59:
+ 593               	.LM102:
+ 594 038a 8091 0000 		lds r24,lastMAKE_IDX
+ 595 038e 8823      		tst r24
+ 596 0390 01F0      		breq .L57
+ 597               	.L55:
+ 598               	.LM103:
+ 599 0392 9091 0000 		lds r25,lastMAKE_IDX
+ 600 0396 E92F      		mov r30,r25
+ 601 0398 F0E0      		ldi r31,lo8(0)
+ 602 039a E050      		subi r30,lo8(-(lastMAKE))
+ 603 039c F040      		sbci r31,hi8(-(lastMAKE))
+ 604 039e 8081      		ld r24,Z
+ 605 03a0 9F5F      		subi r25,lo8(-(1))
+ 606 03a2 9093 0000 		sts lastMAKE_IDX,r25
+ 607 03a6 6CE0      		ldi r22,lo8(12)
+ 608 03a8 0E94 0000 		call tx_state
+ 609               	.LM104:
+ 610 03ac 6091 0000 		lds r22,lastMAKE_SIZE
+ 611 03b0 8091 0000 		lds r24,lastMAKE_IDX
+ 612 03b4 0E94 0000 		call __udivmodqi4
+ 613 03b8 9093 0000 		sts lastMAKE_IDX,r25
+ 614               	.L57:
+ 615               	.LM105:
+ 616 03bc E090 0000 		lds r14,loopCnt
+ 617 03c0 F090 0000 		lds r15,(loopCnt)+1
+ 618 03c4 0091 0000 		lds r16,(loopCnt)+2
+ 619 03c8 1091 0000 		lds r17,(loopCnt)+3
+ 620 03cc 0894      		sec
+ 621 03ce E11C      		adc r14,__zero_reg__
+ 622 03d0 F11C      		adc r15,__zero_reg__
+ 623 03d2 011D      		adc r16,__zero_reg__
+ 624 03d4 111D      		adc r17,__zero_reg__
+ 625 03d6 6091 0000 		lds r22,TYPEMATIC_REPEAT
+ 626 03da 7091 0000 		lds r23,(TYPEMATIC_REPEAT)+1
+ 627 03de 8091 0000 		lds r24,(TYPEMATIC_REPEAT)+2
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 12
+
+
+ 628 03e2 9091 0000 		lds r25,(TYPEMATIC_REPEAT)+3
+ 629 03e6 2AE0      		ldi r18,lo8(10)
+ 630 03e8 30E0      		ldi r19,hi8(10)
+ 631 03ea 40E0      		ldi r20,hlo8(10)
+ 632 03ec 50E0      		ldi r21,hhi8(10)
+ 633 03ee 0E94 0000 		call __mulsi3
+ 634 03f2 9B01      		movw r18,r22
+ 635 03f4 AC01      		movw r20,r24
+ 636 03f6 2D5F      		subi r18,lo8(-(3))
+ 637 03f8 3F4F      		sbci r19,hi8(-(3))
+ 638 03fa 4F4F      		sbci r20,hlo8(-(3))
+ 639 03fc 5F4F      		sbci r21,hhi8(-(3))
+ 640 03fe C801      		movw r24,r16
+ 641 0400 B701      		movw r22,r14
+ 642 0402 0E94 0000 		call __divmodsi4
+ 643 0406 6093 0000 		sts loopCnt,r22
+ 644 040a 7093 0000 		sts (loopCnt)+1,r23
+ 645 040e 8093 0000 		sts (loopCnt)+2,r24
+ 646 0412 9093 0000 		sts (loopCnt)+3,r25
+ 647 0416 00C0      		rjmp .L60
+ 648               	.L63:
+ 649               	.LM106:
+ 650 0418 82E0      		ldi r24,lo8(2)
+ 651 041a 00C0      		rjmp .L61
+ 652               	.L45:
+ 653               	.LM107:
+ 654 041c 8BEA      		ldi r24,lo8(-85)
+ 655 041e 65E0      		ldi r22,lo8(5)
+ 656 0420 00C0      		rjmp .L62
+ 657               	.L46:
+ 658               	.LM108:
+ 659 0422 83E8      		ldi r24,lo8(-125)
+ 660 0424 00C0      		rjmp .L61
+ 661               	.L47:
+ 662               	.LM109:
+ 663 0426 0E94 0000 		call clear
+ 664               	.LM110:
+ 665 042a 80E0      		ldi r24,lo8(0)
+ 666 042c 0E94 0000 		call led_check
+ 667               	.LM111:
+ 668 0430 0E94 0000 		call led_mode_init
+ 669               	.LM112:
+ 670 0434 8AEA      		ldi r24,lo8(-86)
+ 671               	.L61:
+ 672 0436 60E0      		ldi r22,lo8(0)
+ 673               	.L62:
+ 674 0438 0E94 0000 		call tx_state
+ 675               	.L60:
+ 676 043c 10E0      		ldi r17,lo8(0)
+ 677               	.LVL35:
+ 678               	.L50:
+ 679               	.LM113:
+ 680 043e 812F      		mov r24,r17
+ 681 0440 90E0      		ldi r25,lo8(0)
+ 682               	/* epilogue start */
+ 683 0442 1F91      		pop r17
+ 684               	.LVL36:
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 13
+
+
+ 685 0444 0F91      		pop r16
+ 686 0446 FF90      		pop r15
+ 687 0448 EF90      		pop r14
+ 688 044a 0895      		ret
+ 689               	.LFE14:
+ 690               		.size	processTX, .-processTX
+ 691               	.global	processRX
+ 692               		.type	processRX, @function
+ 693               	processRX:
+ 694               	.LFB13:
+ 695               	.LM114:
+ 696 044c 1F93      		push r17
+ 697               	/* prologue: function */
+ 698               	/* frame size = 0 */
+ 699               	.LM115:
+ 700 044e 0E94 0000 		call kbd_get_rx_char
+ 701 0452 182F      		mov r17,r24
+ 702               	.LVL37:
+ 703               	.LM116:
+ 704 0454 6091 0000 		lds r22,m_state
+ 705 0458 6230      		cpi r22,lo8(2)
+ 706 045a 01F0      		breq .L67
+ 707 045c 6330      		cpi r22,lo8(3)
+ 708 045e 00F4      		brsh .L70
+ 709 0460 6130      		cpi r22,lo8(1)
+ 710 0462 01F0      		breq .+2
+ 711 0464 00C0      		rjmp .L65
+ 712 0466 00C0      		rjmp .L102
+ 713               	.L70:
+ 714 0468 6630      		cpi r22,lo8(6)
+ 715 046a 01F4      		brne .+2
+ 716 046c 00C0      		rjmp .L68
+ 717 046e 6730      		cpi r22,lo8(7)
+ 718 0470 01F0      		breq .+2
+ 719 0472 00C0      		rjmp .L65
+ 720 0474 00C0      		rjmp .L103
+ 721               	.L102:
+ 722               	.LM117:
+ 723 0476 853F      		cpi r24,lo8(-11)
+ 724 0478 01F4      		brne .+2
+ 725 047a 00C0      		rjmp .L83
+ 726               	.LVL38:
+ 727               	.L71:
+ 728               	.LM118:
+ 729 047c 8AEF      		ldi r24,lo8(-6)
+ 730               	.LVL39:
+ 731 047e 61E0      		ldi r22,lo8(1)
+ 732 0480 00C0      		rjmp .L101
+ 733               	.L67:
+ 734               	.LM119:
+ 735 0482 0E94 0000 		call clear
+ 736               	.LM120:
+ 737 0486 1123      		tst r17
+ 738 0488 01F0      		breq .L73
+ 739 048a 60E0      		ldi r22,lo8(0)
+ 740 048c 00C0      		rjmp .L74
+ 741               	.L73:
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 14
+
+
+ 742 048e 63E0      		ldi r22,lo8(3)
+ 743               	.L74:
+ 744 0490 8AEF      		ldi r24,lo8(-6)
+ 745 0492 00C0      		rjmp .L101
+ 746               	.L103:
+ 747               	.LM121:
+ 748 0494 682F      		mov r22,r24
+ 749 0496 70E0      		ldi r23,lo8(0)
+ 750 0498 CB01      		movw r24,r22
+ 751 049a 8076      		andi r24,lo8(96)
+ 752 049c 9070      		andi r25,hi8(96)
+ 753 049e A5E0      		ldi r26,5
+ 754 04a0 9595      	1:	asr r25
+ 755 04a2 8795      		ror r24
+ 756 04a4 AA95      		dec r26
+ 757 04a6 01F4      		brne 1b
+ 758 04a8 8093 0000 		sts TYPEMATIC_DELAY,r24
+ 759               	.LM122:
+ 760 04ac AB01      		movw r20,r22
+ 761               	.LVL40:
+ 762 04ae 4871      		andi r20,lo8(24)
+ 763 04b0 5070      		andi r21,hi8(24)
+ 764 04b2 F3E0      		ldi r31,3
+ 765 04b4 5595      	1:	asr r21
+ 766 04b6 4795      		ror r20
+ 767 04b8 FA95      		dec r31
+ 768 04ba 01F4      		brne 1b
+ 769 04bc 80E0      		ldi r24,lo8(0)
+ 770 04be 90E0      		ldi r25,hi8(0)
+ 771               	.LVL41:
+ 772 04c0 21E0      		ldi r18,lo8(1)
+ 773 04c2 30E0      		ldi r19,hi8(1)
+ 774               	.LVL42:
+ 775 04c4 00C0      		rjmp .L75
+ 776               	.L76:
+ 777               	.LM123:
+ 778 04c6 220F      		lsl r18
+ 779 04c8 331F      		rol r19
+ 780               	.LM124:
+ 781 04ca 0196      		adiw r24,1
+ 782               	.L75:
+ 783 04cc 8417      		cp r24,r20
+ 784 04ce 9507      		cpc r25,r21
+ 785 04d0 04F0      		brlt .L76
+ 786               	.LM125:
+ 787 04d2 6770      		andi r22,lo8(7)
+ 788 04d4 7070      		andi r23,hi8(7)
+ 789 04d6 269F      		mul r18,r22
+ 790 04d8 C001      		movw r24,r0
+ 791 04da 279F      		mul r18,r23
+ 792 04dc 900D      		add r25,r0
+ 793 04de 369F      		mul r19,r22
+ 794 04e0 900D      		add r25,r0
+ 795 04e2 1124      		clr r1
+ 796               	.LVL43:
+ 797 04e4 AA27      		clr r26
+ 798 04e6 97FD      		sbrc r25,7
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 15
+
+
+ 799 04e8 A095      		com r26
+ 800 04ea BA2F      		mov r27,r26
+ 801 04ec 8093 0000 		sts TYPEMATIC_REPEAT,r24
+ 802 04f0 9093 0000 		sts (TYPEMATIC_REPEAT)+1,r25
+ 803 04f4 A093 0000 		sts (TYPEMATIC_REPEAT)+2,r26
+ 804 04f8 B093 0000 		sts (TYPEMATIC_REPEAT)+3,r27
+ 805 04fc 00C0      		rjmp .L83
+ 806               	.LVL44:
+ 807               	.L68:
+ 808 04fe 2091 0000 		lds r18,LEDstate
+ 809               	.LM126:
+ 810 0502 80FF      		sbrs r24,0
+ 811 0504 00C0      		rjmp .L77
+ 812               	.LM127:
+ 813 0506 2460      		ori r18,lo8(4)
+ 814 0508 00C0      		rjmp .L98
+ 815               	.L77:
+ 816               	.LM128:
+ 817 050a 2B7F      		andi r18,lo8(-5)
+ 818               	.L98:
+ 819 050c 2093 0000 		sts LEDstate,r18
+ 820 0510 2091 0000 		lds r18,LEDstate
+ 821               	.LM129:
+ 822 0514 81FF      		sbrs r24,1
+ 823 0516 00C0      		rjmp .L79
+ 824               	.LM130:
+ 825 0518 2160      		ori r18,lo8(1)
+ 826 051a 00C0      		rjmp .L99
+ 827               	.L79:
+ 828               	.LM131:
+ 829 051c 2E7F      		andi r18,lo8(-2)
+ 830               	.L99:
+ 831 051e 2093 0000 		sts LEDstate,r18
+ 832 0522 2091 0000 		lds r18,LEDstate
+ 833               	.LM132:
+ 834 0526 82FF      		sbrs r24,2
+ 835 0528 00C0      		rjmp .L81
+ 836               	.LM133:
+ 837 052a 2260      		ori r18,lo8(2)
+ 838 052c 00C0      		rjmp .L100
+ 839               	.L81:
+ 840               	.LM134:
+ 841 052e 2D7F      		andi r18,lo8(-3)
+ 842               	.L100:
+ 843 0530 2093 0000 		sts LEDstate,r18
+ 844               	.LM135:
+ 845 0534 8091 0000 		lds r24,LEDstate
+ 846 0538 90E0      		ldi r25,lo8(0)
+ 847 053a 0E94 0000 		call led_3lockupdate
+ 848 053e 00C0      		rjmp .L83
+ 849               	.L65:
+ 850               	.LM136:
+ 851 0540 133F      		cpi r17,lo8(-13)
+ 852 0542 01F0      		breq .L88
+ 853 0544 143F      		cpi r17,lo8(-12)
+ 854 0546 00F4      		brsh .L94
+ 855 0548 1E3E      		cpi r17,lo8(-18)
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 16
+
+
+ 856 054a 01F0      		breq .L85
+ 857 054c 1F3E      		cpi r17,lo8(-17)
+ 858 054e 00F4      		brsh .L95
+ 859 0550 1D3E      		cpi r17,lo8(-19)
+ 860 0552 01F4      		brne .L83
+ 861 0554 00C0      		rjmp .L104
+ 862               	.L95:
+ 863 0556 103F      		cpi r17,lo8(-16)
+ 864 0558 01F0      		breq .L86
+ 865 055a 123F      		cpi r17,lo8(-14)
+ 866 055c 01F4      		brne .L83
+ 867 055e 00C0      		rjmp .L105
+ 868               	.L94:
+ 869 0560 163F      		cpi r17,lo8(-10)
+ 870 0562 01F0      		breq .L91
+ 871 0564 173F      		cpi r17,lo8(-9)
+ 872 0566 00F0      		brlo .L83
+ 873               	.L96:
+ 874 0568 1E3F      		cpi r17,lo8(-2)
+ 875 056a 01F0      		breq .L92
+ 876 056c 1F3F      		cpi r17,lo8(-1)
+ 877 056e 01F4      		brne .L83
+ 878 0570 00C0      		rjmp .L106
+ 879               	.L85:
+ 880               	.LM137:
+ 881 0572 8EEE      		ldi r24,lo8(-18)
+ 882 0574 00C0      		rjmp .L101
+ 883               	.L105:
+ 884               	.LM138:
+ 885 0576 8AEF      		ldi r24,lo8(-6)
+ 886 0578 64E0      		ldi r22,lo8(4)
+ 887 057a 00C0      		rjmp .L101
+ 888               	.L106:
+ 889               	.LM139:
+ 890 057c 8AEF      		ldi r24,lo8(-6)
+ 891 057e 68E0      		ldi r22,lo8(8)
+ 892 0580 00C0      		rjmp .L101
+ 893               	.L92:
+ 894               	.LM140:
+ 895 0582 8091 0000 		lds r24,lastSent
+ 896 0586 00C0      		rjmp .L101
+ 897               	.L86:
+ 898               	.LM141:
+ 899 0588 8AEF      		ldi r24,lo8(-6)
+ 900 058a 62E0      		ldi r22,lo8(2)
+ 901 058c 00C0      		rjmp .L101
+ 902               	.L104:
+ 903               	.LM142:
+ 904 058e 8AEF      		ldi r24,lo8(-6)
+ 905 0590 66E0      		ldi r22,lo8(6)
+ 906 0592 00C0      		rjmp .L101
+ 907               	.L88:
+ 908               	.LM143:
+ 909 0594 8AEF      		ldi r24,lo8(-6)
+ 910 0596 67E0      		ldi r22,lo8(7)
+ 911 0598 00C0      		rjmp .L101
+ 912               	.L91:
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 17
+
+
+ 913               	.LM144:
+ 914 059a 81E0      		ldi r24,lo8(1)
+ 915 059c 8093 0000 		sts TYPEMATIC_DELAY,r24
+ 916               	.LM145:
+ 917 05a0 85E0      		ldi r24,lo8(5)
+ 918 05a2 90E0      		ldi r25,hi8(5)
+ 919 05a4 A0E0      		ldi r26,hlo8(5)
+ 920 05a6 B0E0      		ldi r27,hhi8(5)
+ 921 05a8 8093 0000 		sts TYPEMATIC_REPEAT,r24
+ 922 05ac 9093 0000 		sts (TYPEMATIC_REPEAT)+1,r25
+ 923 05b0 A093 0000 		sts (TYPEMATIC_REPEAT)+2,r26
+ 924 05b4 B093 0000 		sts (TYPEMATIC_REPEAT)+3,r27
+ 925               	.LM146:
+ 926 05b8 0E94 0000 		call clear
+ 927               	.LVL45:
+ 928               	.L83:
+ 929               	.LM147:
+ 930 05bc 8AEF      		ldi r24,lo8(-6)
+ 931 05be 60E0      		ldi r22,lo8(0)
+ 932               	.L101:
+ 933 05c0 0E94 0000 		call tx_state
+ 934               	.LVL46:
+ 935               	.LM148:
+ 936 05c4 80E0      		ldi r24,lo8(0)
+ 937 05c6 90E0      		ldi r25,hi8(0)
+ 938               	/* epilogue start */
+ 939 05c8 1F91      		pop r17
+ 940               	.LVL47:
+ 941 05ca 0895      		ret
+ 942               	.LFE13:
+ 943               		.size	processRX, .-processRX
+ 944               	.global	ps2main
+ 945               		.type	ps2main, @function
+ 946               	ps2main:
+ 947               	.LFB15:
+ 948               	.LM149:
+ 949 05cc CF93      		push r28
+ 950 05ce DF93      		push r29
+ 951               	/* prologue: function */
+ 952               	/* frame size = 0 */
+ 953               	.LM150:
+ 954 05d0 88E0      		ldi r24,lo8(8)
+ 955 05d2 8093 0000 		sts m_state,r24
+ 956               	.LM151:
+ 957               	/* #APP */
+ 958               	 ;  429 "ps2main.c" 1
+ 959 05d6 F894      		cli
+ 960               	 ;  0 "" 2
+ 961               	.LM152:
+ 962               	/* #NOAPP */
+ 963 05d8 0E94 0000 		call kbd_init
+ 964               	.LM153:
+ 965               	/* #APP */
+ 966               	 ;  435 "ps2main.c" 1
+ 967 05dc 7894      		sei
+ 968               	 ;  0 "" 2
+ 969               	/* #NOAPP */
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 18
+
+
+ 970 05de C0E0      		ldi r28,lo8(0)
+ 971 05e0 D0E0      		ldi r29,hi8(0)
+ 972               	.LVL48:
+ 973               	.L114:
+ 974               	.LM154:
+ 975 05e2 8091 0000 		lds r24,kbd_flags
+ 976 05e6 82FF      		sbrs r24,2
+ 977 05e8 00C0      		rjmp .L108
+ 978 05ea CC3F      		cpi r28,252
+ 979 05ec D105      		cpc r29,__zero_reg__
+ 980 05ee 01F0      		breq .L109
+ 981               	.LBB13:
+ 982               	.LBB14:
+ 983               	.LM155:
+ 984 05f0 2091 0000 		lds r18,front
+ 985 05f4 3091 0000 		lds r19,(front)+1
+ 986 05f8 8091 0000 		lds r24,rear
+ 987 05fc 9091 0000 		lds r25,(rear)+1
+ 988 0600 2817      		cp r18,r24
+ 989 0602 3907      		cpc r19,r25
+ 990 0604 01F4      		brne .L108
+ 991               	.L109:
+ 992               	.LBE14:
+ 993               	.LBE13:
+ 994               	.LM156:
+ 995 0606 0E94 0000 		call processRX
+ 996               	.L108:
+ 997               	.LM157:
+ 998 060a 8091 0000 		lds r24,kbd_flags
+ 999 060e 84FF      		sbrs r24,4
+ 1000 0610 00C0      		rjmp .L114
+ 1001               	.LM158:
+ 1002 0612 0E94 0000 		call processTX
+ 1003 0616 EC01      		movw r28,r24
+ 1004 0618 00C0      		rjmp .L114
+ 1005               	.LFE15:
+ 1006               		.size	ps2main, .-ps2main
+ 1007               	.global	txScanCode
+ 1008               	.global	txScanCode
+ 1009               		.section .bss
+ 1010               		.type	txScanCode, @object
+ 1011               		.size	txScanCode, 1
+ 1012               	txScanCode:
+ 1013 0000 00        		.skip 1,0
+ 1014               		.lcomm lastMAKE_SIZE,1
+ 1015               		.data
+ 1016               		.type	TYPEMATIC_DELAY, @object
+ 1017               		.size	TYPEMATIC_DELAY, 1
+ 1018               	TYPEMATIC_DELAY:
+ 1019 0000 02        		.byte	2
+ 1020               		.lcomm lastMAKE_IDX,1
+ 1021               		.type	TYPEMATIC_REPEAT, @object
+ 1022               		.size	TYPEMATIC_REPEAT, 4
+ 1023               	TYPEMATIC_REPEAT:
+ 1024 0001 05        		.byte	5
+ 1025 0002 00        		.byte	0
+ 1026 0003 00        		.byte	0
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 19
+
+
+ 1027 0004 00        		.byte	0
+ 1028               		.lcomm front,2
+ 1029               		.lcomm rear,2
+ 1030               		.lcomm record.1872,1
+ 1031               		.lcomm QUEUE,200
+ 1032               		.lcomm lastMAKE_keyidx,1
+ 1033               		.lcomm lastMAKE,10
+ 1034               		.lcomm loopCnt,4
+ 1035               		.comm m_state,1,1
+ 1036               		.comm lastSent,1,1
+ 1037               		.comm lastState,1,1
+ 1038               		.section	.debug_frame,"",@progbits
+ 1039               	.Lframe0:
+ 1040 0000 0C00 0000 		.long	.LECIE0-.LSCIE0
+ 1041               	.LSCIE0:
+ 1042 0004 FFFF FFFF 		.long	0xffffffff
+ 1043 0008 01        		.byte	0x1
+ 1044 0009 00        		.string	""
+ 1045 000a 01        		.uleb128 0x1
+ 1046 000b 7F        		.sleb128 -1
+ 1047 000c 24        		.byte	0x24
+ 1048 000d 0C        		.byte	0xc
+ 1049 000e 20        		.uleb128 0x20
+ 1050 000f 00        		.uleb128 0x0
+ 1051               		.p2align	2
+ 1052               	.LECIE0:
+ 1053               	.LSFDE0:
+ 1054 0010 0C00 0000 		.long	.LEFDE0-.LASFDE0
+ 1055               	.LASFDE0:
+ 1056 0014 0000 0000 		.long	.Lframe0
+ 1057 0018 0000 0000 		.long	.LFB7
+ 1058 001c 8800 0000 		.long	.LFE7-.LFB7
+ 1059               		.p2align	2
+ 1060               	.LEFDE0:
+ 1061               	.LSFDE2:
+ 1062 0020 0C00 0000 		.long	.LEFDE2-.LASFDE2
+ 1063               	.LASFDE2:
+ 1064 0024 0000 0000 		.long	.Lframe0
+ 1065 0028 0000 0000 		.long	.LFB8
+ 1066 002c 3800 0000 		.long	.LFE8-.LFB8
+ 1067               		.p2align	2
+ 1068               	.LEFDE2:
+ 1069               	.LSFDE4:
+ 1070 0030 0C00 0000 		.long	.LEFDE4-.LASFDE4
+ 1071               	.LASFDE4:
+ 1072 0034 0000 0000 		.long	.Lframe0
+ 1073 0038 0000 0000 		.long	.LFB9
+ 1074 003c 1E00 0000 		.long	.LFE9-.LFB9
+ 1075               		.p2align	2
+ 1076               	.LEFDE4:
+ 1077               	.LSFDE6:
+ 1078 0040 0C00 0000 		.long	.LEFDE6-.LASFDE6
+ 1079               	.LASFDE6:
+ 1080 0044 0000 0000 		.long	.Lframe0
+ 1081 0048 0000 0000 		.long	.LFB10
+ 1082 004c 3800 0000 		.long	.LFE10-.LFB10
+ 1083               		.p2align	2
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 20
+
+
+ 1084               	.LEFDE6:
+ 1085               	.LSFDE8:
+ 1086 0050 0C00 0000 		.long	.LEFDE8-.LASFDE8
+ 1087               	.LASFDE8:
+ 1088 0054 0000 0000 		.long	.Lframe0
+ 1089 0058 0000 0000 		.long	.LFB12
+ 1090 005c 1A01 0000 		.long	.LFE12-.LFB12
+ 1091               		.p2align	2
+ 1092               	.LEFDE8:
+ 1093               	.LSFDE10:
+ 1094 0060 0C00 0000 		.long	.LEFDE10-.LASFDE10
+ 1095               	.LASFDE10:
+ 1096 0064 0000 0000 		.long	.Lframe0
+ 1097 0068 0000 0000 		.long	.LFB11
+ 1098 006c 1800 0000 		.long	.LFE11-.LFB11
+ 1099               		.p2align	2
+ 1100               	.LEFDE10:
+ 1101               	.LSFDE12:
+ 1102 0070 0C00 0000 		.long	.LEFDE12-.LASFDE12
+ 1103               	.LASFDE12:
+ 1104 0074 0000 0000 		.long	.Lframe0
+ 1105 0078 0000 0000 		.long	.LFB14
+ 1106 007c 0402 0000 		.long	.LFE14-.LFB14
+ 1107               		.p2align	2
+ 1108               	.LEFDE12:
+ 1109               	.LSFDE14:
+ 1110 0080 0C00 0000 		.long	.LEFDE14-.LASFDE14
+ 1111               	.LASFDE14:
+ 1112 0084 0000 0000 		.long	.Lframe0
+ 1113 0088 0000 0000 		.long	.LFB13
+ 1114 008c 8001 0000 		.long	.LFE13-.LFB13
+ 1115               		.p2align	2
+ 1116               	.LEFDE14:
+ 1117               	.LSFDE16:
+ 1118 0090 0C00 0000 		.long	.LEFDE16-.LASFDE16
+ 1119               	.LASFDE16:
+ 1120 0094 0000 0000 		.long	.Lframe0
+ 1121 0098 0000 0000 		.long	.LFB15
+ 1122 009c 4E00 0000 		.long	.LFE15-.LFB15
+ 1123               		.p2align	2
+ 1124               	.LEFDE16:
+ 1125               		.text
+ 1126               	.Letext0:
+ 1127               		.section	.debug_loc,"",@progbits
+ 1128               	.Ldebug_loc0:
+ 1129               	.LLST1:
+ 1130 0000 0000 0000 		.long	.LVL0-.Ltext0
+ 1131 0004 0C00 0000 		.long	.LVL1-.Ltext0
+ 1132 0008 0100      		.word	0x1
+ 1133 000a 68        		.byte	0x68
+ 1134 000b 0C00 0000 		.long	.LVL1-.Ltext0
+ 1135 000f 1200 0000 		.long	.LVL2-.Ltext0
+ 1136 0013 0100      		.word	0x1
+ 1137 0015 62        		.byte	0x62
+ 1138 0016 1200 0000 		.long	.LVL2-.Ltext0
+ 1139 001a 2800 0000 		.long	.LVL3-.Ltext0
+ 1140 001e 0100      		.word	0x1
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 21
+
+
+ 1141 0020 68        		.byte	0x68
+ 1142 0021 2800 0000 		.long	.LVL3-.Ltext0
+ 1143 0025 8800 0000 		.long	.LFE7-.Ltext0
+ 1144 0029 0100      		.word	0x1
+ 1145 002b 62        		.byte	0x62
+ 1146 002c 0000 0000 		.long	0x0
+ 1147 0030 0000 0000 		.long	0x0
+ 1148               	.LLST6:
+ 1149 0034 1601 0000 		.long	.LVL4-.Ltext0
+ 1150 0038 2201 0000 		.long	.LVL5-.Ltext0
+ 1151 003c 0100      		.word	0x1
+ 1152 003e 68        		.byte	0x68
+ 1153 003f 2201 0000 		.long	.LVL5-.Ltext0
+ 1154 0043 5801 0000 		.long	.LVL8-.Ltext0
+ 1155 0047 0600      		.word	0x6
+ 1156 0049 62        		.byte	0x62
+ 1157 004a 93        		.byte	0x93
+ 1158 004b 01        		.uleb128 0x1
+ 1159 004c 63        		.byte	0x63
+ 1160 004d 93        		.byte	0x93
+ 1161 004e 01        		.uleb128 0x1
+ 1162 004f 5801 0000 		.long	.LVL8-.Ltext0
+ 1163 0053 6601 0000 		.long	.LVL9-.Ltext0
+ 1164 0057 0600      		.word	0x6
+ 1165 0059 69        		.byte	0x69
+ 1166 005a 93        		.byte	0x93
+ 1167 005b 01        		.uleb128 0x1
+ 1168 005c 63        		.byte	0x63
+ 1169 005d 93        		.byte	0x93
+ 1170 005e 01        		.uleb128 0x1
+ 1171 005f 7C01 0000 		.long	.LVL10-.Ltext0
+ 1172 0063 8201 0000 		.long	.LVL11-.Ltext0
+ 1173 0067 0600      		.word	0x6
+ 1174 0069 69        		.byte	0x69
+ 1175 006a 93        		.byte	0x93
+ 1176 006b 01        		.uleb128 0x1
+ 1177 006c 63        		.byte	0x63
+ 1178 006d 93        		.byte	0x93
+ 1179 006e 01        		.uleb128 0x1
+ 1180 006f B001 0000 		.long	.LVL12-.Ltext0
+ 1181 0073 B601 0000 		.long	.LVL13-.Ltext0
+ 1182 0077 0600      		.word	0x6
+ 1183 0079 62        		.byte	0x62
+ 1184 007a 93        		.byte	0x93
+ 1185 007b 01        		.uleb128 0x1
+ 1186 007c 63        		.byte	0x63
+ 1187 007d 93        		.byte	0x93
+ 1188 007e 01        		.uleb128 0x1
+ 1189 007f CC01 0000 		.long	.LVL14-.Ltext0
+ 1190 0083 D401 0000 		.long	.LVL15-.Ltext0
+ 1191 0087 0600      		.word	0x6
+ 1192 0089 62        		.byte	0x62
+ 1193 008a 93        		.byte	0x93
+ 1194 008b 01        		.uleb128 0x1
+ 1195 008c 63        		.byte	0x63
+ 1196 008d 93        		.byte	0x93
+ 1197 008e 01        		.uleb128 0x1
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 22
+
+
+ 1198 008f D401 0000 		.long	.LVL15-.Ltext0
+ 1199 0093 DC01 0000 		.long	.LVL16-.Ltext0
+ 1200 0097 0600      		.word	0x6
+ 1201 0099 69        		.byte	0x69
+ 1202 009a 93        		.byte	0x93
+ 1203 009b 01        		.uleb128 0x1
+ 1204 009c 63        		.byte	0x63
+ 1205 009d 93        		.byte	0x93
+ 1206 009e 01        		.uleb128 0x1
+ 1207 009f DC01 0000 		.long	.LVL16-.Ltext0
+ 1208 00a3 EA01 0000 		.long	.LVL18-.Ltext0
+ 1209 00a7 0600      		.word	0x6
+ 1210 00a9 6E        		.byte	0x6e
+ 1211 00aa 93        		.byte	0x93
+ 1212 00ab 01        		.uleb128 0x1
+ 1213 00ac 6F        		.byte	0x6f
+ 1214 00ad 93        		.byte	0x93
+ 1215 00ae 01        		.uleb128 0x1
+ 1216 00af EA01 0000 		.long	.LVL18-.Ltext0
+ 1217 00b3 F001 0000 		.long	.LVL19-.Ltext0
+ 1218 00b7 0600      		.word	0x6
+ 1219 00b9 69        		.byte	0x69
+ 1220 00ba 93        		.byte	0x93
+ 1221 00bb 01        		.uleb128 0x1
+ 1222 00bc 6F        		.byte	0x6f
+ 1223 00bd 93        		.byte	0x93
+ 1224 00be 01        		.uleb128 0x1
+ 1225 00bf 0C02 0000 		.long	.LVL20-.Ltext0
+ 1226 00c3 1602 0000 		.long	.LVL21-.Ltext0
+ 1227 00c7 0600      		.word	0x6
+ 1228 00c9 6E        		.byte	0x6e
+ 1229 00ca 93        		.byte	0x93
+ 1230 00cb 01        		.uleb128 0x1
+ 1231 00cc 6F        		.byte	0x6f
+ 1232 00cd 93        		.byte	0x93
+ 1233 00ce 01        		.uleb128 0x1
+ 1234 00cf 1602 0000 		.long	.LVL21-.Ltext0
+ 1235 00d3 1C02 0000 		.long	.LVL22-.Ltext0
+ 1236 00d7 0600      		.word	0x6
+ 1237 00d9 6E        		.byte	0x6e
+ 1238 00da 93        		.byte	0x93
+ 1239 00db 01        		.uleb128 0x1
+ 1240 00dc 6F        		.byte	0x6f
+ 1241 00dd 93        		.byte	0x93
+ 1242 00de 01        		.uleb128 0x1
+ 1243 00df 2802 0000 		.long	.LVL23-.Ltext0
+ 1244 00e3 3002 0000 		.long	.LFE12-.Ltext0
+ 1245 00e7 0600      		.word	0x6
+ 1246 00e9 69        		.byte	0x69
+ 1247 00ea 93        		.byte	0x93
+ 1248 00eb 01        		.uleb128 0x1
+ 1249 00ec 63        		.byte	0x63
+ 1250 00ed 93        		.byte	0x93
+ 1251 00ee 01        		.uleb128 0x1
+ 1252 00ef 0000 0000 		.long	0x0
+ 1253 00f3 0000 0000 		.long	0x0
+ 1254               	.LLST7:
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 23
+
+
+ 1255 00f7 1601 0000 		.long	.LVL4-.Ltext0
+ 1256 00fb 6601 0000 		.long	.LVL9-.Ltext0
+ 1257 00ff 0100      		.word	0x1
+ 1258 0101 66        		.byte	0x66
+ 1259 0102 7C01 0000 		.long	.LVL10-.Ltext0
+ 1260 0106 8201 0000 		.long	.LVL11-.Ltext0
+ 1261 010a 0100      		.word	0x1
+ 1262 010c 66        		.byte	0x66
+ 1263 010d B001 0000 		.long	.LVL12-.Ltext0
+ 1264 0111 B601 0000 		.long	.LVL13-.Ltext0
+ 1265 0115 0100      		.word	0x1
+ 1266 0117 66        		.byte	0x66
+ 1267 0118 CC01 0000 		.long	.LVL14-.Ltext0
+ 1268 011c F001 0000 		.long	.LVL19-.Ltext0
+ 1269 0120 0100      		.word	0x1
+ 1270 0122 66        		.byte	0x66
+ 1271 0123 0C02 0000 		.long	.LVL20-.Ltext0
+ 1272 0127 1602 0000 		.long	.LVL21-.Ltext0
+ 1273 012b 0100      		.word	0x1
+ 1274 012d 66        		.byte	0x66
+ 1275 012e 1602 0000 		.long	.LVL21-.Ltext0
+ 1276 0132 1C02 0000 		.long	.LVL22-.Ltext0
+ 1277 0136 0100      		.word	0x1
+ 1278 0138 66        		.byte	0x66
+ 1279 0139 2802 0000 		.long	.LVL23-.Ltext0
+ 1280 013d 3002 0000 		.long	.LFE12-.Ltext0
+ 1281 0141 0100      		.word	0x1
+ 1282 0143 66        		.byte	0x66
+ 1283 0144 0000 0000 		.long	0x0
+ 1284 0148 0000 0000 		.long	0x0
+ 1285               	.LLST8:
+ 1286 014c 2A01 0000 		.long	.LVL6-.Ltext0
+ 1287 0150 2E02 0000 		.long	.LVL24-.Ltext0
+ 1288 0154 0100      		.word	0x1
+ 1289 0156 61        		.byte	0x61
+ 1290 0157 0000 0000 		.long	0x0
+ 1291 015b 0000 0000 		.long	0x0
+ 1292               	.LLST10:
+ 1293 015f 3002 0000 		.long	.LVL25-.Ltext0
+ 1294 0163 4002 0000 		.long	.LVL27-.Ltext0
+ 1295 0167 0100      		.word	0x1
+ 1296 0169 68        		.byte	0x68
+ 1297 016a 0000 0000 		.long	0x0
+ 1298 016e 0000 0000 		.long	0x0
+ 1299               	.LLST11:
+ 1300 0172 3002 0000 		.long	.LVL25-.Ltext0
+ 1301 0176 3802 0000 		.long	.LVL26-.Ltext0
+ 1302 017a 0100      		.word	0x1
+ 1303 017c 66        		.byte	0x66
+ 1304 017d 3802 0000 		.long	.LVL26-.Ltext0
+ 1305 0181 4602 0000 		.long	.LVL28-.Ltext0
+ 1306 0185 0100      		.word	0x1
+ 1307 0187 61        		.byte	0x61
+ 1308 0188 0000 0000 		.long	0x0
+ 1309 018c 0000 0000 		.long	0x0
+ 1310               	.LLST13:
+ 1311 0190 9E02 0000 		.long	.LVL29-.Ltext0
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 24
+
+
+ 1312 0194 A402 0000 		.long	.LVL30-.Ltext0
+ 1313 0198 0100      		.word	0x1
+ 1314 019a 61        		.byte	0x61
+ 1315 019b A402 0000 		.long	.LVL30-.Ltext0
+ 1316 019f AE02 0000 		.long	.LVL31-.Ltext0
+ 1317 01a3 0100      		.word	0x1
+ 1318 01a5 68        		.byte	0x68
+ 1319 01a6 AE02 0000 		.long	.LVL31-.Ltext0
+ 1320 01aa C002 0000 		.long	.LVL32-.Ltext0
+ 1321 01ae 0100      		.word	0x1
+ 1322 01b0 61        		.byte	0x61
+ 1323 01b1 C002 0000 		.long	.LVL32-.Ltext0
+ 1324 01b5 C402 0000 		.long	.LVL33-.Ltext0
+ 1325 01b9 0100      		.word	0x1
+ 1326 01bb 68        		.byte	0x68
+ 1327 01bc C402 0000 		.long	.LVL33-.Ltext0
+ 1328 01c0 3003 0000 		.long	.LVL34-.Ltext0
+ 1329 01c4 0100      		.word	0x1
+ 1330 01c6 61        		.byte	0x61
+ 1331 01c7 3E04 0000 		.long	.LVL35-.Ltext0
+ 1332 01cb 4404 0000 		.long	.LVL36-.Ltext0
+ 1333 01cf 0100      		.word	0x1
+ 1334 01d1 61        		.byte	0x61
+ 1335 01d2 0000 0000 		.long	0x0
+ 1336 01d6 0000 0000 		.long	0x0
+ 1337               	.LLST15:
+ 1338 01da 5404 0000 		.long	.LVL37-.Ltext0
+ 1339 01de 7C04 0000 		.long	.LVL38-.Ltext0
+ 1340 01e2 0100      		.word	0x1
+ 1341 01e4 61        		.byte	0x61
+ 1342 01e5 7C04 0000 		.long	.LVL38-.Ltext0
+ 1343 01e9 7E04 0000 		.long	.LVL39-.Ltext0
+ 1344 01ed 0100      		.word	0x1
+ 1345 01ef 68        		.byte	0x68
+ 1346 01f0 7E04 0000 		.long	.LVL39-.Ltext0
+ 1347 01f4 CA05 0000 		.long	.LVL47-.Ltext0
+ 1348 01f8 0100      		.word	0x1
+ 1349 01fa 61        		.byte	0x61
+ 1350 01fb 0000 0000 		.long	0x0
+ 1351 01ff 0000 0000 		.long	0x0
+ 1352               	.LLST16:
+ 1353 0203 AE04 0000 		.long	.LVL40-.Ltext0
+ 1354 0207 FE04 0000 		.long	.LVL44-.Ltext0
+ 1355 020b 0600      		.word	0x6
+ 1356 020d 64        		.byte	0x64
+ 1357 020e 93        		.byte	0x93
+ 1358 020f 01        		.uleb128 0x1
+ 1359 0210 65        		.byte	0x65
+ 1360 0211 93        		.byte	0x93
+ 1361 0212 01        		.uleb128 0x1
+ 1362 0213 BC05 0000 		.long	.LVL45-.Ltext0
+ 1363 0217 C405 0000 		.long	.LVL46-.Ltext0
+ 1364 021b 0600      		.word	0x6
+ 1365 021d 64        		.byte	0x64
+ 1366 021e 93        		.byte	0x93
+ 1367 021f 01        		.uleb128 0x1
+ 1368 0220 65        		.byte	0x65
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 25
+
+
+ 1369 0221 93        		.byte	0x93
+ 1370 0222 01        		.uleb128 0x1
+ 1371 0223 0000 0000 		.long	0x0
+ 1372 0227 0000 0000 		.long	0x0
+ 1373               	.LLST17:
+ 1374 022b C004 0000 		.long	.LVL41-.Ltext0
+ 1375 022f E404 0000 		.long	.LVL43-.Ltext0
+ 1376 0233 0600      		.word	0x6
+ 1377 0235 68        		.byte	0x68
+ 1378 0236 93        		.byte	0x93
+ 1379 0237 01        		.uleb128 0x1
+ 1380 0238 69        		.byte	0x69
+ 1381 0239 93        		.byte	0x93
+ 1382 023a 01        		.uleb128 0x1
+ 1383 023b 0000 0000 		.long	0x0
+ 1384 023f 0000 0000 		.long	0x0
+ 1385               	.LLST18:
+ 1386 0243 C404 0000 		.long	.LVL42-.Ltext0
+ 1387 0247 FE04 0000 		.long	.LVL44-.Ltext0
+ 1388 024b 0600      		.word	0x6
+ 1389 024d 62        		.byte	0x62
+ 1390 024e 93        		.byte	0x93
+ 1391 024f 01        		.uleb128 0x1
+ 1392 0250 63        		.byte	0x63
+ 1393 0251 93        		.byte	0x93
+ 1394 0252 01        		.uleb128 0x1
+ 1395 0253 BC05 0000 		.long	.LVL45-.Ltext0
+ 1396 0257 C405 0000 		.long	.LVL46-.Ltext0
+ 1397 025b 0600      		.word	0x6
+ 1398 025d 62        		.byte	0x62
+ 1399 025e 93        		.byte	0x93
+ 1400 025f 01        		.uleb128 0x1
+ 1401 0260 63        		.byte	0x63
+ 1402 0261 93        		.byte	0x93
+ 1403 0262 01        		.uleb128 0x1
+ 1404 0263 0000 0000 		.long	0x0
+ 1405 0267 0000 0000 		.long	0x0
+ 1406               		.section	.debug_info
+ 1407 0000 8708 0000 		.long	0x887
+ 1408 0004 0200      		.word	0x2
+ 1409 0006 0000 0000 		.long	.Ldebug_abbrev0
+ 1410 000a 04        		.byte	0x4
+ 1411 000b 01        		.uleb128 0x1
+ 1412 000c 0000 0000 		.long	.LASF221
+ 1413 0010 01        		.byte	0x1
+ 1414 0011 0000 0000 		.long	.LASF222
+ 1415 0015 0000 0000 		.long	.LASF223
+ 1416 0019 0000 0000 		.long	.Ltext0
+ 1417 001d 0000 0000 		.long	.Letext0
+ 1418 0021 0000 0000 		.long	.Ldebug_line0
+ 1419 0025 02        		.uleb128 0x2
+ 1420 0026 01        		.byte	0x1
+ 1421 0027 08        		.byte	0x8
+ 1422 0028 0000 0000 		.long	.LASF0
+ 1423 002c 02        		.uleb128 0x2
+ 1424 002d 01        		.byte	0x1
+ 1425 002e 06        		.byte	0x6
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 26
+
+
+ 1426 002f 0000 0000 		.long	.LASF1
+ 1427 0033 02        		.uleb128 0x2
+ 1428 0034 02        		.byte	0x2
+ 1429 0035 07        		.byte	0x7
+ 1430 0036 0000 0000 		.long	.LASF2
+ 1431 003a 02        		.uleb128 0x2
+ 1432 003b 02        		.byte	0x2
+ 1433 003c 05        		.byte	0x5
+ 1434 003d 0000 0000 		.long	.LASF3
+ 1435 0041 02        		.uleb128 0x2
+ 1436 0042 04        		.byte	0x4
+ 1437 0043 07        		.byte	0x7
+ 1438 0044 0000 0000 		.long	.LASF4
+ 1439 0048 02        		.uleb128 0x2
+ 1440 0049 04        		.byte	0x4
+ 1441 004a 05        		.byte	0x5
+ 1442 004b 0000 0000 		.long	.LASF5
+ 1443 004f 02        		.uleb128 0x2
+ 1444 0050 08        		.byte	0x8
+ 1445 0051 07        		.byte	0x7
+ 1446 0052 0000 0000 		.long	.LASF6
+ 1447 0056 02        		.uleb128 0x2
+ 1448 0057 08        		.byte	0x8
+ 1449 0058 05        		.byte	0x5
+ 1450 0059 0000 0000 		.long	.LASF7
+ 1451 005d 02        		.uleb128 0x2
+ 1452 005e 02        		.byte	0x2
+ 1453 005f 07        		.byte	0x7
+ 1454 0060 0000 0000 		.long	.LASF8
+ 1455 0064 02        		.uleb128 0x2
+ 1456 0065 01        		.byte	0x1
+ 1457 0066 06        		.byte	0x6
+ 1458 0067 0000 0000 		.long	.LASF9
+ 1459 006b 03        		.uleb128 0x3
+ 1460 006c 02        		.byte	0x2
+ 1461 006d 05        		.byte	0x5
+ 1462 006e 696E 7400 		.string	"int"
+ 1463 0072 04        		.uleb128 0x4
+ 1464 0073 0000 0000 		.long	.LASF10
+ 1465 0077 02        		.byte	0x2
+ 1466 0078 7A        		.byte	0x7a
+ 1467 0079 2500 0000 		.long	0x25
+ 1468 007d 04        		.uleb128 0x4
+ 1469 007e 0000 0000 		.long	.LASF11
+ 1470 0082 02        		.byte	0x2
+ 1471 0083 7C        		.byte	0x7c
+ 1472 0084 5D00 0000 		.long	0x5d
+ 1473 0088 05        		.uleb128 0x5
+ 1474 0089 01        		.byte	0x1
+ 1475 008a 06        		.byte	0x6
+ 1476 008b 05        		.uleb128 0x5
+ 1477 008c 01        		.byte	0x1
+ 1478 008d 08        		.byte	0x8
+ 1479 008e 06        		.uleb128 0x6
+ 1480 008f 02        		.byte	0x2
+ 1481 0090 04        		.byte	0x4
+ 1482 0091 2C        		.byte	0x2c
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 27
+
+
+ 1483 0092 0405 0000 		.long	0x504
+ 1484 0096 07        		.uleb128 0x7
+ 1485 0097 0000 0000 		.long	.LASF12
+ 1486 009b 00        		.sleb128 0
+ 1487 009c 07        		.uleb128 0x7
+ 1488 009d 0000 0000 		.long	.LASF13
+ 1489 00a1 01        		.sleb128 1
+ 1490 00a2 07        		.uleb128 0x7
+ 1491 00a3 0000 0000 		.long	.LASF14
+ 1492 00a7 02        		.sleb128 2
+ 1493 00a8 07        		.uleb128 0x7
+ 1494 00a9 0000 0000 		.long	.LASF15
+ 1495 00ad 03        		.sleb128 3
+ 1496 00ae 07        		.uleb128 0x7
+ 1497 00af 0000 0000 		.long	.LASF16
+ 1498 00b3 04        		.sleb128 4
+ 1499 00b4 07        		.uleb128 0x7
+ 1500 00b5 0000 0000 		.long	.LASF17
+ 1501 00b9 05        		.sleb128 5
+ 1502 00ba 07        		.uleb128 0x7
+ 1503 00bb 0000 0000 		.long	.LASF18
+ 1504 00bf 06        		.sleb128 6
+ 1505 00c0 07        		.uleb128 0x7
+ 1506 00c1 0000 0000 		.long	.LASF19
+ 1507 00c5 07        		.sleb128 7
+ 1508 00c6 07        		.uleb128 0x7
+ 1509 00c7 0000 0000 		.long	.LASF20
+ 1510 00cb 08        		.sleb128 8
+ 1511 00cc 07        		.uleb128 0x7
+ 1512 00cd 0000 0000 		.long	.LASF21
+ 1513 00d1 09        		.sleb128 9
+ 1514 00d2 07        		.uleb128 0x7
+ 1515 00d3 0000 0000 		.long	.LASF22
+ 1516 00d7 0A        		.sleb128 10
+ 1517 00d8 07        		.uleb128 0x7
+ 1518 00d9 0000 0000 		.long	.LASF23
+ 1519 00dd 0B        		.sleb128 11
+ 1520 00de 07        		.uleb128 0x7
+ 1521 00df 0000 0000 		.long	.LASF24
+ 1522 00e3 0C        		.sleb128 12
+ 1523 00e4 07        		.uleb128 0x7
+ 1524 00e5 0000 0000 		.long	.LASF25
+ 1525 00e9 0D        		.sleb128 13
+ 1526 00ea 07        		.uleb128 0x7
+ 1527 00eb 0000 0000 		.long	.LASF26
+ 1528 00ef 0E        		.sleb128 14
+ 1529 00f0 07        		.uleb128 0x7
+ 1530 00f1 0000 0000 		.long	.LASF27
+ 1531 00f5 0F        		.sleb128 15
+ 1532 00f6 07        		.uleb128 0x7
+ 1533 00f7 0000 0000 		.long	.LASF28
+ 1534 00fb 10        		.sleb128 16
+ 1535 00fc 07        		.uleb128 0x7
+ 1536 00fd 0000 0000 		.long	.LASF29
+ 1537 0101 11        		.sleb128 17
+ 1538 0102 07        		.uleb128 0x7
+ 1539 0103 0000 0000 		.long	.LASF30
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 28
+
+
+ 1540 0107 12        		.sleb128 18
+ 1541 0108 07        		.uleb128 0x7
+ 1542 0109 0000 0000 		.long	.LASF31
+ 1543 010d 13        		.sleb128 19
+ 1544 010e 07        		.uleb128 0x7
+ 1545 010f 0000 0000 		.long	.LASF32
+ 1546 0113 14        		.sleb128 20
+ 1547 0114 07        		.uleb128 0x7
+ 1548 0115 0000 0000 		.long	.LASF33
+ 1549 0119 15        		.sleb128 21
+ 1550 011a 07        		.uleb128 0x7
+ 1551 011b 0000 0000 		.long	.LASF34
+ 1552 011f 16        		.sleb128 22
+ 1553 0120 07        		.uleb128 0x7
+ 1554 0121 0000 0000 		.long	.LASF35
+ 1555 0125 17        		.sleb128 23
+ 1556 0126 07        		.uleb128 0x7
+ 1557 0127 0000 0000 		.long	.LASF36
+ 1558 012b 18        		.sleb128 24
+ 1559 012c 07        		.uleb128 0x7
+ 1560 012d 0000 0000 		.long	.LASF37
+ 1561 0131 19        		.sleb128 25
+ 1562 0132 07        		.uleb128 0x7
+ 1563 0133 0000 0000 		.long	.LASF38
+ 1564 0137 1A        		.sleb128 26
+ 1565 0138 07        		.uleb128 0x7
+ 1566 0139 0000 0000 		.long	.LASF39
+ 1567 013d 1B        		.sleb128 27
+ 1568 013e 07        		.uleb128 0x7
+ 1569 013f 0000 0000 		.long	.LASF40
+ 1570 0143 1C        		.sleb128 28
+ 1571 0144 07        		.uleb128 0x7
+ 1572 0145 0000 0000 		.long	.LASF41
+ 1573 0149 1D        		.sleb128 29
+ 1574 014a 07        		.uleb128 0x7
+ 1575 014b 0000 0000 		.long	.LASF42
+ 1576 014f 1E        		.sleb128 30
+ 1577 0150 07        		.uleb128 0x7
+ 1578 0151 0000 0000 		.long	.LASF43
+ 1579 0155 1F        		.sleb128 31
+ 1580 0156 07        		.uleb128 0x7
+ 1581 0157 0000 0000 		.long	.LASF44
+ 1582 015b 20        		.sleb128 32
+ 1583 015c 07        		.uleb128 0x7
+ 1584 015d 0000 0000 		.long	.LASF45
+ 1585 0161 21        		.sleb128 33
+ 1586 0162 07        		.uleb128 0x7
+ 1587 0163 0000 0000 		.long	.LASF46
+ 1588 0167 22        		.sleb128 34
+ 1589 0168 07        		.uleb128 0x7
+ 1590 0169 0000 0000 		.long	.LASF47
+ 1591 016d 23        		.sleb128 35
+ 1592 016e 07        		.uleb128 0x7
+ 1593 016f 0000 0000 		.long	.LASF48
+ 1594 0173 24        		.sleb128 36
+ 1595 0174 07        		.uleb128 0x7
+ 1596 0175 0000 0000 		.long	.LASF49
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 29
+
+
+ 1597 0179 25        		.sleb128 37
+ 1598 017a 07        		.uleb128 0x7
+ 1599 017b 0000 0000 		.long	.LASF50
+ 1600 017f 26        		.sleb128 38
+ 1601 0180 07        		.uleb128 0x7
+ 1602 0181 0000 0000 		.long	.LASF51
+ 1603 0185 27        		.sleb128 39
+ 1604 0186 07        		.uleb128 0x7
+ 1605 0187 0000 0000 		.long	.LASF52
+ 1606 018b 28        		.sleb128 40
+ 1607 018c 07        		.uleb128 0x7
+ 1608 018d 0000 0000 		.long	.LASF53
+ 1609 0191 29        		.sleb128 41
+ 1610 0192 07        		.uleb128 0x7
+ 1611 0193 0000 0000 		.long	.LASF54
+ 1612 0197 2A        		.sleb128 42
+ 1613 0198 07        		.uleb128 0x7
+ 1614 0199 0000 0000 		.long	.LASF55
+ 1615 019d 2B        		.sleb128 43
+ 1616 019e 07        		.uleb128 0x7
+ 1617 019f 0000 0000 		.long	.LASF56
+ 1618 01a3 2C        		.sleb128 44
+ 1619 01a4 07        		.uleb128 0x7
+ 1620 01a5 0000 0000 		.long	.LASF57
+ 1621 01a9 2D        		.sleb128 45
+ 1622 01aa 07        		.uleb128 0x7
+ 1623 01ab 0000 0000 		.long	.LASF58
+ 1624 01af 2E        		.sleb128 46
+ 1625 01b0 07        		.uleb128 0x7
+ 1626 01b1 0000 0000 		.long	.LASF59
+ 1627 01b5 2F        		.sleb128 47
+ 1628 01b6 07        		.uleb128 0x7
+ 1629 01b7 0000 0000 		.long	.LASF60
+ 1630 01bb 30        		.sleb128 48
+ 1631 01bc 07        		.uleb128 0x7
+ 1632 01bd 0000 0000 		.long	.LASF61
+ 1633 01c1 31        		.sleb128 49
+ 1634 01c2 07        		.uleb128 0x7
+ 1635 01c3 0000 0000 		.long	.LASF62
+ 1636 01c7 32        		.sleb128 50
+ 1637 01c8 07        		.uleb128 0x7
+ 1638 01c9 0000 0000 		.long	.LASF63
+ 1639 01cd 33        		.sleb128 51
+ 1640 01ce 07        		.uleb128 0x7
+ 1641 01cf 0000 0000 		.long	.LASF64
+ 1642 01d3 34        		.sleb128 52
+ 1643 01d4 07        		.uleb128 0x7
+ 1644 01d5 0000 0000 		.long	.LASF65
+ 1645 01d9 35        		.sleb128 53
+ 1646 01da 07        		.uleb128 0x7
+ 1647 01db 0000 0000 		.long	.LASF66
+ 1648 01df 36        		.sleb128 54
+ 1649 01e0 07        		.uleb128 0x7
+ 1650 01e1 0000 0000 		.long	.LASF67
+ 1651 01e5 37        		.sleb128 55
+ 1652 01e6 07        		.uleb128 0x7
+ 1653 01e7 0000 0000 		.long	.LASF68
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 30
+
+
+ 1654 01eb 38        		.sleb128 56
+ 1655 01ec 07        		.uleb128 0x7
+ 1656 01ed 0000 0000 		.long	.LASF69
+ 1657 01f1 39        		.sleb128 57
+ 1658 01f2 07        		.uleb128 0x7
+ 1659 01f3 0000 0000 		.long	.LASF70
+ 1660 01f7 3A        		.sleb128 58
+ 1661 01f8 07        		.uleb128 0x7
+ 1662 01f9 0000 0000 		.long	.LASF71
+ 1663 01fd 3B        		.sleb128 59
+ 1664 01fe 07        		.uleb128 0x7
+ 1665 01ff 0000 0000 		.long	.LASF72
+ 1666 0203 3C        		.sleb128 60
+ 1667 0204 07        		.uleb128 0x7
+ 1668 0205 0000 0000 		.long	.LASF73
+ 1669 0209 3D        		.sleb128 61
+ 1670 020a 07        		.uleb128 0x7
+ 1671 020b 0000 0000 		.long	.LASF74
+ 1672 020f 3E        		.sleb128 62
+ 1673 0210 07        		.uleb128 0x7
+ 1674 0211 0000 0000 		.long	.LASF75
+ 1675 0215 3F        		.sleb128 63
+ 1676 0216 07        		.uleb128 0x7
+ 1677 0217 0000 0000 		.long	.LASF76
+ 1678 021b C000      		.sleb128 64
+ 1679 021d 07        		.uleb128 0x7
+ 1680 021e 0000 0000 		.long	.LASF77
+ 1681 0222 C100      		.sleb128 65
+ 1682 0224 07        		.uleb128 0x7
+ 1683 0225 0000 0000 		.long	.LASF78
+ 1684 0229 C200      		.sleb128 66
+ 1685 022b 07        		.uleb128 0x7
+ 1686 022c 0000 0000 		.long	.LASF79
+ 1687 0230 C300      		.sleb128 67
+ 1688 0232 07        		.uleb128 0x7
+ 1689 0233 0000 0000 		.long	.LASF80
+ 1690 0237 C400      		.sleb128 68
+ 1691 0239 07        		.uleb128 0x7
+ 1692 023a 0000 0000 		.long	.LASF81
+ 1693 023e C500      		.sleb128 69
+ 1694 0240 07        		.uleb128 0x7
+ 1695 0241 0000 0000 		.long	.LASF82
+ 1696 0245 C600      		.sleb128 70
+ 1697 0247 07        		.uleb128 0x7
+ 1698 0248 0000 0000 		.long	.LASF83
+ 1699 024c C700      		.sleb128 71
+ 1700 024e 07        		.uleb128 0x7
+ 1701 024f 0000 0000 		.long	.LASF84
+ 1702 0253 C800      		.sleb128 72
+ 1703 0255 07        		.uleb128 0x7
+ 1704 0256 0000 0000 		.long	.LASF85
+ 1705 025a C900      		.sleb128 73
+ 1706 025c 07        		.uleb128 0x7
+ 1707 025d 0000 0000 		.long	.LASF86
+ 1708 0261 CA00      		.sleb128 74
+ 1709 0263 07        		.uleb128 0x7
+ 1710 0264 0000 0000 		.long	.LASF87
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 31
+
+
+ 1711 0268 CB00      		.sleb128 75
+ 1712 026a 07        		.uleb128 0x7
+ 1713 026b 0000 0000 		.long	.LASF88
+ 1714 026f CC00      		.sleb128 76
+ 1715 0271 07        		.uleb128 0x7
+ 1716 0272 0000 0000 		.long	.LASF89
+ 1717 0276 CD00      		.sleb128 77
+ 1718 0278 07        		.uleb128 0x7
+ 1719 0279 0000 0000 		.long	.LASF90
+ 1720 027d CE00      		.sleb128 78
+ 1721 027f 07        		.uleb128 0x7
+ 1722 0280 0000 0000 		.long	.LASF91
+ 1723 0284 CF00      		.sleb128 79
+ 1724 0286 07        		.uleb128 0x7
+ 1725 0287 0000 0000 		.long	.LASF92
+ 1726 028b D000      		.sleb128 80
+ 1727 028d 07        		.uleb128 0x7
+ 1728 028e 0000 0000 		.long	.LASF93
+ 1729 0292 D100      		.sleb128 81
+ 1730 0294 07        		.uleb128 0x7
+ 1731 0295 0000 0000 		.long	.LASF94
+ 1732 0299 D200      		.sleb128 82
+ 1733 029b 07        		.uleb128 0x7
+ 1734 029c 0000 0000 		.long	.LASF95
+ 1735 02a0 D300      		.sleb128 83
+ 1736 02a2 07        		.uleb128 0x7
+ 1737 02a3 0000 0000 		.long	.LASF96
+ 1738 02a7 D400      		.sleb128 84
+ 1739 02a9 07        		.uleb128 0x7
+ 1740 02aa 0000 0000 		.long	.LASF97
+ 1741 02ae D500      		.sleb128 85
+ 1742 02b0 07        		.uleb128 0x7
+ 1743 02b1 0000 0000 		.long	.LASF98
+ 1744 02b5 D600      		.sleb128 86
+ 1745 02b7 07        		.uleb128 0x7
+ 1746 02b8 0000 0000 		.long	.LASF99
+ 1747 02bc D700      		.sleb128 87
+ 1748 02be 07        		.uleb128 0x7
+ 1749 02bf 0000 0000 		.long	.LASF100
+ 1750 02c3 D800      		.sleb128 88
+ 1751 02c5 07        		.uleb128 0x7
+ 1752 02c6 0000 0000 		.long	.LASF101
+ 1753 02ca D900      		.sleb128 89
+ 1754 02cc 07        		.uleb128 0x7
+ 1755 02cd 0000 0000 		.long	.LASF102
+ 1756 02d1 DA00      		.sleb128 90
+ 1757 02d3 07        		.uleb128 0x7
+ 1758 02d4 0000 0000 		.long	.LASF103
+ 1759 02d8 DB00      		.sleb128 91
+ 1760 02da 07        		.uleb128 0x7
+ 1761 02db 0000 0000 		.long	.LASF104
+ 1762 02df DC00      		.sleb128 92
+ 1763 02e1 07        		.uleb128 0x7
+ 1764 02e2 0000 0000 		.long	.LASF105
+ 1765 02e6 DD00      		.sleb128 93
+ 1766 02e8 07        		.uleb128 0x7
+ 1767 02e9 0000 0000 		.long	.LASF106
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 32
+
+
+ 1768 02ed DE00      		.sleb128 94
+ 1769 02ef 07        		.uleb128 0x7
+ 1770 02f0 0000 0000 		.long	.LASF107
+ 1771 02f4 DF00      		.sleb128 95
+ 1772 02f6 07        		.uleb128 0x7
+ 1773 02f7 0000 0000 		.long	.LASF108
+ 1774 02fb E000      		.sleb128 96
+ 1775 02fd 07        		.uleb128 0x7
+ 1776 02fe 0000 0000 		.long	.LASF109
+ 1777 0302 E100      		.sleb128 97
+ 1778 0304 07        		.uleb128 0x7
+ 1779 0305 0000 0000 		.long	.LASF110
+ 1780 0309 E200      		.sleb128 98
+ 1781 030b 07        		.uleb128 0x7
+ 1782 030c 0000 0000 		.long	.LASF111
+ 1783 0310 E300      		.sleb128 99
+ 1784 0312 07        		.uleb128 0x7
+ 1785 0313 0000 0000 		.long	.LASF112
+ 1786 0317 E400      		.sleb128 100
+ 1787 0319 07        		.uleb128 0x7
+ 1788 031a 0000 0000 		.long	.LASF113
+ 1789 031e E500      		.sleb128 101
+ 1790 0320 07        		.uleb128 0x7
+ 1791 0321 0000 0000 		.long	.LASF114
+ 1792 0325 E600      		.sleb128 102
+ 1793 0327 07        		.uleb128 0x7
+ 1794 0328 0000 0000 		.long	.LASF115
+ 1795 032c E700      		.sleb128 103
+ 1796 032e 07        		.uleb128 0x7
+ 1797 032f 0000 0000 		.long	.LASF116
+ 1798 0333 E800      		.sleb128 104
+ 1799 0335 07        		.uleb128 0x7
+ 1800 0336 0000 0000 		.long	.LASF117
+ 1801 033a E900      		.sleb128 105
+ 1802 033c 07        		.uleb128 0x7
+ 1803 033d 0000 0000 		.long	.LASF118
+ 1804 0341 EA00      		.sleb128 106
+ 1805 0343 07        		.uleb128 0x7
+ 1806 0344 0000 0000 		.long	.LASF119
+ 1807 0348 EB00      		.sleb128 107
+ 1808 034a 07        		.uleb128 0x7
+ 1809 034b 0000 0000 		.long	.LASF120
+ 1810 034f EC00      		.sleb128 108
+ 1811 0351 07        		.uleb128 0x7
+ 1812 0352 0000 0000 		.long	.LASF121
+ 1813 0356 ED00      		.sleb128 109
+ 1814 0358 07        		.uleb128 0x7
+ 1815 0359 0000 0000 		.long	.LASF122
+ 1816 035d EE00      		.sleb128 110
+ 1817 035f 07        		.uleb128 0x7
+ 1818 0360 0000 0000 		.long	.LASF123
+ 1819 0364 EF00      		.sleb128 111
+ 1820 0366 07        		.uleb128 0x7
+ 1821 0367 0000 0000 		.long	.LASF124
+ 1822 036b F000      		.sleb128 112
+ 1823 036d 07        		.uleb128 0x7
+ 1824 036e 0000 0000 		.long	.LASF125
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 33
+
+
+ 1825 0372 F100      		.sleb128 113
+ 1826 0374 07        		.uleb128 0x7
+ 1827 0375 0000 0000 		.long	.LASF126
+ 1828 0379 F200      		.sleb128 114
+ 1829 037b 07        		.uleb128 0x7
+ 1830 037c 0000 0000 		.long	.LASF127
+ 1831 0380 F300      		.sleb128 115
+ 1832 0382 07        		.uleb128 0x7
+ 1833 0383 0000 0000 		.long	.LASF128
+ 1834 0387 F400      		.sleb128 116
+ 1835 0389 07        		.uleb128 0x7
+ 1836 038a 0000 0000 		.long	.LASF129
+ 1837 038e F500      		.sleb128 117
+ 1838 0390 07        		.uleb128 0x7
+ 1839 0391 0000 0000 		.long	.LASF130
+ 1840 0395 F600      		.sleb128 118
+ 1841 0397 07        		.uleb128 0x7
+ 1842 0398 0000 0000 		.long	.LASF131
+ 1843 039c F700      		.sleb128 119
+ 1844 039e 07        		.uleb128 0x7
+ 1845 039f 0000 0000 		.long	.LASF132
+ 1846 03a3 F800      		.sleb128 120
+ 1847 03a5 07        		.uleb128 0x7
+ 1848 03a6 0000 0000 		.long	.LASF133
+ 1849 03aa F900      		.sleb128 121
+ 1850 03ac 07        		.uleb128 0x7
+ 1851 03ad 0000 0000 		.long	.LASF134
+ 1852 03b1 FA00      		.sleb128 122
+ 1853 03b3 07        		.uleb128 0x7
+ 1854 03b4 0000 0000 		.long	.LASF135
+ 1855 03b8 FB00      		.sleb128 123
+ 1856 03ba 07        		.uleb128 0x7
+ 1857 03bb 0000 0000 		.long	.LASF136
+ 1858 03bf FC00      		.sleb128 124
+ 1859 03c1 07        		.uleb128 0x7
+ 1860 03c2 0000 0000 		.long	.LASF137
+ 1861 03c6 FD00      		.sleb128 125
+ 1862 03c8 07        		.uleb128 0x7
+ 1863 03c9 0000 0000 		.long	.LASF138
+ 1864 03cd FE00      		.sleb128 126
+ 1865 03cf 07        		.uleb128 0x7
+ 1866 03d0 0000 0000 		.long	.LASF139
+ 1867 03d4 FF00      		.sleb128 127
+ 1868 03d6 07        		.uleb128 0x7
+ 1869 03d7 0000 0000 		.long	.LASF140
+ 1870 03db 8001      		.sleb128 128
+ 1871 03dd 07        		.uleb128 0x7
+ 1872 03de 0000 0000 		.long	.LASF141
+ 1873 03e2 8101      		.sleb128 129
+ 1874 03e4 07        		.uleb128 0x7
+ 1875 03e5 0000 0000 		.long	.LASF142
+ 1876 03e9 8201      		.sleb128 130
+ 1877 03eb 07        		.uleb128 0x7
+ 1878 03ec 0000 0000 		.long	.LASF143
+ 1879 03f0 8301      		.sleb128 131
+ 1880 03f2 07        		.uleb128 0x7
+ 1881 03f3 0000 0000 		.long	.LASF144
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 34
+
+
+ 1882 03f7 8401      		.sleb128 132
+ 1883 03f9 07        		.uleb128 0x7
+ 1884 03fa 0000 0000 		.long	.LASF145
+ 1885 03fe 8501      		.sleb128 133
+ 1886 0400 07        		.uleb128 0x7
+ 1887 0401 0000 0000 		.long	.LASF146
+ 1888 0405 8601      		.sleb128 134
+ 1889 0407 07        		.uleb128 0x7
+ 1890 0408 0000 0000 		.long	.LASF147
+ 1891 040c 8701      		.sleb128 135
+ 1892 040e 07        		.uleb128 0x7
+ 1893 040f 0000 0000 		.long	.LASF148
+ 1894 0413 8801      		.sleb128 136
+ 1895 0415 07        		.uleb128 0x7
+ 1896 0416 0000 0000 		.long	.LASF149
+ 1897 041a 8901      		.sleb128 137
+ 1898 041c 07        		.uleb128 0x7
+ 1899 041d 0000 0000 		.long	.LASF150
+ 1900 0421 8A01      		.sleb128 138
+ 1901 0423 07        		.uleb128 0x7
+ 1902 0424 0000 0000 		.long	.LASF151
+ 1903 0428 8B01      		.sleb128 139
+ 1904 042a 07        		.uleb128 0x7
+ 1905 042b 0000 0000 		.long	.LASF152
+ 1906 042f 8C01      		.sleb128 140
+ 1907 0431 07        		.uleb128 0x7
+ 1908 0432 0000 0000 		.long	.LASF153
+ 1909 0436 8D01      		.sleb128 141
+ 1910 0438 07        		.uleb128 0x7
+ 1911 0439 0000 0000 		.long	.LASF154
+ 1912 043d 8E01      		.sleb128 142
+ 1913 043f 07        		.uleb128 0x7
+ 1914 0440 0000 0000 		.long	.LASF155
+ 1915 0444 8F01      		.sleb128 143
+ 1916 0446 07        		.uleb128 0x7
+ 1917 0447 0000 0000 		.long	.LASF156
+ 1918 044b 9001      		.sleb128 144
+ 1919 044d 07        		.uleb128 0x7
+ 1920 044e 0000 0000 		.long	.LASF157
+ 1921 0452 9101      		.sleb128 145
+ 1922 0454 07        		.uleb128 0x7
+ 1923 0455 0000 0000 		.long	.LASF158
+ 1924 0459 9201      		.sleb128 146
+ 1925 045b 07        		.uleb128 0x7
+ 1926 045c 0000 0000 		.long	.LASF159
+ 1927 0460 9301      		.sleb128 147
+ 1928 0462 07        		.uleb128 0x7
+ 1929 0463 0000 0000 		.long	.LASF160
+ 1930 0467 9401      		.sleb128 148
+ 1931 0469 07        		.uleb128 0x7
+ 1932 046a 0000 0000 		.long	.LASF161
+ 1933 046e 9501      		.sleb128 149
+ 1934 0470 07        		.uleb128 0x7
+ 1935 0471 0000 0000 		.long	.LASF162
+ 1936 0475 9601      		.sleb128 150
+ 1937 0477 07        		.uleb128 0x7
+ 1938 0478 0000 0000 		.long	.LASF163
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 35
+
+
+ 1939 047c 9701      		.sleb128 151
+ 1940 047e 07        		.uleb128 0x7
+ 1941 047f 0000 0000 		.long	.LASF164
+ 1942 0483 9801      		.sleb128 152
+ 1943 0485 07        		.uleb128 0x7
+ 1944 0486 0000 0000 		.long	.LASF165
+ 1945 048a 9901      		.sleb128 153
+ 1946 048c 07        		.uleb128 0x7
+ 1947 048d 0000 0000 		.long	.LASF166
+ 1948 0491 9A01      		.sleb128 154
+ 1949 0493 07        		.uleb128 0x7
+ 1950 0494 0000 0000 		.long	.LASF167
+ 1951 0498 9B01      		.sleb128 155
+ 1952 049a 07        		.uleb128 0x7
+ 1953 049b 0000 0000 		.long	.LASF168
+ 1954 049f 9C01      		.sleb128 156
+ 1955 04a1 07        		.uleb128 0x7
+ 1956 04a2 0000 0000 		.long	.LASF169
+ 1957 04a6 9D01      		.sleb128 157
+ 1958 04a8 07        		.uleb128 0x7
+ 1959 04a9 0000 0000 		.long	.LASF170
+ 1960 04ad 9E01      		.sleb128 158
+ 1961 04af 07        		.uleb128 0x7
+ 1962 04b0 0000 0000 		.long	.LASF171
+ 1963 04b4 9F01      		.sleb128 159
+ 1964 04b6 07        		.uleb128 0x7
+ 1965 04b7 0000 0000 		.long	.LASF172
+ 1966 04bb A001      		.sleb128 160
+ 1967 04bd 07        		.uleb128 0x7
+ 1968 04be 0000 0000 		.long	.LASF173
+ 1969 04c2 A101      		.sleb128 161
+ 1970 04c4 07        		.uleb128 0x7
+ 1971 04c5 0000 0000 		.long	.LASF174
+ 1972 04c9 A201      		.sleb128 162
+ 1973 04cb 07        		.uleb128 0x7
+ 1974 04cc 0000 0000 		.long	.LASF175
+ 1975 04d0 A301      		.sleb128 163
+ 1976 04d2 07        		.uleb128 0x7
+ 1977 04d3 0000 0000 		.long	.LASF176
+ 1978 04d7 A401      		.sleb128 164
+ 1979 04d9 07        		.uleb128 0x7
+ 1980 04da 0000 0000 		.long	.LASF177
+ 1981 04de A501      		.sleb128 165
+ 1982 04e0 07        		.uleb128 0x7
+ 1983 04e1 0000 0000 		.long	.LASF178
+ 1984 04e5 A601      		.sleb128 166
+ 1985 04e7 07        		.uleb128 0x7
+ 1986 04e8 0000 0000 		.long	.LASF179
+ 1987 04ec A701      		.sleb128 167
+ 1988 04ee 07        		.uleb128 0x7
+ 1989 04ef 0000 0000 		.long	.LASF180
+ 1990 04f3 A801      		.sleb128 168
+ 1991 04f5 07        		.uleb128 0x7
+ 1992 04f6 0000 0000 		.long	.LASF181
+ 1993 04fa A901      		.sleb128 169
+ 1994 04fc 07        		.uleb128 0x7
+ 1995 04fd 0000 0000 		.long	.LASF182
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 36
+
+
+ 1996 0501 AA01      		.sleb128 170
+ 1997 0503 00        		.byte	0x0
+ 1998 0504 08        		.uleb128 0x8
+ 1999 0505 01        		.byte	0x1
+ 2000 0506 0000 0000 		.long	.LASF224
+ 2001 050a 01        		.byte	0x1
+ 2002 050b 79        		.byte	0x79
+ 2003 050c 01        		.byte	0x1
+ 2004 050d 7200 0000 		.long	0x72
+ 2005 0511 01        		.byte	0x1
+ 2006 0512 09        		.uleb128 0x9
+ 2007 0513 01        		.byte	0x1
+ 2008 0514 0000 0000 		.long	.LASF183
+ 2009 0518 01        		.byte	0x1
+ 2010 0519 53        		.byte	0x53
+ 2011 051a 01        		.byte	0x1
+ 2012 051b 0000 0000 		.long	.LFB7
+ 2013 051f 0000 0000 		.long	.LFE7
+ 2014 0523 02        		.byte	0x2
+ 2015 0524 90        		.byte	0x90
+ 2016 0525 20        		.uleb128 0x20
+ 2017 0526 4B05 0000 		.long	0x54b
+ 2018 052a 0A        		.uleb128 0xa
+ 2019 052b 0000 0000 		.long	.LASF186
+ 2020 052f 01        		.byte	0x1
+ 2021 0530 53        		.byte	0x53
+ 2022 0531 7200 0000 		.long	0x72
+ 2023 0535 0000 0000 		.long	.LLST1
+ 2024 0539 0B        		.uleb128 0xb
+ 2025 053a 0000 0000 		.long	.LASF191
+ 2026 053e 01        		.byte	0x1
+ 2027 053f 54        		.byte	0x54
+ 2028 0540 7200 0000 		.long	0x72
+ 2029 0544 05        		.byte	0x5
+ 2030 0545 03        		.byte	0x3
+ 2031 0546 0000 0000 		.long	record.1872
+ 2032 054a 00        		.byte	0x0
+ 2033 054b 0C        		.uleb128 0xc
+ 2034 054c 01        		.byte	0x1
+ 2035 054d 706F 7000 		.string	"pop"
+ 2036 0551 01        		.byte	0x1
+ 2037 0552 70        		.byte	0x70
+ 2038 0553 01        		.byte	0x1
+ 2039 0554 7200 0000 		.long	0x72
+ 2040 0558 0000 0000 		.long	.LFB8
+ 2041 055c 0000 0000 		.long	.LFE8
+ 2042 0560 02        		.byte	0x2
+ 2043 0561 90        		.byte	0x90
+ 2044 0562 20        		.uleb128 0x20
+ 2045 0563 0D        		.uleb128 0xd
+ 2046 0564 0405 0000 		.long	0x504
+ 2047 0568 0000 0000 		.long	.LFB9
+ 2048 056c 0000 0000 		.long	.LFE9
+ 2049 0570 02        		.byte	0x2
+ 2050 0571 90        		.byte	0x90
+ 2051 0572 20        		.uleb128 0x20
+ 2052 0573 09        		.uleb128 0x9
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 37
+
+
+ 2053 0574 01        		.byte	0x1
+ 2054 0575 0000 0000 		.long	.LASF184
+ 2055 0579 01        		.byte	0x1
+ 2056 057a 80        		.byte	0x80
+ 2057 057b 01        		.byte	0x1
+ 2058 057c 0000 0000 		.long	.LFB10
+ 2059 0580 0000 0000 		.long	.LFE10
+ 2060 0584 02        		.byte	0x2
+ 2061 0585 90        		.byte	0x90
+ 2062 0586 20        		.uleb128 0x20
+ 2063 0587 9505 0000 		.long	0x595
+ 2064 058b 0E        		.uleb128 0xe
+ 2065 058c 6900      		.string	"i"
+ 2066 058e 01        		.byte	0x1
+ 2067 058f 81        		.byte	0x81
+ 2068 0590 6B00 0000 		.long	0x6b
+ 2069 0594 00        		.byte	0x0
+ 2070 0595 09        		.uleb128 0x9
+ 2071 0596 01        		.byte	0x1
+ 2072 0597 0000 0000 		.long	.LASF185
+ 2073 059b 01        		.byte	0x1
+ 2074 059c 97        		.byte	0x97
+ 2075 059d 01        		.byte	0x1
+ 2076 059e 0000 0000 		.long	.LFB12
+ 2077 05a2 0000 0000 		.long	.LFE12
+ 2078 05a6 02        		.byte	0x2
+ 2079 05a7 90        		.byte	0x90
+ 2080 05a8 20        		.uleb128 0x20
+ 2081 05a9 FB05 0000 		.long	0x5fb
+ 2082 05ad 0A        		.uleb128 0xa
+ 2083 05ae 0000 0000 		.long	.LASF187
+ 2084 05b2 01        		.byte	0x1
+ 2085 05b3 96        		.byte	0x96
+ 2086 05b4 7200 0000 		.long	0x72
+ 2087 05b8 0000 0000 		.long	.LLST6
+ 2088 05bc 0A        		.uleb128 0xa
+ 2089 05bd 0000 0000 		.long	.LASF188
+ 2090 05c1 01        		.byte	0x1
+ 2091 05c2 96        		.byte	0x96
+ 2092 05c3 7200 0000 		.long	0x72
+ 2093 05c7 0000 0000 		.long	.LLST7
+ 2094 05cb 0F        		.uleb128 0xf
+ 2095 05cc 0000 0000 		.long	.LASF189
+ 2096 05d0 01        		.byte	0x1
+ 2097 05d1 99        		.byte	0x99
+ 2098 05d2 7200 0000 		.long	0x72
+ 2099 05d6 10        		.uleb128 0x10
+ 2100 05d7 0000 0000 		.long	.LBB8
+ 2101 05db 0000 0000 		.long	.LBE8
+ 2102 05df 0F        		.uleb128 0xf
+ 2103 05e0 0000 0000 		.long	.LASF190
+ 2104 05e4 01        		.byte	0x1
+ 2105 05e5 99        		.byte	0x99
+ 2106 05e6 7D00 0000 		.long	0x7d
+ 2107 05ea 11        		.uleb128 0x11
+ 2108 05eb 0000 0000 		.long	.LASF192
+ 2109 05ef 01        		.byte	0x1
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 38
+
+
+ 2110 05f0 99        		.byte	0x99
+ 2111 05f1 7200 0000 		.long	0x72
+ 2112 05f5 0000 0000 		.long	.LLST8
+ 2113 05f9 00        		.byte	0x0
+ 2114 05fa 00        		.byte	0x0
+ 2115 05fb 09        		.uleb128 0x9
+ 2116 05fc 01        		.byte	0x1
+ 2117 05fd 0000 0000 		.long	.LASF193
+ 2118 0601 01        		.byte	0x1
+ 2119 0602 8C        		.byte	0x8c
+ 2120 0603 01        		.byte	0x1
+ 2121 0604 0000 0000 		.long	.LFB11
+ 2122 0608 0000 0000 		.long	.LFE11
+ 2123 060c 02        		.byte	0x2
+ 2124 060d 90        		.byte	0x90
+ 2125 060e 20        		.uleb128 0x20
+ 2126 060f 3006 0000 		.long	0x630
+ 2127 0613 12        		.uleb128 0x12
+ 2128 0614 7800      		.string	"x"
+ 2129 0616 01        		.byte	0x1
+ 2130 0617 8B        		.byte	0x8b
+ 2131 0618 2500 0000 		.long	0x25
+ 2132 061c 0000 0000 		.long	.LLST10
+ 2133 0620 0A        		.uleb128 0xa
+ 2134 0621 0000 0000 		.long	.LASF194
+ 2135 0625 01        		.byte	0x1
+ 2136 0626 8B        		.byte	0x8b
+ 2137 0627 2500 0000 		.long	0x25
+ 2138 062b 0000 0000 		.long	.LLST11
+ 2139 062f 00        		.byte	0x0
+ 2140 0630 13        		.uleb128 0x13
+ 2141 0631 01        		.byte	0x1
+ 2142 0632 0000 0000 		.long	.LASF196
+ 2143 0636 01        		.byte	0x1
+ 2144 0637 5E01      		.word	0x15e
+ 2145 0639 01        		.byte	0x1
+ 2146 063a 6B00 0000 		.long	0x6b
+ 2147 063e 0000 0000 		.long	.LFB14
+ 2148 0642 0000 0000 		.long	.LFE14
+ 2149 0646 02        		.byte	0x2
+ 2150 0647 90        		.byte	0x90
+ 2151 0648 20        		.uleb128 0x20
+ 2152 0649 7E06 0000 		.long	0x67e
+ 2153 064d 14        		.uleb128 0x14
+ 2154 064e 0000 0000 		.long	.LASF195
+ 2155 0652 01        		.byte	0x1
+ 2156 0653 5F01      		.word	0x15f
+ 2157 0655 7200 0000 		.long	0x72
+ 2158 0659 0000 0000 		.long	.LLST13
+ 2159 065d 15        		.uleb128 0x15
+ 2160 065e 0405 0000 		.long	0x504
+ 2161 0662 0000 0000 		.long	.LBB9
+ 2162 0666 0000 0000 		.long	.LBE9
+ 2163 066a 01        		.byte	0x1
+ 2164 066b 6301      		.word	0x163
+ 2165 066d 15        		.uleb128 0x15
+ 2166 066e 0405 0000 		.long	0x504
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 39
+
+
+ 2167 0672 0000 0000 		.long	.LBB11
+ 2168 0676 0000 0000 		.long	.LBE11
+ 2169 067a 01        		.byte	0x1
+ 2170 067b 8201      		.word	0x182
+ 2171 067d 00        		.byte	0x0
+ 2172 067e 16        		.uleb128 0x16
+ 2173 067f 01        		.byte	0x1
+ 2174 0680 0000 0000 		.long	.LASF197
+ 2175 0684 01        		.byte	0x1
+ 2176 0685 EB        		.byte	0xeb
+ 2177 0686 01        		.byte	0x1
+ 2178 0687 6B00 0000 		.long	0x6b
+ 2179 068b 0000 0000 		.long	.LFB13
+ 2180 068f 0000 0000 		.long	.LFE13
+ 2181 0693 02        		.byte	0x2
+ 2182 0694 90        		.byte	0x90
+ 2183 0695 20        		.uleb128 0x20
+ 2184 0696 DE06 0000 		.long	0x6de
+ 2185 069a 11        		.uleb128 0x11
+ 2186 069b 0000 0000 		.long	.LASF198
+ 2187 069f 01        		.byte	0x1
+ 2188 06a0 ED        		.byte	0xed
+ 2189 06a1 2500 0000 		.long	0x25
+ 2190 06a5 0000 0000 		.long	.LLST15
+ 2191 06a9 0F        		.uleb128 0xf
+ 2192 06aa 0000 0000 		.long	.LASF199
+ 2193 06ae 01        		.byte	0x1
+ 2194 06af EE        		.byte	0xee
+ 2195 06b0 6B00 0000 		.long	0x6b
+ 2196 06b4 11        		.uleb128 0x11
+ 2197 06b5 0000 0000 		.long	.LASF200
+ 2198 06b9 01        		.byte	0x1
+ 2199 06ba EE        		.byte	0xee
+ 2200 06bb 6B00 0000 		.long	0x6b
+ 2201 06bf 0000 0000 		.long	.LLST16
+ 2202 06c3 17        		.uleb128 0x17
+ 2203 06c4 6900      		.string	"i"
+ 2204 06c6 01        		.byte	0x1
+ 2205 06c7 EF        		.byte	0xef
+ 2206 06c8 6B00 0000 		.long	0x6b
+ 2207 06cc 0000 0000 		.long	.LLST17
+ 2208 06d0 17        		.uleb128 0x17
+ 2209 06d1 6A00      		.string	"j"
+ 2210 06d3 01        		.byte	0x1
+ 2211 06d4 EF        		.byte	0xef
+ 2212 06d5 6B00 0000 		.long	0x6b
+ 2213 06d9 0000 0000 		.long	.LLST18
+ 2214 06dd 00        		.byte	0x0
+ 2215 06de 13        		.uleb128 0x13
+ 2216 06df 01        		.byte	0x1
+ 2217 06e0 0000 0000 		.long	.LASF201
+ 2218 06e4 01        		.byte	0x1
+ 2219 06e5 AA01      		.word	0x1aa
+ 2220 06e7 01        		.byte	0x1
+ 2221 06e8 7200 0000 		.long	0x72
+ 2222 06ec 0000 0000 		.long	.LFB15
+ 2223 06f0 0000 0000 		.long	.LFE15
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 40
+
+
+ 2224 06f4 02        		.byte	0x2
+ 2225 06f5 90        		.byte	0x90
+ 2226 06f6 20        		.uleb128 0x20
+ 2227 06f7 1F07 0000 		.long	0x71f
+ 2228 06fb 18        		.uleb128 0x18
+ 2229 06fc 0000 0000 		.long	.LASF195
+ 2230 0700 01        		.byte	0x1
+ 2231 0701 AB01      		.word	0x1ab
+ 2232 0703 6B00 0000 		.long	0x6b
+ 2233 0707 06        		.byte	0x6
+ 2234 0708 6C        		.byte	0x6c
+ 2235 0709 93        		.byte	0x93
+ 2236 070a 01        		.uleb128 0x1
+ 2237 070b 6D        		.byte	0x6d
+ 2238 070c 93        		.byte	0x93
+ 2239 070d 01        		.uleb128 0x1
+ 2240 070e 15        		.uleb128 0x15
+ 2241 070f 0405 0000 		.long	0x504
+ 2242 0713 0000 0000 		.long	.LBB13
+ 2243 0717 0000 0000 		.long	.LBE13
+ 2244 071b 01        		.byte	0x1
+ 2245 071c B701      		.word	0x1b7
+ 2246 071e 00        		.byte	0x0
+ 2247 071f 19        		.uleb128 0x19
+ 2248 0720 7200 0000 		.long	0x72
+ 2249 0724 2F07 0000 		.long	0x72f
+ 2250 0728 1A        		.uleb128 0x1a
+ 2251 0729 2F07 0000 		.long	0x72f
+ 2252 072d C7        		.byte	0xc7
+ 2253 072e 00        		.byte	0x0
+ 2254 072f 05        		.uleb128 0x5
+ 2255 0730 02        		.byte	0x2
+ 2256 0731 07        		.byte	0x7
+ 2257 0732 0B        		.uleb128 0xb
+ 2258 0733 0000 0000 		.long	.LASF202
+ 2259 0737 01        		.byte	0x1
+ 2260 0738 3E        		.byte	0x3e
+ 2261 0739 1F07 0000 		.long	0x71f
+ 2262 073d 05        		.byte	0x5
+ 2263 073e 03        		.byte	0x3
+ 2264 073f 0000 0000 		.long	QUEUE
+ 2265 0743 0B        		.uleb128 0xb
+ 2266 0744 0000 0000 		.long	.LASF203
+ 2267 0748 01        		.byte	0x1
+ 2268 0749 3F        		.byte	0x3f
+ 2269 074a 6B00 0000 		.long	0x6b
+ 2270 074e 05        		.byte	0x5
+ 2271 074f 03        		.byte	0x3
+ 2272 0750 0000 0000 		.long	rear
+ 2273 0754 0B        		.uleb128 0xb
+ 2274 0755 0000 0000 		.long	.LASF204
+ 2275 0759 01        		.byte	0x1
+ 2276 075a 3F        		.byte	0x3f
+ 2277 075b 6B00 0000 		.long	0x6b
+ 2278 075f 05        		.byte	0x5
+ 2279 0760 03        		.byte	0x3
+ 2280 0761 0000 0000 		.long	front
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 41
+
+
+ 2281 0765 0B        		.uleb128 0xb
+ 2282 0766 0000 0000 		.long	.LASF205
+ 2283 076a 01        		.byte	0x1
+ 2284 076b 41        		.byte	0x41
+ 2285 076c 7200 0000 		.long	0x72
+ 2286 0770 05        		.byte	0x5
+ 2287 0771 03        		.byte	0x3
+ 2288 0772 0000 0000 		.long	lastMAKE_keyidx
+ 2289 0776 19        		.uleb128 0x19
+ 2290 0777 7200 0000 		.long	0x72
+ 2291 077b 8607 0000 		.long	0x786
+ 2292 077f 1A        		.uleb128 0x1a
+ 2293 0780 2F07 0000 		.long	0x72f
+ 2294 0784 09        		.byte	0x9
+ 2295 0785 00        		.byte	0x0
+ 2296 0786 0B        		.uleb128 0xb
+ 2297 0787 0000 0000 		.long	.LASF206
+ 2298 078b 01        		.byte	0x1
+ 2299 078c 42        		.byte	0x42
+ 2300 078d 7607 0000 		.long	0x776
+ 2301 0791 05        		.byte	0x5
+ 2302 0792 03        		.byte	0x3
+ 2303 0793 0000 0000 		.long	lastMAKE
+ 2304 0797 0B        		.uleb128 0xb
+ 2305 0798 0000 0000 		.long	.LASF207
+ 2306 079c 01        		.byte	0x1
+ 2307 079d 43        		.byte	0x43
+ 2308 079e 7200 0000 		.long	0x72
+ 2309 07a2 05        		.byte	0x5
+ 2310 07a3 03        		.byte	0x3
+ 2311 07a4 0000 0000 		.long	lastMAKE_SIZE
+ 2312 07a8 0B        		.uleb128 0xb
+ 2313 07a9 0000 0000 		.long	.LASF208
+ 2314 07ad 01        		.byte	0x1
+ 2315 07ae 44        		.byte	0x44
+ 2316 07af 7200 0000 		.long	0x72
+ 2317 07b3 05        		.byte	0x5
+ 2318 07b4 03        		.byte	0x3
+ 2319 07b5 0000 0000 		.long	lastMAKE_IDX
+ 2320 07b9 0B        		.uleb128 0xb
+ 2321 07ba 0000 0000 		.long	.LASF209
+ 2322 07be 01        		.byte	0x1
+ 2323 07bf 45        		.byte	0x45
+ 2324 07c0 4800 0000 		.long	0x48
+ 2325 07c4 05        		.byte	0x5
+ 2326 07c5 03        		.byte	0x3
+ 2327 07c6 0000 0000 		.long	loopCnt
+ 2328 07ca 0B        		.uleb128 0xb
+ 2329 07cb 0000 0000 		.long	.LASF210
+ 2330 07cf 01        		.byte	0x1
+ 2331 07d0 4B        		.byte	0x4b
+ 2332 07d1 7200 0000 		.long	0x72
+ 2333 07d5 05        		.byte	0x5
+ 2334 07d6 03        		.byte	0x3
+ 2335 07d7 0000 0000 		.long	TYPEMATIC_DELAY
+ 2336 07db 0B        		.uleb128 0xb
+ 2337 07dc 0000 0000 		.long	.LASF211
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 42
+
+
+ 2338 07e0 01        		.byte	0x1
+ 2339 07e1 4C        		.byte	0x4c
+ 2340 07e2 4800 0000 		.long	0x48
+ 2341 07e6 05        		.byte	0x5
+ 2342 07e7 03        		.byte	0x3
+ 2343 07e8 0000 0000 		.long	TYPEMATIC_REPEAT
+ 2344 07ec 1B        		.uleb128 0x1b
+ 2345 07ed 0000 0000 		.long	.LASF212
+ 2346 07f1 03        		.byte	0x3
+ 2347 07f2 44        		.byte	0x44
+ 2348 07f3 F907 0000 		.long	0x7f9
+ 2349 07f7 01        		.byte	0x1
+ 2350 07f8 01        		.byte	0x1
+ 2351 07f9 1C        		.uleb128 0x1c
+ 2352 07fa 2500 0000 		.long	0x25
+ 2353 07fe 19        		.uleb128 0x19
+ 2354 07ff 7200 0000 		.long	0x72
+ 2355 0803 0908 0000 		.long	0x809
+ 2356 0807 1D        		.uleb128 0x1d
+ 2357 0808 00        		.byte	0x0
+ 2358 0809 1B        		.uleb128 0x1b
+ 2359 080a 0000 0000 		.long	.LASF213
+ 2360 080e 04        		.byte	0x4
+ 2361 080f D9        		.byte	0xd9
+ 2362 0810 1608 0000 		.long	0x816
+ 2363 0814 01        		.byte	0x1
+ 2364 0815 01        		.byte	0x1
+ 2365 0816 1E        		.uleb128 0x1e
+ 2366 0817 FE07 0000 		.long	0x7fe
+ 2367 081b 1B        		.uleb128 0x1b
+ 2368 081c 0000 0000 		.long	.LASF214
+ 2369 0820 04        		.byte	0x4
+ 2370 0821 DA        		.byte	0xda
+ 2371 0822 FE07 0000 		.long	0x7fe
+ 2372 0826 01        		.byte	0x1
+ 2373 0827 01        		.byte	0x1
+ 2374 0828 1B        		.uleb128 0x1b
+ 2375 0829 0000 0000 		.long	.LASF215
+ 2376 082d 05        		.byte	0x5
+ 2377 082e 27        		.byte	0x27
+ 2378 082f 7200 0000 		.long	0x72
+ 2379 0833 01        		.byte	0x1
+ 2380 0834 01        		.byte	0x1
+ 2381 0835 1F        		.uleb128 0x1f
+ 2382 0836 0000 0000 		.long	.LASF216
+ 2383 083a 01        		.byte	0x1
+ 2384 083b 47        		.byte	0x47
+ 2385 083c 2500 0000 		.long	0x25
+ 2386 0840 01        		.byte	0x1
+ 2387 0841 05        		.byte	0x5
+ 2388 0842 03        		.byte	0x3
+ 2389 0843 0000 0000 		.long	txScanCode
+ 2390 0847 1F        		.uleb128 0x1f
+ 2391 0848 0000 0000 		.long	.LASF217
+ 2392 084c 01        		.byte	0x1
+ 2393 084d 48        		.byte	0x48
+ 2394 084e 2500 0000 		.long	0x25
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 43
+
+
+ 2395 0852 01        		.byte	0x1
+ 2396 0853 05        		.byte	0x5
+ 2397 0854 03        		.byte	0x3
+ 2398 0855 0000 0000 		.long	m_state
+ 2399 0859 1F        		.uleb128 0x1f
+ 2400 085a 0000 0000 		.long	.LASF218
+ 2401 085e 01        		.byte	0x1
+ 2402 085f 49        		.byte	0x49
+ 2403 0860 2500 0000 		.long	0x25
+ 2404 0864 01        		.byte	0x1
+ 2405 0865 05        		.byte	0x5
+ 2406 0866 03        		.byte	0x3
+ 2407 0867 0000 0000 		.long	lastSent
+ 2408 086b 1F        		.uleb128 0x1f
+ 2409 086c 0000 0000 		.long	.LASF219
+ 2410 0870 01        		.byte	0x1
+ 2411 0871 4A        		.byte	0x4a
+ 2412 0872 2500 0000 		.long	0x25
+ 2413 0876 01        		.byte	0x1
+ 2414 0877 05        		.byte	0x5
+ 2415 0878 03        		.byte	0x3
+ 2416 0879 0000 0000 		.long	lastState
+ 2417 087d 1B        		.uleb128 0x1b
+ 2418 087e 0000 0000 		.long	.LASF220
+ 2419 0882 01        		.byte	0x1
+ 2420 0883 4F        		.byte	0x4f
+ 2421 0884 FE07 0000 		.long	0x7fe
+ 2422 0888 01        		.byte	0x1
+ 2423 0889 01        		.byte	0x1
+ 2424 088a 00        		.byte	0x0
+ 2425               		.section	.debug_abbrev
+ 2426 0000 01        		.uleb128 0x1
+ 2427 0001 11        		.uleb128 0x11
+ 2428 0002 01        		.byte	0x1
+ 2429 0003 25        		.uleb128 0x25
+ 2430 0004 0E        		.uleb128 0xe
+ 2431 0005 13        		.uleb128 0x13
+ 2432 0006 0B        		.uleb128 0xb
+ 2433 0007 03        		.uleb128 0x3
+ 2434 0008 0E        		.uleb128 0xe
+ 2435 0009 1B        		.uleb128 0x1b
+ 2436 000a 0E        		.uleb128 0xe
+ 2437 000b 11        		.uleb128 0x11
+ 2438 000c 01        		.uleb128 0x1
+ 2439 000d 12        		.uleb128 0x12
+ 2440 000e 01        		.uleb128 0x1
+ 2441 000f 10        		.uleb128 0x10
+ 2442 0010 06        		.uleb128 0x6
+ 2443 0011 00        		.byte	0x0
+ 2444 0012 00        		.byte	0x0
+ 2445 0013 02        		.uleb128 0x2
+ 2446 0014 24        		.uleb128 0x24
+ 2447 0015 00        		.byte	0x0
+ 2448 0016 0B        		.uleb128 0xb
+ 2449 0017 0B        		.uleb128 0xb
+ 2450 0018 3E        		.uleb128 0x3e
+ 2451 0019 0B        		.uleb128 0xb
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 44
+
+
+ 2452 001a 03        		.uleb128 0x3
+ 2453 001b 0E        		.uleb128 0xe
+ 2454 001c 00        		.byte	0x0
+ 2455 001d 00        		.byte	0x0
+ 2456 001e 03        		.uleb128 0x3
+ 2457 001f 24        		.uleb128 0x24
+ 2458 0020 00        		.byte	0x0
+ 2459 0021 0B        		.uleb128 0xb
+ 2460 0022 0B        		.uleb128 0xb
+ 2461 0023 3E        		.uleb128 0x3e
+ 2462 0024 0B        		.uleb128 0xb
+ 2463 0025 03        		.uleb128 0x3
+ 2464 0026 08        		.uleb128 0x8
+ 2465 0027 00        		.byte	0x0
+ 2466 0028 00        		.byte	0x0
+ 2467 0029 04        		.uleb128 0x4
+ 2468 002a 16        		.uleb128 0x16
+ 2469 002b 00        		.byte	0x0
+ 2470 002c 03        		.uleb128 0x3
+ 2471 002d 0E        		.uleb128 0xe
+ 2472 002e 3A        		.uleb128 0x3a
+ 2473 002f 0B        		.uleb128 0xb
+ 2474 0030 3B        		.uleb128 0x3b
+ 2475 0031 0B        		.uleb128 0xb
+ 2476 0032 49        		.uleb128 0x49
+ 2477 0033 13        		.uleb128 0x13
+ 2478 0034 00        		.byte	0x0
+ 2479 0035 00        		.byte	0x0
+ 2480 0036 05        		.uleb128 0x5
+ 2481 0037 24        		.uleb128 0x24
+ 2482 0038 00        		.byte	0x0
+ 2483 0039 0B        		.uleb128 0xb
+ 2484 003a 0B        		.uleb128 0xb
+ 2485 003b 3E        		.uleb128 0x3e
+ 2486 003c 0B        		.uleb128 0xb
+ 2487 003d 00        		.byte	0x0
+ 2488 003e 00        		.byte	0x0
+ 2489 003f 06        		.uleb128 0x6
+ 2490 0040 04        		.uleb128 0x4
+ 2491 0041 01        		.byte	0x1
+ 2492 0042 0B        		.uleb128 0xb
+ 2493 0043 0B        		.uleb128 0xb
+ 2494 0044 3A        		.uleb128 0x3a
+ 2495 0045 0B        		.uleb128 0xb
+ 2496 0046 3B        		.uleb128 0x3b
+ 2497 0047 0B        		.uleb128 0xb
+ 2498 0048 01        		.uleb128 0x1
+ 2499 0049 13        		.uleb128 0x13
+ 2500 004a 00        		.byte	0x0
+ 2501 004b 00        		.byte	0x0
+ 2502 004c 07        		.uleb128 0x7
+ 2503 004d 28        		.uleb128 0x28
+ 2504 004e 00        		.byte	0x0
+ 2505 004f 03        		.uleb128 0x3
+ 2506 0050 0E        		.uleb128 0xe
+ 2507 0051 1C        		.uleb128 0x1c
+ 2508 0052 0D        		.uleb128 0xd
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 45
+
+
+ 2509 0053 00        		.byte	0x0
+ 2510 0054 00        		.byte	0x0
+ 2511 0055 08        		.uleb128 0x8
+ 2512 0056 2E        		.uleb128 0x2e
+ 2513 0057 00        		.byte	0x0
+ 2514 0058 3F        		.uleb128 0x3f
+ 2515 0059 0C        		.uleb128 0xc
+ 2516 005a 03        		.uleb128 0x3
+ 2517 005b 0E        		.uleb128 0xe
+ 2518 005c 3A        		.uleb128 0x3a
+ 2519 005d 0B        		.uleb128 0xb
+ 2520 005e 3B        		.uleb128 0x3b
+ 2521 005f 0B        		.uleb128 0xb
+ 2522 0060 27        		.uleb128 0x27
+ 2523 0061 0C        		.uleb128 0xc
+ 2524 0062 49        		.uleb128 0x49
+ 2525 0063 13        		.uleb128 0x13
+ 2526 0064 20        		.uleb128 0x20
+ 2527 0065 0B        		.uleb128 0xb
+ 2528 0066 00        		.byte	0x0
+ 2529 0067 00        		.byte	0x0
+ 2530 0068 09        		.uleb128 0x9
+ 2531 0069 2E        		.uleb128 0x2e
+ 2532 006a 01        		.byte	0x1
+ 2533 006b 3F        		.uleb128 0x3f
+ 2534 006c 0C        		.uleb128 0xc
+ 2535 006d 03        		.uleb128 0x3
+ 2536 006e 0E        		.uleb128 0xe
+ 2537 006f 3A        		.uleb128 0x3a
+ 2538 0070 0B        		.uleb128 0xb
+ 2539 0071 3B        		.uleb128 0x3b
+ 2540 0072 0B        		.uleb128 0xb
+ 2541 0073 27        		.uleb128 0x27
+ 2542 0074 0C        		.uleb128 0xc
+ 2543 0075 11        		.uleb128 0x11
+ 2544 0076 01        		.uleb128 0x1
+ 2545 0077 12        		.uleb128 0x12
+ 2546 0078 01        		.uleb128 0x1
+ 2547 0079 40        		.uleb128 0x40
+ 2548 007a 0A        		.uleb128 0xa
+ 2549 007b 01        		.uleb128 0x1
+ 2550 007c 13        		.uleb128 0x13
+ 2551 007d 00        		.byte	0x0
+ 2552 007e 00        		.byte	0x0
+ 2553 007f 0A        		.uleb128 0xa
+ 2554 0080 05        		.uleb128 0x5
+ 2555 0081 00        		.byte	0x0
+ 2556 0082 03        		.uleb128 0x3
+ 2557 0083 0E        		.uleb128 0xe
+ 2558 0084 3A        		.uleb128 0x3a
+ 2559 0085 0B        		.uleb128 0xb
+ 2560 0086 3B        		.uleb128 0x3b
+ 2561 0087 0B        		.uleb128 0xb
+ 2562 0088 49        		.uleb128 0x49
+ 2563 0089 13        		.uleb128 0x13
+ 2564 008a 02        		.uleb128 0x2
+ 2565 008b 06        		.uleb128 0x6
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 46
+
+
+ 2566 008c 00        		.byte	0x0
+ 2567 008d 00        		.byte	0x0
+ 2568 008e 0B        		.uleb128 0xb
+ 2569 008f 34        		.uleb128 0x34
+ 2570 0090 00        		.byte	0x0
+ 2571 0091 03        		.uleb128 0x3
+ 2572 0092 0E        		.uleb128 0xe
+ 2573 0093 3A        		.uleb128 0x3a
+ 2574 0094 0B        		.uleb128 0xb
+ 2575 0095 3B        		.uleb128 0x3b
+ 2576 0096 0B        		.uleb128 0xb
+ 2577 0097 49        		.uleb128 0x49
+ 2578 0098 13        		.uleb128 0x13
+ 2579 0099 02        		.uleb128 0x2
+ 2580 009a 0A        		.uleb128 0xa
+ 2581 009b 00        		.byte	0x0
+ 2582 009c 00        		.byte	0x0
+ 2583 009d 0C        		.uleb128 0xc
+ 2584 009e 2E        		.uleb128 0x2e
+ 2585 009f 00        		.byte	0x0
+ 2586 00a0 3F        		.uleb128 0x3f
+ 2587 00a1 0C        		.uleb128 0xc
+ 2588 00a2 03        		.uleb128 0x3
+ 2589 00a3 08        		.uleb128 0x8
+ 2590 00a4 3A        		.uleb128 0x3a
+ 2591 00a5 0B        		.uleb128 0xb
+ 2592 00a6 3B        		.uleb128 0x3b
+ 2593 00a7 0B        		.uleb128 0xb
+ 2594 00a8 27        		.uleb128 0x27
+ 2595 00a9 0C        		.uleb128 0xc
+ 2596 00aa 49        		.uleb128 0x49
+ 2597 00ab 13        		.uleb128 0x13
+ 2598 00ac 11        		.uleb128 0x11
+ 2599 00ad 01        		.uleb128 0x1
+ 2600 00ae 12        		.uleb128 0x12
+ 2601 00af 01        		.uleb128 0x1
+ 2602 00b0 40        		.uleb128 0x40
+ 2603 00b1 0A        		.uleb128 0xa
+ 2604 00b2 00        		.byte	0x0
+ 2605 00b3 00        		.byte	0x0
+ 2606 00b4 0D        		.uleb128 0xd
+ 2607 00b5 2E        		.uleb128 0x2e
+ 2608 00b6 00        		.byte	0x0
+ 2609 00b7 31        		.uleb128 0x31
+ 2610 00b8 13        		.uleb128 0x13
+ 2611 00b9 11        		.uleb128 0x11
+ 2612 00ba 01        		.uleb128 0x1
+ 2613 00bb 12        		.uleb128 0x12
+ 2614 00bc 01        		.uleb128 0x1
+ 2615 00bd 40        		.uleb128 0x40
+ 2616 00be 0A        		.uleb128 0xa
+ 2617 00bf 00        		.byte	0x0
+ 2618 00c0 00        		.byte	0x0
+ 2619 00c1 0E        		.uleb128 0xe
+ 2620 00c2 34        		.uleb128 0x34
+ 2621 00c3 00        		.byte	0x0
+ 2622 00c4 03        		.uleb128 0x3
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 47
+
+
+ 2623 00c5 08        		.uleb128 0x8
+ 2624 00c6 3A        		.uleb128 0x3a
+ 2625 00c7 0B        		.uleb128 0xb
+ 2626 00c8 3B        		.uleb128 0x3b
+ 2627 00c9 0B        		.uleb128 0xb
+ 2628 00ca 49        		.uleb128 0x49
+ 2629 00cb 13        		.uleb128 0x13
+ 2630 00cc 00        		.byte	0x0
+ 2631 00cd 00        		.byte	0x0
+ 2632 00ce 0F        		.uleb128 0xf
+ 2633 00cf 34        		.uleb128 0x34
+ 2634 00d0 00        		.byte	0x0
+ 2635 00d1 03        		.uleb128 0x3
+ 2636 00d2 0E        		.uleb128 0xe
+ 2637 00d3 3A        		.uleb128 0x3a
+ 2638 00d4 0B        		.uleb128 0xb
+ 2639 00d5 3B        		.uleb128 0x3b
+ 2640 00d6 0B        		.uleb128 0xb
+ 2641 00d7 49        		.uleb128 0x49
+ 2642 00d8 13        		.uleb128 0x13
+ 2643 00d9 00        		.byte	0x0
+ 2644 00da 00        		.byte	0x0
+ 2645 00db 10        		.uleb128 0x10
+ 2646 00dc 0B        		.uleb128 0xb
+ 2647 00dd 01        		.byte	0x1
+ 2648 00de 11        		.uleb128 0x11
+ 2649 00df 01        		.uleb128 0x1
+ 2650 00e0 12        		.uleb128 0x12
+ 2651 00e1 01        		.uleb128 0x1
+ 2652 00e2 00        		.byte	0x0
+ 2653 00e3 00        		.byte	0x0
+ 2654 00e4 11        		.uleb128 0x11
+ 2655 00e5 34        		.uleb128 0x34
+ 2656 00e6 00        		.byte	0x0
+ 2657 00e7 03        		.uleb128 0x3
+ 2658 00e8 0E        		.uleb128 0xe
+ 2659 00e9 3A        		.uleb128 0x3a
+ 2660 00ea 0B        		.uleb128 0xb
+ 2661 00eb 3B        		.uleb128 0x3b
+ 2662 00ec 0B        		.uleb128 0xb
+ 2663 00ed 49        		.uleb128 0x49
+ 2664 00ee 13        		.uleb128 0x13
+ 2665 00ef 02        		.uleb128 0x2
+ 2666 00f0 06        		.uleb128 0x6
+ 2667 00f1 00        		.byte	0x0
+ 2668 00f2 00        		.byte	0x0
+ 2669 00f3 12        		.uleb128 0x12
+ 2670 00f4 05        		.uleb128 0x5
+ 2671 00f5 00        		.byte	0x0
+ 2672 00f6 03        		.uleb128 0x3
+ 2673 00f7 08        		.uleb128 0x8
+ 2674 00f8 3A        		.uleb128 0x3a
+ 2675 00f9 0B        		.uleb128 0xb
+ 2676 00fa 3B        		.uleb128 0x3b
+ 2677 00fb 0B        		.uleb128 0xb
+ 2678 00fc 49        		.uleb128 0x49
+ 2679 00fd 13        		.uleb128 0x13
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 48
+
+
+ 2680 00fe 02        		.uleb128 0x2
+ 2681 00ff 06        		.uleb128 0x6
+ 2682 0100 00        		.byte	0x0
+ 2683 0101 00        		.byte	0x0
+ 2684 0102 13        		.uleb128 0x13
+ 2685 0103 2E        		.uleb128 0x2e
+ 2686 0104 01        		.byte	0x1
+ 2687 0105 3F        		.uleb128 0x3f
+ 2688 0106 0C        		.uleb128 0xc
+ 2689 0107 03        		.uleb128 0x3
+ 2690 0108 0E        		.uleb128 0xe
+ 2691 0109 3A        		.uleb128 0x3a
+ 2692 010a 0B        		.uleb128 0xb
+ 2693 010b 3B        		.uleb128 0x3b
+ 2694 010c 05        		.uleb128 0x5
+ 2695 010d 27        		.uleb128 0x27
+ 2696 010e 0C        		.uleb128 0xc
+ 2697 010f 49        		.uleb128 0x49
+ 2698 0110 13        		.uleb128 0x13
+ 2699 0111 11        		.uleb128 0x11
+ 2700 0112 01        		.uleb128 0x1
+ 2701 0113 12        		.uleb128 0x12
+ 2702 0114 01        		.uleb128 0x1
+ 2703 0115 40        		.uleb128 0x40
+ 2704 0116 0A        		.uleb128 0xa
+ 2705 0117 01        		.uleb128 0x1
+ 2706 0118 13        		.uleb128 0x13
+ 2707 0119 00        		.byte	0x0
+ 2708 011a 00        		.byte	0x0
+ 2709 011b 14        		.uleb128 0x14
+ 2710 011c 34        		.uleb128 0x34
+ 2711 011d 00        		.byte	0x0
+ 2712 011e 03        		.uleb128 0x3
+ 2713 011f 0E        		.uleb128 0xe
+ 2714 0120 3A        		.uleb128 0x3a
+ 2715 0121 0B        		.uleb128 0xb
+ 2716 0122 3B        		.uleb128 0x3b
+ 2717 0123 05        		.uleb128 0x5
+ 2718 0124 49        		.uleb128 0x49
+ 2719 0125 13        		.uleb128 0x13
+ 2720 0126 02        		.uleb128 0x2
+ 2721 0127 06        		.uleb128 0x6
+ 2722 0128 00        		.byte	0x0
+ 2723 0129 00        		.byte	0x0
+ 2724 012a 15        		.uleb128 0x15
+ 2725 012b 1D        		.uleb128 0x1d
+ 2726 012c 00        		.byte	0x0
+ 2727 012d 31        		.uleb128 0x31
+ 2728 012e 13        		.uleb128 0x13
+ 2729 012f 11        		.uleb128 0x11
+ 2730 0130 01        		.uleb128 0x1
+ 2731 0131 12        		.uleb128 0x12
+ 2732 0132 01        		.uleb128 0x1
+ 2733 0133 58        		.uleb128 0x58
+ 2734 0134 0B        		.uleb128 0xb
+ 2735 0135 59        		.uleb128 0x59
+ 2736 0136 05        		.uleb128 0x5
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 49
+
+
+ 2737 0137 00        		.byte	0x0
+ 2738 0138 00        		.byte	0x0
+ 2739 0139 16        		.uleb128 0x16
+ 2740 013a 2E        		.uleb128 0x2e
+ 2741 013b 01        		.byte	0x1
+ 2742 013c 3F        		.uleb128 0x3f
+ 2743 013d 0C        		.uleb128 0xc
+ 2744 013e 03        		.uleb128 0x3
+ 2745 013f 0E        		.uleb128 0xe
+ 2746 0140 3A        		.uleb128 0x3a
+ 2747 0141 0B        		.uleb128 0xb
+ 2748 0142 3B        		.uleb128 0x3b
+ 2749 0143 0B        		.uleb128 0xb
+ 2750 0144 27        		.uleb128 0x27
+ 2751 0145 0C        		.uleb128 0xc
+ 2752 0146 49        		.uleb128 0x49
+ 2753 0147 13        		.uleb128 0x13
+ 2754 0148 11        		.uleb128 0x11
+ 2755 0149 01        		.uleb128 0x1
+ 2756 014a 12        		.uleb128 0x12
+ 2757 014b 01        		.uleb128 0x1
+ 2758 014c 40        		.uleb128 0x40
+ 2759 014d 0A        		.uleb128 0xa
+ 2760 014e 01        		.uleb128 0x1
+ 2761 014f 13        		.uleb128 0x13
+ 2762 0150 00        		.byte	0x0
+ 2763 0151 00        		.byte	0x0
+ 2764 0152 17        		.uleb128 0x17
+ 2765 0153 34        		.uleb128 0x34
+ 2766 0154 00        		.byte	0x0
+ 2767 0155 03        		.uleb128 0x3
+ 2768 0156 08        		.uleb128 0x8
+ 2769 0157 3A        		.uleb128 0x3a
+ 2770 0158 0B        		.uleb128 0xb
+ 2771 0159 3B        		.uleb128 0x3b
+ 2772 015a 0B        		.uleb128 0xb
+ 2773 015b 49        		.uleb128 0x49
+ 2774 015c 13        		.uleb128 0x13
+ 2775 015d 02        		.uleb128 0x2
+ 2776 015e 06        		.uleb128 0x6
+ 2777 015f 00        		.byte	0x0
+ 2778 0160 00        		.byte	0x0
+ 2779 0161 18        		.uleb128 0x18
+ 2780 0162 34        		.uleb128 0x34
+ 2781 0163 00        		.byte	0x0
+ 2782 0164 03        		.uleb128 0x3
+ 2783 0165 0E        		.uleb128 0xe
+ 2784 0166 3A        		.uleb128 0x3a
+ 2785 0167 0B        		.uleb128 0xb
+ 2786 0168 3B        		.uleb128 0x3b
+ 2787 0169 05        		.uleb128 0x5
+ 2788 016a 49        		.uleb128 0x49
+ 2789 016b 13        		.uleb128 0x13
+ 2790 016c 02        		.uleb128 0x2
+ 2791 016d 0A        		.uleb128 0xa
+ 2792 016e 00        		.byte	0x0
+ 2793 016f 00        		.byte	0x0
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 50
+
+
+ 2794 0170 19        		.uleb128 0x19
+ 2795 0171 01        		.uleb128 0x1
+ 2796 0172 01        		.byte	0x1
+ 2797 0173 49        		.uleb128 0x49
+ 2798 0174 13        		.uleb128 0x13
+ 2799 0175 01        		.uleb128 0x1
+ 2800 0176 13        		.uleb128 0x13
+ 2801 0177 00        		.byte	0x0
+ 2802 0178 00        		.byte	0x0
+ 2803 0179 1A        		.uleb128 0x1a
+ 2804 017a 21        		.uleb128 0x21
+ 2805 017b 00        		.byte	0x0
+ 2806 017c 49        		.uleb128 0x49
+ 2807 017d 13        		.uleb128 0x13
+ 2808 017e 2F        		.uleb128 0x2f
+ 2809 017f 0B        		.uleb128 0xb
+ 2810 0180 00        		.byte	0x0
+ 2811 0181 00        		.byte	0x0
+ 2812 0182 1B        		.uleb128 0x1b
+ 2813 0183 34        		.uleb128 0x34
+ 2814 0184 00        		.byte	0x0
+ 2815 0185 03        		.uleb128 0x3
+ 2816 0186 0E        		.uleb128 0xe
+ 2817 0187 3A        		.uleb128 0x3a
+ 2818 0188 0B        		.uleb128 0xb
+ 2819 0189 3B        		.uleb128 0x3b
+ 2820 018a 0B        		.uleb128 0xb
+ 2821 018b 49        		.uleb128 0x49
+ 2822 018c 13        		.uleb128 0x13
+ 2823 018d 3F        		.uleb128 0x3f
+ 2824 018e 0C        		.uleb128 0xc
+ 2825 018f 3C        		.uleb128 0x3c
+ 2826 0190 0C        		.uleb128 0xc
+ 2827 0191 00        		.byte	0x0
+ 2828 0192 00        		.byte	0x0
+ 2829 0193 1C        		.uleb128 0x1c
+ 2830 0194 35        		.uleb128 0x35
+ 2831 0195 00        		.byte	0x0
+ 2832 0196 49        		.uleb128 0x49
+ 2833 0197 13        		.uleb128 0x13
+ 2834 0198 00        		.byte	0x0
+ 2835 0199 00        		.byte	0x0
+ 2836 019a 1D        		.uleb128 0x1d
+ 2837 019b 21        		.uleb128 0x21
+ 2838 019c 00        		.byte	0x0
+ 2839 019d 00        		.byte	0x0
+ 2840 019e 00        		.byte	0x0
+ 2841 019f 1E        		.uleb128 0x1e
+ 2842 01a0 26        		.uleb128 0x26
+ 2843 01a1 00        		.byte	0x0
+ 2844 01a2 49        		.uleb128 0x49
+ 2845 01a3 13        		.uleb128 0x13
+ 2846 01a4 00        		.byte	0x0
+ 2847 01a5 00        		.byte	0x0
+ 2848 01a6 1F        		.uleb128 0x1f
+ 2849 01a7 34        		.uleb128 0x34
+ 2850 01a8 00        		.byte	0x0
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 51
+
+
+ 2851 01a9 03        		.uleb128 0x3
+ 2852 01aa 0E        		.uleb128 0xe
+ 2853 01ab 3A        		.uleb128 0x3a
+ 2854 01ac 0B        		.uleb128 0xb
+ 2855 01ad 3B        		.uleb128 0x3b
+ 2856 01ae 0B        		.uleb128 0xb
+ 2857 01af 49        		.uleb128 0x49
+ 2858 01b0 13        		.uleb128 0x13
+ 2859 01b1 3F        		.uleb128 0x3f
+ 2860 01b2 0C        		.uleb128 0xc
+ 2861 01b3 02        		.uleb128 0x2
+ 2862 01b4 0A        		.uleb128 0xa
+ 2863 01b5 00        		.byte	0x0
+ 2864 01b6 00        		.byte	0x0
+ 2865 01b7 00        		.byte	0x0
+ 2866               		.section	.debug_pubnames,"",@progbits
+ 2867 0000 AB00 0000 		.long	0xab
+ 2868 0004 0200      		.word	0x2
+ 2869 0006 0000 0000 		.long	.Ldebug_info0
+ 2870 000a 8B08 0000 		.long	0x88b
+ 2871 000e 1205 0000 		.long	0x512
+ 2872 0012 7075 7368 		.string	"push"
+ 2872      00
+ 2873 0017 4B05 0000 		.long	0x54b
+ 2874 001b 706F 7000 		.string	"pop"
+ 2875 001f 6305 0000 		.long	0x563
+ 2876 0023 6973 456D 		.string	"isEmpty"
+ 2876      7074 7900 
+ 2877 002b 7305 0000 		.long	0x573
+ 2878 002f 636C 6561 		.string	"clear"
+ 2878      7200 
+ 2879 0035 9505 0000 		.long	0x595
+ 2880 0039 7075 744B 		.string	"putKey"
+ 2880      6579 00
+ 2881 0040 FB05 0000 		.long	0x5fb
+ 2882 0044 7478 5F73 		.string	"tx_state"
+ 2882      7461 7465 
+ 2882      00
+ 2883 004d 3006 0000 		.long	0x630
+ 2884 0051 7072 6F63 		.string	"processTX"
+ 2884      6573 7354 
+ 2884      5800 
+ 2885 005b 7E06 0000 		.long	0x67e
+ 2886 005f 7072 6F63 		.string	"processRX"
+ 2886      6573 7352 
+ 2886      5800 
+ 2887 0069 DE06 0000 		.long	0x6de
+ 2888 006d 7073 326D 		.string	"ps2main"
+ 2888      6169 6E00 
+ 2889 0075 3508 0000 		.long	0x835
+ 2890 0079 7478 5363 		.string	"txScanCode"
+ 2890      616E 436F 
+ 2890      6465 00
+ 2891 0084 4708 0000 		.long	0x847
+ 2892 0088 6D5F 7374 		.string	"m_state"
+ 2892      6174 6500 
+ 2893 0090 5908 0000 		.long	0x859
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 52
+
+
+ 2894 0094 6C61 7374 		.string	"lastSent"
+ 2894      5365 6E74 
+ 2894      00
+ 2895 009d 6B08 0000 		.long	0x86b
+ 2896 00a1 6C61 7374 		.string	"lastState"
+ 2896      5374 6174 
+ 2896      6500 
+ 2897 00ab 0000 0000 		.long	0x0
+ 2898               		.section	.debug_aranges,"",@progbits
+ 2899 0000 1C00 0000 		.long	0x1c
+ 2900 0004 0200      		.word	0x2
+ 2901 0006 0000 0000 		.long	.Ldebug_info0
+ 2902 000a 04        		.byte	0x4
+ 2903 000b 00        		.byte	0x0
+ 2904 000c 0000      		.word	0x0
+ 2905 000e 0000      		.word	0x0
+ 2906 0010 0000 0000 		.long	.Ltext0
+ 2907 0014 1A06 0000 		.long	.Letext0-.Ltext0
+ 2908 0018 0000 0000 		.long	0x0
+ 2909 001c 0000 0000 		.long	0x0
+ 2910               		.section	.debug_line
+ 2911 0000 8F05 0000 		.long	.LELT0-.LSLT0
+ 2912               	.LSLT0:
+ 2913 0004 0200      		.word	0x2
+ 2914 0006 7700 0000 		.long	.LELTP0-.LASLTP0
+ 2915               	.LASLTP0:
+ 2916 000a 01        		.byte	0x1
+ 2917 000b 01        		.byte	0x1
+ 2918 000c F6        		.byte	0xf6
+ 2919 000d F5        		.byte	0xf5
+ 2920 000e 0A        		.byte	0xa
+ 2921 000f 00        		.byte	0x0
+ 2922 0010 01        		.byte	0x1
+ 2923 0011 01        		.byte	0x1
+ 2924 0012 01        		.byte	0x1
+ 2925 0013 01        		.byte	0x1
+ 2926 0014 00        		.byte	0x0
+ 2927 0015 00        		.byte	0x0
+ 2928 0016 00        		.byte	0x0
+ 2929 0017 01        		.byte	0x1
+ 2930 0018 633A 2F77 		.ascii	"c:/winavr-20100110/lib/gcc/../../avr/include"
+ 2930      696E 6176 
+ 2930      722D 3230 
+ 2930      3130 3031 
+ 2930      3130 2F6C 
+ 2931 0044 00        		.byte	0
+ 2932 0045 00        		.byte	0x0
+ 2933 0046 7073 326D 		.string	"ps2main.c"
+ 2933      6169 6E2E 
+ 2933      6300 
+ 2934 0050 00        		.uleb128 0x0
+ 2935 0051 00        		.uleb128 0x0
+ 2936 0052 00        		.uleb128 0x0
+ 2937 0053 7374 6469 		.string	"stdint.h"
+ 2937      6E74 2E68 
+ 2937      00
+ 2938 005c 01        		.uleb128 0x1
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 53
+
+
+ 2939 005d 00        		.uleb128 0x0
+ 2940 005e 00        		.uleb128 0x0
+ 2941 005f 6B65 7973 		.string	"keysta.h"
+ 2941      7461 2E68 
+ 2941      00
+ 2942 0068 00        		.uleb128 0x0
+ 2943 0069 00        		.uleb128 0x0
+ 2944 006a 00        		.uleb128 0x0
+ 2945 006b 6B65 796D 		.string	"keymap.h"
+ 2945      6170 2E68 
+ 2945      00
+ 2946 0074 00        		.uleb128 0x0
+ 2947 0075 00        		.uleb128 0x0
+ 2948 0076 00        		.uleb128 0x0
+ 2949 0077 6C65 642E 		.string	"led.h"
+ 2949      6800 
+ 2950 007d 00        		.uleb128 0x0
+ 2951 007e 00        		.uleb128 0x0
+ 2952 007f 00        		.uleb128 0x0
+ 2953 0080 00        		.byte	0x0
+ 2954               	.LELTP0:
+ 2955 0081 00        		.byte	0x0
+ 2956 0082 05        		.uleb128 0x5
+ 2957 0083 02        		.byte	0x2
+ 2958 0084 0000 0000 		.long	.LM1
+ 2959 0088 66        		.byte	0x66
+ 2960 0089 00        		.byte	0x0
+ 2961 008a 05        		.uleb128 0x5
+ 2962 008b 02        		.byte	0x2
+ 2963 008c 0000 0000 		.long	.LM2
+ 2964 0090 17        		.byte	0x17
+ 2965 0091 00        		.byte	0x0
+ 2966 0092 05        		.uleb128 0x5
+ 2967 0093 02        		.byte	0x2
+ 2968 0094 0000 0000 		.long	.LM3
+ 2969 0098 15        		.byte	0x15
+ 2970 0099 00        		.byte	0x0
+ 2971 009a 05        		.uleb128 0x5
+ 2972 009b 02        		.byte	0x2
+ 2973 009c 0000 0000 		.long	.LM4
+ 2974 00a0 15        		.byte	0x15
+ 2975 00a1 00        		.byte	0x0
+ 2976 00a2 05        		.uleb128 0x5
+ 2977 00a3 02        		.byte	0x2
+ 2978 00a4 0000 0000 		.long	.LM5
+ 2979 00a8 17        		.byte	0x17
+ 2980 00a9 00        		.byte	0x0
+ 2981 00aa 05        		.uleb128 0x5
+ 2982 00ab 02        		.byte	0x2
+ 2983 00ac 0000 0000 		.long	.LM6
+ 2984 00b0 18        		.byte	0x18
+ 2985 00b1 00        		.byte	0x0
+ 2986 00b2 05        		.uleb128 0x5
+ 2987 00b3 02        		.byte	0x2
+ 2988 00b4 0000 0000 		.long	.LM7
+ 2989 00b8 15        		.byte	0x15
+ 2990 00b9 00        		.byte	0x0
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 54
+
+
+ 2991 00ba 05        		.uleb128 0x5
+ 2992 00bb 02        		.byte	0x2
+ 2993 00bc 0000 0000 		.long	.LM8
+ 2994 00c0 15        		.byte	0x15
+ 2995 00c1 00        		.byte	0x0
+ 2996 00c2 05        		.uleb128 0x5
+ 2997 00c3 02        		.byte	0x2
+ 2998 00c4 0000 0000 		.long	.LM9
+ 2999 00c8 18        		.byte	0x18
+ 3000 00c9 00        		.byte	0x0
+ 3001 00ca 05        		.uleb128 0x5
+ 3002 00cb 02        		.byte	0x2
+ 3003 00cc 0000 0000 		.long	.LM10
+ 3004 00d0 15        		.byte	0x15
+ 3005 00d1 00        		.byte	0x0
+ 3006 00d2 05        		.uleb128 0x5
+ 3007 00d3 02        		.byte	0x2
+ 3008 00d4 0000 0000 		.long	.LM11
+ 3009 00d8 16        		.byte	0x16
+ 3010 00d9 00        		.byte	0x0
+ 3011 00da 05        		.uleb128 0x5
+ 3012 00db 02        		.byte	0x2
+ 3013 00dc 0000 0000 		.long	.LM12
+ 3014 00e0 15        		.byte	0x15
+ 3015 00e1 00        		.byte	0x0
+ 3016 00e2 05        		.uleb128 0x5
+ 3017 00e3 02        		.byte	0x2
+ 3018 00e4 0000 0000 		.long	.LM13
+ 3019 00e8 15        		.byte	0x15
+ 3020 00e9 00        		.byte	0x0
+ 3021 00ea 05        		.uleb128 0x5
+ 3022 00eb 02        		.byte	0x2
+ 3023 00ec 0000 0000 		.long	.LM14
+ 3024 00f0 17        		.byte	0x17
+ 3025 00f1 00        		.byte	0x0
+ 3026 00f2 05        		.uleb128 0x5
+ 3027 00f3 02        		.byte	0x2
+ 3028 00f4 0000 0000 		.long	.LM15
+ 3029 00f8 17        		.byte	0x17
+ 3030 00f9 00        		.byte	0x0
+ 3031 00fa 05        		.uleb128 0x5
+ 3032 00fb 02        		.byte	0x2
+ 3033 00fc 0000 0000 		.long	.LM16
+ 3034 0100 15        		.byte	0x15
+ 3035 0101 00        		.byte	0x0
+ 3036 0102 05        		.uleb128 0x5
+ 3037 0103 02        		.byte	0x2
+ 3038 0104 0000 0000 		.long	.LM17
+ 3039 0108 17        		.byte	0x17
+ 3040 0109 00        		.byte	0x0
+ 3041 010a 05        		.uleb128 0x5
+ 3042 010b 02        		.byte	0x2
+ 3043 010c 0000 0000 		.long	.LM18
+ 3044 0110 16        		.byte	0x16
+ 3045 0111 00        		.byte	0x0
+ 3046 0112 05        		.uleb128 0x5
+ 3047 0113 02        		.byte	0x2
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 55
+
+
+ 3048 0114 0000 0000 		.long	.LM19
+ 3049 0118 15        		.byte	0x15
+ 3050 0119 00        		.byte	0x0
+ 3051 011a 05        		.uleb128 0x5
+ 3052 011b 02        		.byte	0x2
+ 3053 011c 0000 0000 		.long	.LM20
+ 3054 0120 16        		.byte	0x16
+ 3055 0121 00        		.byte	0x0
+ 3056 0122 05        		.uleb128 0x5
+ 3057 0123 02        		.byte	0x2
+ 3058 0124 0000 0000 		.long	.LM21
+ 3059 0128 01        		.byte	0x1
+ 3060 0129 00        		.byte	0x0
+ 3061 012a 05        		.uleb128 0x5
+ 3062 012b 02        		.byte	0x2
+ 3063 012c 0000 0000 		.long	.LM22
+ 3064 0130 19        		.byte	0x19
+ 3065 0131 00        		.byte	0x0
+ 3066 0132 05        		.uleb128 0x5
+ 3067 0133 02        		.byte	0x2
+ 3068 0134 0000 0000 		.long	.LM23
+ 3069 0138 16        		.byte	0x16
+ 3070 0139 00        		.byte	0x0
+ 3071 013a 05        		.uleb128 0x5
+ 3072 013b 02        		.byte	0x2
+ 3073 013c 0000 0000 		.long	.LM24
+ 3074 0140 16        		.byte	0x16
+ 3075 0141 00        		.byte	0x0
+ 3076 0142 05        		.uleb128 0x5
+ 3077 0143 02        		.byte	0x2
+ 3078 0144 0000 0000 		.long	.LM25
+ 3079 0148 15        		.byte	0x15
+ 3080 0149 00        		.byte	0x0
+ 3081 014a 05        		.uleb128 0x5
+ 3082 014b 02        		.byte	0x2
+ 3083 014c 0000 0000 		.long	.LM26
+ 3084 0150 15        		.byte	0x15
+ 3085 0151 00        		.byte	0x0
+ 3086 0152 05        		.uleb128 0x5
+ 3087 0153 02        		.byte	0x2
+ 3088 0154 0000 0000 		.long	.LM27
+ 3089 0158 15        		.byte	0x15
+ 3090 0159 00        		.byte	0x0
+ 3091 015a 05        		.uleb128 0x5
+ 3092 015b 02        		.byte	0x2
+ 3093 015c 0000 0000 		.long	.LM28
+ 3094 0160 17        		.byte	0x17
+ 3095 0161 00        		.byte	0x0
+ 3096 0162 05        		.uleb128 0x5
+ 3097 0163 02        		.byte	0x2
+ 3098 0164 0000 0000 		.long	.LM29
+ 3099 0168 13        		.byte	0x13
+ 3100 0169 00        		.byte	0x0
+ 3101 016a 05        		.uleb128 0x5
+ 3102 016b 02        		.byte	0x2
+ 3103 016c 0000 0000 		.long	.LM30
+ 3104 0170 16        		.byte	0x16
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 56
+
+
+ 3105 0171 00        		.byte	0x0
+ 3106 0172 05        		.uleb128 0x5
+ 3107 0173 02        		.byte	0x2
+ 3108 0174 0000 0000 		.long	.LM31
+ 3109 0178 22        		.byte	0x22
+ 3110 0179 00        		.byte	0x0
+ 3111 017a 05        		.uleb128 0x5
+ 3112 017b 02        		.byte	0x2
+ 3113 017c 0000 0000 		.long	.LM32
+ 3114 0180 16        		.byte	0x16
+ 3115 0181 00        		.byte	0x0
+ 3116 0182 05        		.uleb128 0x5
+ 3117 0183 02        		.byte	0x2
+ 3118 0184 0000 0000 		.long	.LM33
+ 3119 0188 1B        		.byte	0x1b
+ 3120 0189 00        		.byte	0x0
+ 3121 018a 05        		.uleb128 0x5
+ 3122 018b 02        		.byte	0x2
+ 3123 018c 0000 0000 		.long	.LM34
+ 3124 0190 16        		.byte	0x16
+ 3125 0191 00        		.byte	0x0
+ 3126 0192 05        		.uleb128 0x5
+ 3127 0193 02        		.byte	0x2
+ 3128 0194 0000 0000 		.long	.LM35
+ 3129 0198 15        		.byte	0x15
+ 3130 0199 00        		.byte	0x0
+ 3131 019a 05        		.uleb128 0x5
+ 3132 019b 02        		.byte	0x2
+ 3133 019c 0000 0000 		.long	.LM36
+ 3134 01a0 15        		.byte	0x15
+ 3135 01a1 00        		.byte	0x0
+ 3136 01a2 05        		.uleb128 0x5
+ 3137 01a3 02        		.byte	0x2
+ 3138 01a4 0000 0000 		.long	.LM37
+ 3139 01a8 16        		.byte	0x16
+ 3140 01a9 00        		.byte	0x0
+ 3141 01aa 05        		.uleb128 0x5
+ 3142 01ab 02        		.byte	0x2
+ 3143 01ac 0000 0000 		.long	.LM38
+ 3144 01b0 15        		.byte	0x15
+ 3145 01b1 00        		.byte	0x0
+ 3146 01b2 05        		.uleb128 0x5
+ 3147 01b3 02        		.byte	0x2
+ 3148 01b4 0000 0000 		.long	.LM39
+ 3149 01b8 16        		.byte	0x16
+ 3150 01b9 00        		.byte	0x0
+ 3151 01ba 05        		.uleb128 0x5
+ 3152 01bb 02        		.byte	0x2
+ 3153 01bc 0000 0000 		.long	.LM40
+ 3154 01c0 15        		.byte	0x15
+ 3155 01c1 00        		.byte	0x0
+ 3156 01c2 05        		.uleb128 0x5
+ 3157 01c3 02        		.byte	0x2
+ 3158 01c4 0000 0000 		.long	.LM41
+ 3159 01c8 15        		.byte	0x15
+ 3160 01c9 00        		.byte	0x0
+ 3161 01ca 05        		.uleb128 0x5
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 57
+
+
+ 3162 01cb 02        		.byte	0x2
+ 3163 01cc 0000 0000 		.long	.LM42
+ 3164 01d0 15        		.byte	0x15
+ 3165 01d1 00        		.byte	0x0
+ 3166 01d2 05        		.uleb128 0x5
+ 3167 01d3 02        		.byte	0x2
+ 3168 01d4 0000 0000 		.long	.LM43
+ 3169 01d8 15        		.byte	0x15
+ 3170 01d9 00        		.byte	0x0
+ 3171 01da 05        		.uleb128 0x5
+ 3172 01db 02        		.byte	0x2
+ 3173 01dc 0000 0000 		.long	.LM44
+ 3174 01e0 19        		.byte	0x19
+ 3175 01e1 00        		.byte	0x0
+ 3176 01e2 05        		.uleb128 0x5
+ 3177 01e3 02        		.byte	0x2
+ 3178 01e4 0000 0000 		.long	.LM45
+ 3179 01e8 15        		.byte	0x15
+ 3180 01e9 00        		.byte	0x0
+ 3181 01ea 05        		.uleb128 0x5
+ 3182 01eb 02        		.byte	0x2
+ 3183 01ec 0000 0000 		.long	.LM46
+ 3184 01f0 15        		.byte	0x15
+ 3185 01f1 00        		.byte	0x0
+ 3186 01f2 05        		.uleb128 0x5
+ 3187 01f3 02        		.byte	0x2
+ 3188 01f4 0000 0000 		.long	.LM47
+ 3189 01f8 15        		.byte	0x15
+ 3190 01f9 00        		.byte	0x0
+ 3191 01fa 05        		.uleb128 0x5
+ 3192 01fb 02        		.byte	0x2
+ 3193 01fc 0000 0000 		.long	.LM48
+ 3194 0200 15        		.byte	0x15
+ 3195 0201 00        		.byte	0x0
+ 3196 0202 05        		.uleb128 0x5
+ 3197 0203 02        		.byte	0x2
+ 3198 0204 0000 0000 		.long	.LM49
+ 3199 0208 15        		.byte	0x15
+ 3200 0209 00        		.byte	0x0
+ 3201 020a 05        		.uleb128 0x5
+ 3202 020b 02        		.byte	0x2
+ 3203 020c 0000 0000 		.long	.LM50
+ 3204 0210 15        		.byte	0x15
+ 3205 0211 00        		.byte	0x0
+ 3206 0212 05        		.uleb128 0x5
+ 3207 0213 02        		.byte	0x2
+ 3208 0214 0000 0000 		.long	.LM51
+ 3209 0218 15        		.byte	0x15
+ 3210 0219 00        		.byte	0x0
+ 3211 021a 05        		.uleb128 0x5
+ 3212 021b 02        		.byte	0x2
+ 3213 021c 0000 0000 		.long	.LM52
+ 3214 0220 15        		.byte	0x15
+ 3215 0221 00        		.byte	0x0
+ 3216 0222 05        		.uleb128 0x5
+ 3217 0223 02        		.byte	0x2
+ 3218 0224 0000 0000 		.long	.LM53
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 58
+
+
+ 3219 0228 1B        		.byte	0x1b
+ 3220 0229 00        		.byte	0x0
+ 3221 022a 05        		.uleb128 0x5
+ 3222 022b 02        		.byte	0x2
+ 3223 022c 0000 0000 		.long	.LM54
+ 3224 0230 15        		.byte	0x15
+ 3225 0231 00        		.byte	0x0
+ 3226 0232 05        		.uleb128 0x5
+ 3227 0233 02        		.byte	0x2
+ 3228 0234 0000 0000 		.long	.LM55
+ 3229 0238 15        		.byte	0x15
+ 3230 0239 00        		.byte	0x0
+ 3231 023a 05        		.uleb128 0x5
+ 3232 023b 02        		.byte	0x2
+ 3233 023c 0000 0000 		.long	.LM56
+ 3234 0240 15        		.byte	0x15
+ 3235 0241 00        		.byte	0x0
+ 3236 0242 05        		.uleb128 0x5
+ 3237 0243 02        		.byte	0x2
+ 3238 0244 0000 0000 		.long	.LM57
+ 3239 0248 16        		.byte	0x16
+ 3240 0249 00        		.byte	0x0
+ 3241 024a 05        		.uleb128 0x5
+ 3242 024b 02        		.byte	0x2
+ 3243 024c 0000 0000 		.long	.LM58
+ 3244 0250 1B        		.byte	0x1b
+ 3245 0251 00        		.byte	0x0
+ 3246 0252 05        		.uleb128 0x5
+ 3247 0253 02        		.byte	0x2
+ 3248 0254 0000 0000 		.long	.LM59
+ 3249 0258 15        		.byte	0x15
+ 3250 0259 00        		.byte	0x0
+ 3251 025a 05        		.uleb128 0x5
+ 3252 025b 02        		.byte	0x2
+ 3253 025c 0000 0000 		.long	.LM60
+ 3254 0260 16        		.byte	0x16
+ 3255 0261 00        		.byte	0x0
+ 3256 0262 05        		.uleb128 0x5
+ 3257 0263 02        		.byte	0x2
+ 3258 0264 0000 0000 		.long	.LM61
+ 3259 0268 15        		.byte	0x15
+ 3260 0269 00        		.byte	0x0
+ 3261 026a 05        		.uleb128 0x5
+ 3262 026b 02        		.byte	0x2
+ 3263 026c 0000 0000 		.long	.LM62
+ 3264 0270 16        		.byte	0x16
+ 3265 0271 00        		.byte	0x0
+ 3266 0272 05        		.uleb128 0x5
+ 3267 0273 02        		.byte	0x2
+ 3268 0274 0000 0000 		.long	.LM63
+ 3269 0278 15        		.byte	0x15
+ 3270 0279 00        		.byte	0x0
+ 3271 027a 05        		.uleb128 0x5
+ 3272 027b 02        		.byte	0x2
+ 3273 027c 0000 0000 		.long	.LM64
+ 3274 0280 15        		.byte	0x15
+ 3275 0281 00        		.byte	0x0
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 59
+
+
+ 3276 0282 05        		.uleb128 0x5
+ 3277 0283 02        		.byte	0x2
+ 3278 0284 0000 0000 		.long	.LM65
+ 3279 0288 15        		.byte	0x15
+ 3280 0289 00        		.byte	0x0
+ 3281 028a 05        		.uleb128 0x5
+ 3282 028b 02        		.byte	0x2
+ 3283 028c 0000 0000 		.long	.LM66
+ 3284 0290 15        		.byte	0x15
+ 3285 0291 00        		.byte	0x0
+ 3286 0292 05        		.uleb128 0x5
+ 3287 0293 02        		.byte	0x2
+ 3288 0294 0000 0000 		.long	.LM67
+ 3289 0298 15        		.byte	0x15
+ 3290 0299 00        		.byte	0x0
+ 3291 029a 05        		.uleb128 0x5
+ 3292 029b 02        		.byte	0x2
+ 3293 029c 0000 0000 		.long	.LM68
+ 3294 02a0 1C        		.byte	0x1c
+ 3295 02a1 00        		.byte	0x0
+ 3296 02a2 05        		.uleb128 0x5
+ 3297 02a3 02        		.byte	0x2
+ 3298 02a4 0000 0000 		.long	.LM69
+ 3299 02a8 15        		.byte	0x15
+ 3300 02a9 00        		.byte	0x0
+ 3301 02aa 05        		.uleb128 0x5
+ 3302 02ab 02        		.byte	0x2
+ 3303 02ac 0000 0000 		.long	.LM70
+ 3304 02b0 15        		.byte	0x15
+ 3305 02b1 00        		.byte	0x0
+ 3306 02b2 05        		.uleb128 0x5
+ 3307 02b3 02        		.byte	0x2
+ 3308 02b4 0000 0000 		.long	.LM71
+ 3309 02b8 15        		.byte	0x15
+ 3310 02b9 00        		.byte	0x0
+ 3311 02ba 05        		.uleb128 0x5
+ 3312 02bb 02        		.byte	0x2
+ 3313 02bc 0000 0000 		.long	.LM72
+ 3314 02c0 15        		.byte	0x15
+ 3315 02c1 00        		.byte	0x0
+ 3316 02c2 05        		.uleb128 0x5
+ 3317 02c3 02        		.byte	0x2
+ 3318 02c4 0000 0000 		.long	.LM73
+ 3319 02c8 17        		.byte	0x17
+ 3320 02c9 00        		.byte	0x0
+ 3321 02ca 05        		.uleb128 0x5
+ 3322 02cb 02        		.byte	0x2
+ 3323 02cc 0000 0000 		.long	.LM74
+ 3324 02d0 03        		.byte	0x3
+ 3325 02d1 A57F      		.sleb128 -91
+ 3326 02d3 01        		.byte	0x1
+ 3327 02d4 00        		.byte	0x0
+ 3328 02d5 05        		.uleb128 0x5
+ 3329 02d6 02        		.byte	0x2
+ 3330 02d7 0000 0000 		.long	.LM75
+ 3331 02db 15        		.byte	0x15
+ 3332 02dc 00        		.byte	0x0
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 60
+
+
+ 3333 02dd 05        		.uleb128 0x5
+ 3334 02de 02        		.byte	0x2
+ 3335 02df 0000 0000 		.long	.LM76
+ 3336 02e3 15        		.byte	0x15
+ 3337 02e4 00        		.byte	0x0
+ 3338 02e5 05        		.uleb128 0x5
+ 3339 02e6 02        		.byte	0x2
+ 3340 02e7 0000 0000 		.long	.LM77
+ 3341 02eb 15        		.byte	0x15
+ 3342 02ec 00        		.byte	0x0
+ 3343 02ed 05        		.uleb128 0x5
+ 3344 02ee 02        		.byte	0x2
+ 3345 02ef 0000 0000 		.long	.LM78
+ 3346 02f3 15        		.byte	0x15
+ 3347 02f4 00        		.byte	0x0
+ 3348 02f5 05        		.uleb128 0x5
+ 3349 02f6 02        		.byte	0x2
+ 3350 02f7 0000 0000 		.long	.LM79
+ 3351 02fb 15        		.byte	0x15
+ 3352 02fc 00        		.byte	0x0
+ 3353 02fd 05        		.uleb128 0x5
+ 3354 02fe 02        		.byte	0x2
+ 3355 02ff 0000 0000 		.long	.LM80
+ 3356 0303 E1        		.byte	0xe1
+ 3357 0304 00        		.byte	0x0
+ 3358 0305 05        		.uleb128 0x5
+ 3359 0306 02        		.byte	0x2
+ 3360 0307 0000 0000 		.long	.LM81
+ 3361 030b 16        		.byte	0x16
+ 3362 030c 00        		.byte	0x0
+ 3363 030d 05        		.uleb128 0x5
+ 3364 030e 02        		.byte	0x2
+ 3365 030f 0000 0000 		.long	.LM82
+ 3366 0313 03        		.byte	0x3
+ 3367 0314 9A7E      		.sleb128 -230
+ 3368 0316 01        		.byte	0x1
+ 3369 0317 00        		.byte	0x0
+ 3370 0318 05        		.uleb128 0x5
+ 3371 0319 02        		.byte	0x2
+ 3372 031a 0000 0000 		.long	.LM83
+ 3373 031e 03        		.byte	0x3
+ 3374 031f EA01      		.sleb128 234
+ 3375 0321 01        		.byte	0x1
+ 3376 0322 00        		.byte	0x0
+ 3377 0323 05        		.uleb128 0x5
+ 3378 0324 02        		.byte	0x2
+ 3379 0325 0000 0000 		.long	.LM84
+ 3380 0329 16        		.byte	0x16
+ 3381 032a 00        		.byte	0x0
+ 3382 032b 05        		.uleb128 0x5
+ 3383 032c 02        		.byte	0x2
+ 3384 032d 0000 0000 		.long	.LM85
+ 3385 0331 15        		.byte	0x15
+ 3386 0332 00        		.byte	0x0
+ 3387 0333 05        		.uleb128 0x5
+ 3388 0334 02        		.byte	0x2
+ 3389 0335 0000 0000 		.long	.LM86
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 61
+
+
+ 3390 0339 17        		.byte	0x17
+ 3391 033a 00        		.byte	0x0
+ 3392 033b 05        		.uleb128 0x5
+ 3393 033c 02        		.byte	0x2
+ 3394 033d 0000 0000 		.long	.LM87
+ 3395 0341 15        		.byte	0x15
+ 3396 0342 00        		.byte	0x0
+ 3397 0343 05        		.uleb128 0x5
+ 3398 0344 02        		.byte	0x2
+ 3399 0345 0000 0000 		.long	.LM88
+ 3400 0349 16        		.byte	0x16
+ 3401 034a 00        		.byte	0x0
+ 3402 034b 05        		.uleb128 0x5
+ 3403 034c 02        		.byte	0x2
+ 3404 034d 0000 0000 		.long	.LM89
+ 3405 0351 16        		.byte	0x16
+ 3406 0352 00        		.byte	0x0
+ 3407 0353 05        		.uleb128 0x5
+ 3408 0354 02        		.byte	0x2
+ 3409 0355 0000 0000 		.long	.LM90
+ 3410 0359 15        		.byte	0x15
+ 3411 035a 00        		.byte	0x0
+ 3412 035b 05        		.uleb128 0x5
+ 3413 035c 02        		.byte	0x2
+ 3414 035d 0000 0000 		.long	.LM91
+ 3415 0361 17        		.byte	0x17
+ 3416 0362 00        		.byte	0x0
+ 3417 0363 05        		.uleb128 0x5
+ 3418 0364 02        		.byte	0x2
+ 3419 0365 0000 0000 		.long	.LM92
+ 3420 0369 15        		.byte	0x15
+ 3421 036a 00        		.byte	0x0
+ 3422 036b 05        		.uleb128 0x5
+ 3423 036c 02        		.byte	0x2
+ 3424 036d 0000 0000 		.long	.LM93
+ 3425 0371 15        		.byte	0x15
+ 3426 0372 00        		.byte	0x0
+ 3427 0373 05        		.uleb128 0x5
+ 3428 0374 02        		.byte	0x2
+ 3429 0375 0000 0000 		.long	.LM94
+ 3430 0379 15        		.byte	0x15
+ 3431 037a 00        		.byte	0x0
+ 3432 037b 05        		.uleb128 0x5
+ 3433 037c 02        		.byte	0x2
+ 3434 037d 0000 0000 		.long	.LM95
+ 3435 0381 1C        		.byte	0x1c
+ 3436 0382 00        		.byte	0x0
+ 3437 0383 05        		.uleb128 0x5
+ 3438 0384 02        		.byte	0x2
+ 3439 0385 0000 0000 		.long	.LM96
+ 3440 0389 15        		.byte	0x15
+ 3441 038a 00        		.byte	0x0
+ 3442 038b 05        		.uleb128 0x5
+ 3443 038c 02        		.byte	0x2
+ 3444 038d 0000 0000 		.long	.LM97
+ 3445 0391 17        		.byte	0x17
+ 3446 0392 00        		.byte	0x0
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 62
+
+
+ 3447 0393 05        		.uleb128 0x5
+ 3448 0394 02        		.byte	0x2
+ 3449 0395 0000 0000 		.long	.LM98
+ 3450 0399 03        		.byte	0x3
+ 3451 039a F87D      		.sleb128 -264
+ 3452 039c 01        		.byte	0x1
+ 3453 039d 00        		.byte	0x0
+ 3454 039e 05        		.uleb128 0x5
+ 3455 039f 02        		.byte	0x2
+ 3456 03a0 0000 0000 		.long	.LM99
+ 3457 03a4 03        		.byte	0x3
+ 3458 03a5 8F02      		.sleb128 271
+ 3459 03a7 01        		.byte	0x1
+ 3460 03a8 00        		.byte	0x0
+ 3461 03a9 05        		.uleb128 0x5
+ 3462 03aa 02        		.byte	0x2
+ 3463 03ab 0000 0000 		.long	.LM100
+ 3464 03af 0E        		.byte	0xe
+ 3465 03b0 00        		.byte	0x0
+ 3466 03b1 05        		.uleb128 0x5
+ 3467 03b2 02        		.byte	0x2
+ 3468 03b3 0000 0000 		.long	.LM101
+ 3469 03b7 15        		.byte	0x15
+ 3470 03b8 00        		.byte	0x0
+ 3471 03b9 05        		.uleb128 0x5
+ 3472 03ba 02        		.byte	0x2
+ 3473 03bb 0000 0000 		.long	.LM102
+ 3474 03bf 19        		.byte	0x19
+ 3475 03c0 00        		.byte	0x0
+ 3476 03c1 05        		.uleb128 0x5
+ 3477 03c2 02        		.byte	0x2
+ 3478 03c3 0000 0000 		.long	.LM103
+ 3479 03c7 15        		.byte	0x15
+ 3480 03c8 00        		.byte	0x0
+ 3481 03c9 05        		.uleb128 0x5
+ 3482 03ca 02        		.byte	0x2
+ 3483 03cb 0000 0000 		.long	.LM104
+ 3484 03cf 15        		.byte	0x15
+ 3485 03d0 00        		.byte	0x0
+ 3486 03d1 05        		.uleb128 0x5
+ 3487 03d2 02        		.byte	0x2
+ 3488 03d3 0000 0000 		.long	.LM105
+ 3489 03d7 18        		.byte	0x18
+ 3490 03d8 00        		.byte	0x0
+ 3491 03d9 05        		.uleb128 0x5
+ 3492 03da 02        		.byte	0x2
+ 3493 03db 0000 0000 		.long	.LM106
+ 3494 03df 18        		.byte	0x18
+ 3495 03e0 00        		.byte	0x0
+ 3496 03e1 05        		.uleb128 0x5
+ 3497 03e2 02        		.byte	0x2
+ 3498 03e3 0000 0000 		.long	.LM107
+ 3499 03e7 17        		.byte	0x17
+ 3500 03e8 00        		.byte	0x0
+ 3501 03e9 05        		.uleb128 0x5
+ 3502 03ea 02        		.byte	0x2
+ 3503 03eb 0000 0000 		.long	.LM108
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 63
+
+
+ 3504 03ef 17        		.byte	0x17
+ 3505 03f0 00        		.byte	0x0
+ 3506 03f1 05        		.uleb128 0x5
+ 3507 03f2 02        		.byte	0x2
+ 3508 03f3 0000 0000 		.long	.LM109
+ 3509 03f7 19        		.byte	0x19
+ 3510 03f8 00        		.byte	0x0
+ 3511 03f9 05        		.uleb128 0x5
+ 3512 03fa 02        		.byte	0x2
+ 3513 03fb 0000 0000 		.long	.LM110
+ 3514 03ff 15        		.byte	0x15
+ 3515 0400 00        		.byte	0x0
+ 3516 0401 05        		.uleb128 0x5
+ 3517 0402 02        		.byte	0x2
+ 3518 0403 0000 0000 		.long	.LM111
+ 3519 0407 15        		.byte	0x15
+ 3520 0408 00        		.byte	0x0
+ 3521 0409 05        		.uleb128 0x5
+ 3522 040a 02        		.byte	0x2
+ 3523 040b 0000 0000 		.long	.LM112
+ 3524 040f 15        		.byte	0x15
+ 3525 0410 00        		.byte	0x0
+ 3526 0411 05        		.uleb128 0x5
+ 3527 0412 02        		.byte	0x2
+ 3528 0413 0000 0000 		.long	.LM113
+ 3529 0417 18        		.byte	0x18
+ 3530 0418 00        		.byte	0x0
+ 3531 0419 05        		.uleb128 0x5
+ 3532 041a 02        		.byte	0x2
+ 3533 041b 0000 0000 		.long	.LM114
+ 3534 041f 03        		.byte	0x3
+ 3535 0420 C67E      		.sleb128 -186
+ 3536 0422 01        		.byte	0x1
+ 3537 0423 00        		.byte	0x0
+ 3538 0424 05        		.uleb128 0x5
+ 3539 0425 02        		.byte	0x2
+ 3540 0426 0000 0000 		.long	.LM115
+ 3541 042a 1A        		.byte	0x1a
+ 3542 042b 00        		.byte	0x0
+ 3543 042c 05        		.uleb128 0x5
+ 3544 042d 02        		.byte	0x2
+ 3545 042e 0000 0000 		.long	.LM116
+ 3546 0432 16        		.byte	0x16
+ 3547 0433 00        		.byte	0x0
+ 3548 0434 05        		.uleb128 0x5
+ 3549 0435 02        		.byte	0x2
+ 3550 0436 0000 0000 		.long	.LM117
+ 3551 043a 17        		.byte	0x17
+ 3552 043b 00        		.byte	0x0
+ 3553 043c 05        		.uleb128 0x5
+ 3554 043d 02        		.byte	0x2
+ 3555 043e 0000 0000 		.long	.LM118
+ 3556 0442 17        		.byte	0x17
+ 3557 0443 00        		.byte	0x0
+ 3558 0444 05        		.uleb128 0x5
+ 3559 0445 02        		.byte	0x2
+ 3560 0446 0000 0000 		.long	.LM119
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 64
+
+
+ 3561 044a 19        		.byte	0x19
+ 3562 044b 00        		.byte	0x0
+ 3563 044c 05        		.uleb128 0x5
+ 3564 044d 02        		.byte	0x2
+ 3565 044e 0000 0000 		.long	.LM120
+ 3566 0452 15        		.byte	0x15
+ 3567 0453 00        		.byte	0x0
+ 3568 0454 05        		.uleb128 0x5
+ 3569 0455 02        		.byte	0x2
+ 3570 0456 0000 0000 		.long	.LM121
+ 3571 045a 17        		.byte	0x17
+ 3572 045b 00        		.byte	0x0
+ 3573 045c 05        		.uleb128 0x5
+ 3574 045d 02        		.byte	0x2
+ 3575 045e 0000 0000 		.long	.LM122
+ 3576 0462 17        		.byte	0x17
+ 3577 0463 00        		.byte	0x0
+ 3578 0464 05        		.uleb128 0x5
+ 3579 0465 02        		.byte	0x2
+ 3580 0466 0000 0000 		.long	.LM123
+ 3581 046a 18        		.byte	0x18
+ 3582 046b 00        		.byte	0x0
+ 3583 046c 05        		.uleb128 0x5
+ 3584 046d 02        		.byte	0x2
+ 3585 046e 0000 0000 		.long	.LM124
+ 3586 0472 13        		.byte	0x13
+ 3587 0473 00        		.byte	0x0
+ 3588 0474 05        		.uleb128 0x5
+ 3589 0475 02        		.byte	0x2
+ 3590 0476 0000 0000 		.long	.LM125
+ 3591 047a 18        		.byte	0x18
+ 3592 047b 00        		.byte	0x0
+ 3593 047c 05        		.uleb128 0x5
+ 3594 047d 02        		.byte	0x2
+ 3595 047e 0000 0000 		.long	.LM126
+ 3596 0482 1B        		.byte	0x1b
+ 3597 0483 00        		.byte	0x0
+ 3598 0484 05        		.uleb128 0x5
+ 3599 0485 02        		.byte	0x2
+ 3600 0486 0000 0000 		.long	.LM127
+ 3601 048a 15        		.byte	0x15
+ 3602 048b 00        		.byte	0x0
+ 3603 048c 05        		.uleb128 0x5
+ 3604 048d 02        		.byte	0x2
+ 3605 048e 0000 0000 		.long	.LM128
+ 3606 0492 16        		.byte	0x16
+ 3607 0493 00        		.byte	0x0
+ 3608 0494 05        		.uleb128 0x5
+ 3609 0495 02        		.byte	0x2
+ 3610 0496 0000 0000 		.long	.LM129
+ 3611 049a 18        		.byte	0x18
+ 3612 049b 00        		.byte	0x0
+ 3613 049c 05        		.uleb128 0x5
+ 3614 049d 02        		.byte	0x2
+ 3615 049e 0000 0000 		.long	.LM130
+ 3616 04a2 15        		.byte	0x15
+ 3617 04a3 00        		.byte	0x0
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 65
+
+
+ 3618 04a4 05        		.uleb128 0x5
+ 3619 04a5 02        		.byte	0x2
+ 3620 04a6 0000 0000 		.long	.LM131
+ 3621 04aa 16        		.byte	0x16
+ 3622 04ab 00        		.byte	0x0
+ 3623 04ac 05        		.uleb128 0x5
+ 3624 04ad 02        		.byte	0x2
+ 3625 04ae 0000 0000 		.long	.LM132
+ 3626 04b2 18        		.byte	0x18
+ 3627 04b3 00        		.byte	0x0
+ 3628 04b4 05        		.uleb128 0x5
+ 3629 04b5 02        		.byte	0x2
+ 3630 04b6 0000 0000 		.long	.LM133
+ 3631 04ba 16        		.byte	0x16
+ 3632 04bb 00        		.byte	0x0
+ 3633 04bc 05        		.uleb128 0x5
+ 3634 04bd 02        		.byte	0x2
+ 3635 04be 0000 0000 		.long	.LM134
+ 3636 04c2 18        		.byte	0x18
+ 3637 04c3 00        		.byte	0x0
+ 3638 04c4 05        		.uleb128 0x5
+ 3639 04c5 02        		.byte	0x2
+ 3640 04c6 0000 0000 		.long	.LM135
+ 3641 04ca 17        		.byte	0x17
+ 3642 04cb 00        		.byte	0x0
+ 3643 04cc 05        		.uleb128 0x5
+ 3644 04cd 02        		.byte	0x2
+ 3645 04ce 0000 0000 		.long	.LM136
+ 3646 04d2 1A        		.byte	0x1a
+ 3647 04d3 00        		.byte	0x0
+ 3648 04d4 05        		.uleb128 0x5
+ 3649 04d5 02        		.byte	0x2
+ 3650 04d6 0000 0000 		.long	.LM137
+ 3651 04da 16        		.byte	0x16
+ 3652 04db 00        		.byte	0x0
+ 3653 04dc 05        		.uleb128 0x5
+ 3654 04dd 02        		.byte	0x2
+ 3655 04de 0000 0000 		.long	.LM138
+ 3656 04e2 17        		.byte	0x17
+ 3657 04e3 00        		.byte	0x0
+ 3658 04e4 05        		.uleb128 0x5
+ 3659 04e5 02        		.byte	0x2
+ 3660 04e6 0000 0000 		.long	.LM139
+ 3661 04ea 17        		.byte	0x17
+ 3662 04eb 00        		.byte	0x0
+ 3663 04ec 05        		.uleb128 0x5
+ 3664 04ed 02        		.byte	0x2
+ 3665 04ee 0000 0000 		.long	.LM140
+ 3666 04f2 17        		.byte	0x17
+ 3667 04f3 00        		.byte	0x0
+ 3668 04f4 05        		.uleb128 0x5
+ 3669 04f5 02        		.byte	0x2
+ 3670 04f6 0000 0000 		.long	.LM141
+ 3671 04fa 17        		.byte	0x17
+ 3672 04fb 00        		.byte	0x0
+ 3673 04fc 05        		.uleb128 0x5
+ 3674 04fd 02        		.byte	0x2
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 66
+
+
+ 3675 04fe 0000 0000 		.long	.LM142
+ 3676 0502 17        		.byte	0x17
+ 3677 0503 00        		.byte	0x0
+ 3678 0504 05        		.uleb128 0x5
+ 3679 0505 02        		.byte	0x2
+ 3680 0506 0000 0000 		.long	.LM143
+ 3681 050a 17        		.byte	0x17
+ 3682 050b 00        		.byte	0x0
+ 3683 050c 05        		.uleb128 0x5
+ 3684 050d 02        		.byte	0x2
+ 3685 050e 0000 0000 		.long	.LM144
+ 3686 0512 1F        		.byte	0x1f
+ 3687 0513 00        		.byte	0x0
+ 3688 0514 05        		.uleb128 0x5
+ 3689 0515 02        		.byte	0x2
+ 3690 0516 0000 0000 		.long	.LM145
+ 3691 051a 15        		.byte	0x15
+ 3692 051b 00        		.byte	0x0
+ 3693 051c 05        		.uleb128 0x5
+ 3694 051d 02        		.byte	0x2
+ 3695 051e 0000 0000 		.long	.LM146
+ 3696 0522 15        		.byte	0x15
+ 3697 0523 00        		.byte	0x0
+ 3698 0524 05        		.uleb128 0x5
+ 3699 0525 02        		.byte	0x2
+ 3700 0526 0000 0000 		.long	.LM147
+ 3701 052a 16        		.byte	0x16
+ 3702 052b 00        		.byte	0x0
+ 3703 052c 05        		.uleb128 0x5
+ 3704 052d 02        		.byte	0x2
+ 3705 052e 0000 0000 		.long	.LM148
+ 3706 0532 1C        		.byte	0x1c
+ 3707 0533 00        		.byte	0x0
+ 3708 0534 05        		.uleb128 0x5
+ 3709 0535 02        		.byte	0x2
+ 3710 0536 0000 0000 		.long	.LM149
+ 3711 053a 63        		.byte	0x63
+ 3712 053b 00        		.byte	0x0
+ 3713 053c 05        		.uleb128 0x5
+ 3714 053d 02        		.byte	0x2
+ 3715 053e 0000 0000 		.long	.LM150
+ 3716 0542 16        		.byte	0x16
+ 3717 0543 00        		.byte	0x0
+ 3718 0544 05        		.uleb128 0x5
+ 3719 0545 02        		.byte	0x2
+ 3720 0546 0000 0000 		.long	.LM151
+ 3721 054a 15        		.byte	0x15
+ 3722 054b 00        		.byte	0x0
+ 3723 054c 05        		.uleb128 0x5
+ 3724 054d 02        		.byte	0x2
+ 3725 054e 0000 0000 		.long	.LM152
+ 3726 0552 18        		.byte	0x18
+ 3727 0553 00        		.byte	0x0
+ 3728 0554 05        		.uleb128 0x5
+ 3729 0555 02        		.byte	0x2
+ 3730 0556 0000 0000 		.long	.LM153
+ 3731 055a 16        		.byte	0x16
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 67
+
+
+ 3732 055b 00        		.byte	0x0
+ 3733 055c 05        		.uleb128 0x5
+ 3734 055d 02        		.byte	0x2
+ 3735 055e 0000 0000 		.long	.LM154
+ 3736 0562 18        		.byte	0x18
+ 3737 0563 00        		.byte	0x0
+ 3738 0564 05        		.uleb128 0x5
+ 3739 0565 02        		.byte	0x2
+ 3740 0566 0000 0000 		.long	.LM155
+ 3741 056a 03        		.byte	0x3
+ 3742 056b C37D      		.sleb128 -317
+ 3743 056d 01        		.byte	0x1
+ 3744 056e 00        		.byte	0x0
+ 3745 056f 05        		.uleb128 0x5
+ 3746 0570 02        		.byte	0x2
+ 3747 0571 0000 0000 		.long	.LM156
+ 3748 0575 03        		.byte	0x3
+ 3749 0576 BF02      		.sleb128 319
+ 3750 0578 01        		.byte	0x1
+ 3751 0579 00        		.byte	0x0
+ 3752 057a 05        		.uleb128 0x5
+ 3753 057b 02        		.byte	0x2
+ 3754 057c 0000 0000 		.long	.LM157
+ 3755 0580 16        		.byte	0x16
+ 3756 0581 00        		.byte	0x0
+ 3757 0582 05        		.uleb128 0x5
+ 3758 0583 02        		.byte	0x2
+ 3759 0584 0000 0000 		.long	.LM158
+ 3760 0588 15        		.byte	0x15
+ 3761 0589 00        		.byte	0x0
+ 3762 058a 05        		.uleb128 0x5
+ 3763 058b 02        		.byte	0x2
+ 3764 058c 0000 0000 		.long	.Letext0
+ 3765 0590 00        		.byte	0x0
+ 3766 0591 01        		.uleb128 0x1
+ 3767 0592 01        		.byte	0x1
+ 3768               	.LELT0:
+ 3769 0593 1600 0000 		.section	.debug_str,"MS",@progbits,1
+ 3769      0200 1000 
+ 3769      0000 0101 
+ 3769      FB0E 0A00 
+ 3769      0101 0101 
+ 3770               	.LASF147:
+ 3771 0000 4B45 595F 		.string	"KEY_LSHIFT"
+ 3771      4C53 4849 
+ 3771      4654 00
+ 3772               	.LASF143:
+ 3773 000b 4B45 595F 		.string	"KEY_KL_NUM"
+ 3773      4B4C 5F4E 
+ 3773      554D 00
+ 3774               	.LASF213:
+ 3775 0016 6B65 7963 		.string	"keycode_set2"
+ 3775      6F64 655F 
+ 3775      7365 7432 
+ 3775      00
+ 3776               	.LASF68:
+ 3777 0023 4B45 595F 		.string	"KEY_SLASH"
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 68
+
+
+ 3777      534C 4153 
+ 3777      4800 
+ 3778               	.LASF198:
+ 3779 002d 7278 6564 		.string	"rxed"
+ 3779      00
+ 3780               	.LASF171:
+ 3781 0032 4B45 595F 		.string	"KEY_PLAY"
+ 3781      504C 4159 
+ 3781      00
+ 3782               	.LASF95:
+ 3783 003b 4B45 595F 		.string	"KEY_NUMLOCK"
+ 3783      4E55 4D4C 
+ 3783      4F43 4B00 
+ 3784               	.LASF179:
+ 3785 0047 4B45 595F 		.string	"KEY_REC"
+ 3785      5245 4300 
+ 3786               	.LASF200:
+ 3787 004f 7465 6D70 		.string	"temp_b"
+ 3787      5F62 00
+ 3788               	.LASF151:
+ 3789 0056 4B45 595F 		.string	"KEY_RSHIFT"
+ 3789      5253 4849 
+ 3789      4654 00
+ 3790               	.LASF146:
+ 3791 0061 4B45 595F 		.string	"KEY_LCTRL"
+ 3791      4C43 5452 
+ 3791      4C00 
+ 3792               	.LASF79:
+ 3793 006b 4B45 595F 		.string	"KEY_F10"
+ 3793      4631 3000 
+ 3794               	.LASF80:
+ 3795 0073 4B45 595F 		.string	"KEY_F11"
+ 3795      4631 3100 
+ 3796               	.LASF81:
+ 3797 007b 4B45 595F 		.string	"KEY_F12"
+ 3797      4631 3200 
+ 3798               	.LASF116:
+ 3799 0083 4B45 595F 		.string	"KEY_F13"
+ 3799      4631 3300 
+ 3800               	.LASF117:
+ 3801 008b 4B45 595F 		.string	"KEY_F14"
+ 3801      4631 3400 
+ 3802               	.LASF118:
+ 3803 0093 4B45 595F 		.string	"KEY_F15"
+ 3803      4631 3500 
+ 3804               	.LASF119:
+ 3805 009b 4B45 595F 		.string	"KEY_F16"
+ 3805      4631 3600 
+ 3806               	.LASF120:
+ 3807 00a3 4B45 595F 		.string	"KEY_F17"
+ 3807      4631 3700 
+ 3808               	.LASF121:
+ 3809 00ab 4B45 595F 		.string	"KEY_F18"
+ 3809      4631 3800 
+ 3810               	.LASF111:
+ 3811 00b3 4B45 595F 		.string	"KEY_KP_DOT"
+ 3811      4B50 5F44 
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 69
+
+
+ 3811      4F54 00
+ 3812               	.LASF170:
+ 3813 00be 4B45 595F 		.string	"KEY_STOP"
+ 3813      5354 4F50 
+ 3813      00
+ 3814               	.LASF223:
+ 3815 00c7 433A 5C55 		.string	"C:\\Users\\21030\\Documents\\GitHub\\mx1830\\source"
+ 3815      7365 7273 
+ 3815      5C32 3130 
+ 3815      3330 5C44 
+ 3815      6F63 756D 
+ 3816               	.LASF89:
+ 3817 00f5 4B45 595F 		.string	"KEY_END"
+ 3817      454E 4400 
+ 3818               	.LASF6:
+ 3819 00fd 6C6F 6E67 		.string	"long long unsigned int"
+ 3819      206C 6F6E 
+ 3819      6720 756E 
+ 3819      7369 676E 
+ 3819      6564 2069 
+ 3820               	.LASF54:
+ 3821 0114 4B45 595F 		.string	"KEY_BKSP"
+ 3821      424B 5350 
+ 3821      00
+ 3822               	.LASF88:
+ 3823 011d 4B45 595F 		.string	"KEY_DEL"
+ 3823      4445 4C00 
+ 3824               	.LASF188:
+ 3825 0125 6973 5075 		.string	"isPushed"
+ 3825      7368 6564 
+ 3825      00
+ 3826               	.LASF169:
+ 3827 012e 4B45 595F 		.string	"KEY_PREV_TRK"
+ 3827      5052 4556 
+ 3827      5F54 524B 
+ 3827      00
+ 3828               	.LASF63:
+ 3829 013b 4B45 595F 		.string	"KEY_COLON"
+ 3829      434F 4C4F 
+ 3829      4E00 
+ 3830               	.LASF157:
+ 3831 0145 4B45 595F 		.string	"KEY_POWER"
+ 3831      504F 5745 
+ 3831      5200 
+ 3832               	.LASF175:
+ 3833 014f 4B45 595F 		.string	"KEY_MEDIA"
+ 3833      4D45 4449 
+ 3833      4100 
+ 3834               	.LASF7:
+ 3835 0159 6C6F 6E67 		.string	"long long int"
+ 3835      206C 6F6E 
+ 3835      6720 696E 
+ 3835      7400 
+ 3836               	.LASF1:
+ 3837 0167 7369 676E 		.string	"signed char"
+ 3837      6564 2063 
+ 3837      6861 7200 
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 70
+
+
+ 3838               	.LASF98:
+ 3839 0173 4B45 595F 		.string	"KEY_KP_MINUS"
+ 3839      4B50 5F4D 
+ 3839      494E 5553 
+ 3839      00
+ 3840               	.LASF215:
+ 3841 0180 4C45 4473 		.string	"LEDstate"
+ 3841      7461 7465 
+ 3841      00
+ 3842               	.LASF196:
+ 3843 0189 7072 6F63 		.string	"processTX"
+ 3843      6573 7354 
+ 3843      5800 
+ 3844               	.LASF173:
+ 3845 0193 4B45 595F 		.string	"KEY_VOL_UP"
+ 3845      564F 4C5F 
+ 3845      5550 00
+ 3846               	.LASF128:
+ 3847 019e 4B45 595F 		.string	"KEY_EXECUTE"
+ 3847      4558 4543 
+ 3847      5554 4500 
+ 3848               	.LASF123:
+ 3849 01aa 4B45 595F 		.string	"KEY_F20"
+ 3849      4632 3000 
+ 3850               	.LASF124:
+ 3851 01b2 4B45 595F 		.string	"KEY_F21"
+ 3851      4632 3100 
+ 3852               	.LASF60:
+ 3853 01ba 4B45 595F 		.string	"KEY_RBR"
+ 3853      5242 5200 
+ 3854               	.LASF126:
+ 3855 01c2 4B45 595F 		.string	"KEY_F23"
+ 3855      4632 3300 
+ 3856               	.LASF127:
+ 3857 01ca 4B45 595F 		.string	"KEY_F24"
+ 3857      4632 3400 
+ 3858               	.LASF224:
+ 3859 01d2 6973 456D 		.string	"isEmpty"
+ 3859      7074 7900 
+ 3860               	.LASF5:
+ 3861 01da 6C6F 6E67 		.string	"long int"
+ 3861      2069 6E74 
+ 3861      00
+ 3862               	.LASF163:
+ 3863 01e3 4B45 595F 		.string	"KEY_WWW_BACK"
+ 3863      5757 575F 
+ 3863      4241 434B 
+ 3863      00
+ 3864               	.LASF62:
+ 3865 01f0 4B45 595F 		.string	"KEY_Europe1"
+ 3865      4575 726F 
+ 3865      7065 3100 
+ 3866               	.LASF112:
+ 3867 01fc 4B45 595F 		.string	"KEY_Europe2"
+ 3867      4575 726F 
+ 3867      7065 3200 
+ 3868               	.LASF197:
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 71
+
+
+ 3869 0208 7072 6F63 		.string	"processRX"
+ 3869      6573 7352 
+ 3869      5800 
+ 3870               	.LASF96:
+ 3871 0212 4B45 595F 		.string	"KEY_KP_SLASH"
+ 3871      4B50 5F53 
+ 3871      4C41 5348 
+ 3871      00
+ 3872               	.LASF91:
+ 3873 021f 4B45 595F 		.string	"KEY_RIGHT"
+ 3873      5249 4748 
+ 3873      5400 
+ 3874               	.LASF137:
+ 3875 0229 4B45 595F 		.string	"KEY_PASTE"
+ 3875      5041 5354 
+ 3875      4500 
+ 3876               	.LASF195:
+ 3877 0233 6B65 7976 		.string	"keyval"
+ 3877      616C 00
+ 3878               	.LASF185:
+ 3879 023a 7075 744B 		.string	"putKey"
+ 3879      6579 00
+ 3880               	.LASF65:
+ 3881 0241 4B45 595F 		.string	"KEY_HASH"
+ 3881      4841 5348 
+ 3881      00
+ 3882               	.LASF152:
+ 3883 024a 4B45 595F 		.string	"KEY_RALT"
+ 3883      5241 4C54 
+ 3883      00
+ 3884               	.LASF11:
+ 3885 0253 7569 6E74 		.string	"uint16_t"
+ 3885      3136 5F74 
+ 3885      00
+ 3886               	.LASF166:
+ 3887 025c 4B45 595F 		.string	"KEY_WWW_REFRESH"
+ 3887      5757 575F 
+ 3887      5245 4652 
+ 3887      4553 4800 
+ 3888               	.LASF212:
+ 3889 026c 6B62 645F 		.string	"kbd_flags"
+ 3889      666C 6167 
+ 3889      7300 
+ 3890               	.LASF144:
+ 3891 0276 4B45 595F 		.string	"KEY_KL_SCL"
+ 3891      4B4C 5F53 
+ 3891      434C 00
+ 3892               	.LASF192:
+ 3893 0281 5F5F 7265 		.string	"__result"
+ 3893      7375 6C74 
+ 3893      00
+ 3894               	.LASF219:
+ 3895 028a 6C61 7374 		.string	"lastState"
+ 3895      5374 6174 
+ 3895      6500 
+ 3896               	.LASF202:
+ 3897 0294 5155 4555 		.string	"QUEUE"
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 72
+
+
+ 3897      4500 
+ 3898               	.LASF59:
+ 3899 029a 4B45 595F 		.string	"KEY_LBR"
+ 3899      4C42 5200 
+ 3900               	.LASF194:
+ 3901 02a2 6E65 7773 		.string	"newstate"
+ 3901      7461 7465 
+ 3901      00
+ 3902               	.LASF85:
+ 3903 02ab 4B45 595F 		.string	"KEY_INSERT"
+ 3903      494E 5345 
+ 3903      5254 00
+ 3904               	.LASF220:
+ 3905 02b6 4D41 5452 		.string	"MATRIX"
+ 3905      4958 00
+ 3906               	.LASF221:
+ 3907 02bd 474E 5520 		.string	"GNU C 4.3.3"
+ 3907      4320 342E 
+ 3907      332E 3300 
+ 3908               	.LASF82:
+ 3909 02c9 4B45 595F 		.string	"KEY_PRNSCR"
+ 3909      5052 4E53 
+ 3909      4352 00
+ 3910               	.LASF90:
+ 3911 02d4 4B45 595F 		.string	"KEY_PGDN"
+ 3911      5047 444E 
+ 3911      00
+ 3912               	.LASF153:
+ 3913 02dd 4B45 595F 		.string	"KEY_RGUI"
+ 3913      5247 5549 
+ 3913      00
+ 3914               	.LASF162:
+ 3915 02e6 4B45 595F 		.string	"KEY_WWW_HOME"
+ 3915      5757 575F 
+ 3915      484F 4D45 
+ 3915      00
+ 3916               	.LASF14:
+ 3917 02f3 504F 5354 		.string	"POSTFail"
+ 3917      4661 696C 
+ 3917      00
+ 3918               	.LASF130:
+ 3919 02fc 4B45 595F 		.string	"KEY_MENU"
+ 3919      4D45 4E55 
+ 3919      00
+ 3920               	.LASF8:
+ 3921 0305 756E 7369 		.string	"unsigned int"
+ 3921      676E 6564 
+ 3921      2069 6E74 
+ 3921      00
+ 3922               	.LASF183:
+ 3923 0312 7075 7368 		.string	"push"
+ 3923      00
+ 3924               	.LASF208:
+ 3925 0317 6C61 7374 		.string	"lastMAKE_IDX"
+ 3925      4D41 4B45 
+ 3925      5F49 4458 
+ 3925      00
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 73
+
+
+ 3926               	.LASF222:
+ 3927 0324 7073 326D 		.string	"ps2main.c"
+ 3927      6169 6E2E 
+ 3927      6300 
+ 3928               	.LASF138:
+ 3929 032e 4B45 595F 		.string	"KEY_FIND"
+ 3929      4649 4E44 
+ 3929      00
+ 3930               	.LASF83:
+ 3931 0337 4B45 595F 		.string	"KEY_SCRLCK"
+ 3931      5343 524C 
+ 3931      434B 00
+ 3932               	.LASF4:
+ 3933 0342 6C6F 6E67 		.string	"long unsigned int"
+ 3933      2075 6E73 
+ 3933      6967 6E65 
+ 3933      6420 696E 
+ 3933      7400 
+ 3934               	.LASF156:
+ 3935 0354 4B45 595F 		.string	"KEY_HANGLE"
+ 3935      4841 4E47 
+ 3935      4C45 00
+ 3936               	.LASF64:
+ 3937 035f 4B45 595F 		.string	"KEY_QUOTE"
+ 3937      5155 4F54 
+ 3937      4500 
+ 3938               	.LASF142:
+ 3939 0369 4B45 595F 		.string	"KEY_KL_CAP"
+ 3939      4B4C 5F43 
+ 3939      4150 00
+ 3940               	.LASF12:
+ 3941 0374 4B45 595F 		.string	"KEY_NONE"
+ 3941      4E4F 4E45 
+ 3941      00
+ 3942               	.LASF100:
+ 3943 037d 4B45 595F 		.string	"KEY_KP_ENTER"
+ 3943      4B50 5F45 
+ 3943      4E54 4552 
+ 3943      00
+ 3944               	.LASF38:
+ 3945 038a 4B45 595F 		.string	"KEY_W"
+ 3945      5700 
+ 3946               	.LASF99:
+ 3947 0390 4B45 595F 		.string	"KEY_KP_PLUS"
+ 3947      4B50 5F50 
+ 3947      4C55 5300 
+ 3948               	.LASF2:
+ 3949 039c 7368 6F72 		.string	"short unsigned int"
+ 3949      7420 756E 
+ 3949      7369 676E 
+ 3949      6564 2069 
+ 3949      6E74 00
+ 3950               	.LASF136:
+ 3951 03af 4B45 595F 		.string	"KEY_COPY"
+ 3951      434F 5059 
+ 3951      00
+ 3952               	.LASF206:
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 74
+
+
+ 3953 03b8 6C61 7374 		.string	"lastMAKE"
+ 3953      4D41 4B45 
+ 3953      00
+ 3954               	.LASF201:
+ 3955 03c1 7073 326D 		.string	"ps2main"
+ 3955      6169 6E00 
+ 3956               	.LASF135:
+ 3957 03c9 4B45 595F 		.string	"KEY_CUT"
+ 3957      4355 5400 
+ 3958               	.LASF69:
+ 3959 03d1 4B45 595F 		.string	"KEY_CAPS"
+ 3959      4341 5053 
+ 3959      00
+ 3960               	.LASF210:
+ 3961 03da 5459 5045 		.string	"TYPEMATIC_DELAY"
+ 3961      4D41 5449 
+ 3961      435F 4445 
+ 3961      4C41 5900 
+ 3962               	.LASF67:
+ 3963 03ea 4B45 595F 		.string	"KEY_DOT"
+ 3963      444F 5400 
+ 3964               	.LASF217:
+ 3965 03f2 6D5F 7374 		.string	"m_state"
+ 3965      6174 6500 
+ 3966               	.LASF199:
+ 3967 03fa 7465 6D70 		.string	"temp_a"
+ 3967      5F61 00
+ 3968               	.LASF186:
+ 3969 0401 6974 656D 		.string	"item"
+ 3969      00
+ 3970               	.LASF181:
+ 3971 0406 4B45 595F 		.string	"KEY_MINIMIZE"
+ 3971      4D49 4E49 
+ 3971      4D49 5A45 
+ 3971      00
+ 3972               	.LASF56:
+ 3973 0413 4B45 595F 		.string	"KEY_SPACE"
+ 3973      5350 4143 
+ 3973      4500 
+ 3974               	.LASF158:
+ 3975 041d 4B45 595F 		.string	"KEY_SLEEP"
+ 3975      534C 4545 
+ 3975      5000 
+ 3976               	.LASF187:
+ 3977 0427 6B65 7969 		.string	"keyidx"
+ 3977      6478 00
+ 3978               	.LASF114:
+ 3979 042e 4B45 595F 		.string	"KEY_POWER_HID"
+ 3979      504F 5745 
+ 3979      525F 4849 
+ 3979      4400 
+ 3980               	.LASF165:
+ 3981 043c 4B45 595F 		.string	"KEY_WWW_STOP"
+ 3981      5757 575F 
+ 3981      5354 4F50 
+ 3981      00
+ 3982               	.LASF115:
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 75
+
+
+ 3983 0449 4B45 595F 		.string	"KEY_KP_EQUAL"
+ 3983      4B50 5F45 
+ 3983      5155 414C 
+ 3983      00
+ 3984               	.LASF134:
+ 3985 0456 4B45 595F 		.string	"KEY_UNDO"
+ 3985      554E 444F 
+ 3985      00
+ 3986               	.LASF51:
+ 3987 045f 4B45 595F 		.string	"KEY_0"
+ 3987      3000 
+ 3988               	.LASF42:
+ 3989 0465 4B45 595F 		.string	"KEY_1"
+ 3989      3100 
+ 3990               	.LASF43:
+ 3991 046b 4B45 595F 		.string	"KEY_2"
+ 3991      3200 
+ 3992               	.LASF44:
+ 3993 0471 4B45 595F 		.string	"KEY_3"
+ 3993      3300 
+ 3994               	.LASF45:
+ 3995 0477 4B45 595F 		.string	"KEY_4"
+ 3995      3400 
+ 3996               	.LASF46:
+ 3997 047d 4B45 595F 		.string	"KEY_5"
+ 3997      3500 
+ 3998               	.LASF47:
+ 3999 0483 4B45 595F 		.string	"KEY_6"
+ 3999      3600 
+ 4000               	.LASF48:
+ 4001 0489 4B45 595F 		.string	"KEY_7"
+ 4001      3700 
+ 4002               	.LASF49:
+ 4003 048f 4B45 595F 		.string	"KEY_8"
+ 4003      3800 
+ 4004               	.LASF50:
+ 4005 0495 4B45 595F 		.string	"KEY_9"
+ 4005      3900 
+ 4006               	.LASF57:
+ 4007 049b 4B45 595F 		.string	"KEY_MINUS"
+ 4007      4D49 4E55 
+ 4007      5300 
+ 4008               	.LASF184:
+ 4009 04a5 636C 6561 		.string	"clear"
+ 4009      7200 
+ 4010               	.LASF172:
+ 4011 04ab 4B45 595F 		.string	"KEY_MUTE"
+ 4011      4D55 5445 
+ 4011      00
+ 4012               	.LASF159:
+ 4013 04b4 4B45 595F 		.string	"KEY_WAKE"
+ 4013      5741 4B45 
+ 4013      00
+ 4014               	.LASF16:
+ 4015 04bd 4B45 595F 		.string	"KEY_A"
+ 4015      4100 
+ 4016               	.LASF17:
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 76
+
+
+ 4017 04c3 4B45 595F 		.string	"KEY_B"
+ 4017      4200 
+ 4018               	.LASF18:
+ 4019 04c9 4B45 595F 		.string	"KEY_C"
+ 4019      4300 
+ 4020               	.LASF19:
+ 4021 04cf 4B45 595F 		.string	"KEY_D"
+ 4021      4400 
+ 4022               	.LASF20:
+ 4023 04d5 4B45 595F 		.string	"KEY_E"
+ 4023      4500 
+ 4024               	.LASF21:
+ 4025 04db 4B45 595F 		.string	"KEY_F"
+ 4025      4600 
+ 4026               	.LASF22:
+ 4027 04e1 4B45 595F 		.string	"KEY_G"
+ 4027      4700 
+ 4028               	.LASF23:
+ 4029 04e7 4B45 595F 		.string	"KEY_H"
+ 4029      4800 
+ 4030               	.LASF24:
+ 4031 04ed 4B45 595F 		.string	"KEY_I"
+ 4031      4900 
+ 4032               	.LASF25:
+ 4033 04f3 4B45 595F 		.string	"KEY_J"
+ 4033      4A00 
+ 4034               	.LASF26:
+ 4035 04f9 4B45 595F 		.string	"KEY_K"
+ 4035      4B00 
+ 4036               	.LASF27:
+ 4037 04ff 4B45 595F 		.string	"KEY_L"
+ 4037      4C00 
+ 4038               	.LASF28:
+ 4039 0505 4B45 595F 		.string	"KEY_M"
+ 4039      4D00 
+ 4040               	.LASF29:
+ 4041 050b 4B45 595F 		.string	"KEY_N"
+ 4041      4E00 
+ 4042               	.LASF30:
+ 4043 0511 4B45 595F 		.string	"KEY_O"
+ 4043      4F00 
+ 4044               	.LASF31:
+ 4045 0517 4B45 595F 		.string	"KEY_P"
+ 4045      5000 
+ 4046               	.LASF32:
+ 4047 051d 4B45 595F 		.string	"KEY_Q"
+ 4047      5100 
+ 4048               	.LASF33:
+ 4049 0523 4B45 595F 		.string	"KEY_R"
+ 4049      5200 
+ 4050               	.LASF34:
+ 4051 0529 4B45 595F 		.string	"KEY_S"
+ 4051      5300 
+ 4052               	.LASF35:
+ 4053 052f 4B45 595F 		.string	"KEY_T"
+ 4053      5400 
+ 4054               	.LASF36:
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 77
+
+
+ 4055 0535 4B45 595F 		.string	"KEY_U"
+ 4055      5500 
+ 4056               	.LASF37:
+ 4057 053b 4B45 595F 		.string	"KEY_V"
+ 4057      5600 
+ 4058               	.LASF13:
+ 4059 0541 4572 726F 		.string	"ErrorRollOver"
+ 4059      7252 6F6C 
+ 4059      6C4F 7665 
+ 4059      7200 
+ 4060               	.LASF39:
+ 4061 054f 4B45 595F 		.string	"KEY_X"
+ 4061      5800 
+ 4062               	.LASF40:
+ 4063 0555 4B45 595F 		.string	"KEY_Y"
+ 4063      5900 
+ 4064               	.LASF41:
+ 4065 055b 4B45 595F 		.string	"KEY_Z"
+ 4065      5A00 
+ 4066               	.LASF191:
+ 4067 0561 7265 636F 		.string	"record"
+ 4067      7264 00
+ 4068               	.LASF125:
+ 4069 0568 4B45 595F 		.string	"KEY_F22"
+ 4069      4632 3200 
+ 4070               	.LASF129:
+ 4071 0570 4B45 595F 		.string	"KEY_HELP"
+ 4071      4845 4C50 
+ 4071      00
+ 4072               	.LASF193:
+ 4073 0579 7478 5F73 		.string	"tx_state"
+ 4073      7461 7465 
+ 4073      00
+ 4074               	.LASF168:
+ 4075 0582 4B45 595F 		.string	"KEY_NEXT_TRK"
+ 4075      4E45 5854 
+ 4075      5F54 524B 
+ 4075      00
+ 4076               	.LASF97:
+ 4077 058f 4B45 595F 		.string	"KEY_KP_AST"
+ 4077      4B50 5F41 
+ 4077      5354 00
+ 4078               	.LASF141:
+ 4079 059a 4B45 595F 		.string	"KEY_VOLDN"
+ 4079      564F 4C44 
+ 4079      4E00 
+ 4080               	.LASF174:
+ 4081 05a4 4B45 595F 		.string	"KEY_VOL_DOWN"
+ 4081      564F 4C5F 
+ 4081      444F 574E 
+ 4081      00
+ 4082               	.LASF182:
+ 4083 05b1 4B45 595F 		.string	"KEY_EJECT"
+ 4083      454A 4543 
+ 4083      5400 
+ 4084               	.LASF154:
+ 4085 05bb 4B45 595F 		.string	"KEY_Modifiers_end"
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 78
+
+
+ 4085      4D6F 6469 
+ 4085      6669 6572 
+ 4085      735F 656E 
+ 4085      6400 
+ 4086               	.LASF0:
+ 4087 05cd 756E 7369 		.string	"unsigned char"
+ 4087      676E 6564 
+ 4087      2063 6861 
+ 4087      7200 
+ 4088               	.LASF178:
+ 4089 05db 4B45 595F 		.string	"KEY_SCREENSAVE"
+ 4089      5343 5245 
+ 4089      454E 5341 
+ 4089      5645 00
+ 4090               	.LASF122:
+ 4091 05ea 4B45 595F 		.string	"KEY_F19"
+ 4091      4631 3900 
+ 4092               	.LASF66:
+ 4093 05f2 4B45 595F 		.string	"KEY_COMMA"
+ 4093      434F 4D4D 
+ 4093      4100 
+ 4094               	.LASF209:
+ 4095 05fc 6C6F 6F70 		.string	"loopCnt"
+ 4095      436E 7400 
+ 4096               	.LASF55:
+ 4097 0604 4B45 595F 		.string	"KEY_TAB"
+ 4097      5441 4200 
+ 4098               	.LASF3:
+ 4099 060c 7368 6F72 		.string	"short int"
+ 4099      7420 696E 
+ 4099      7400 
+ 4100               	.LASF205:
+ 4101 0616 6C61 7374 		.string	"lastMAKE_keyidx"
+ 4101      4D41 4B45 
+ 4101      5F6B 6579 
+ 4101      6964 7800 
+ 4102               	.LASF93:
+ 4103 0626 4B45 595F 		.string	"KEY_DOWN"
+ 4103      444F 574E 
+ 4103      00
+ 4104               	.LASF214:
+ 4105 062f 4B46 4C41 		.string	"KFLA"
+ 4105      00
+ 4106               	.LASF58:
+ 4107 0634 4B45 595F 		.string	"KEY_EQUAL"
+ 4107      4551 5541 
+ 4107      4C00 
+ 4108               	.LASF84:
+ 4109 063e 4B45 595F 		.string	"KEY_PAUSE"
+ 4109      5041 5553 
+ 4109      4500 
+ 4110               	.LASF101:
+ 4111 0648 4B45 595F 		.string	"KEY_KP_1"
+ 4111      4B50 5F31 
+ 4111      00
+ 4112               	.LASF102:
+ 4113 0651 4B45 595F 		.string	"KEY_KP_2"
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 79
+
+
+ 4113      4B50 5F32 
+ 4113      00
+ 4114               	.LASF103:
+ 4115 065a 4B45 595F 		.string	"KEY_KP_3"
+ 4115      4B50 5F33 
+ 4115      00
+ 4116               	.LASF87:
+ 4117 0663 4B45 595F 		.string	"KEY_PGUP"
+ 4117      5047 5550 
+ 4117      00
+ 4118               	.LASF105:
+ 4119 066c 4B45 595F 		.string	"KEY_KP_5"
+ 4119      4B50 5F35 
+ 4119      00
+ 4120               	.LASF106:
+ 4121 0675 4B45 595F 		.string	"KEY_KP_6"
+ 4121      4B50 5F36 
+ 4121      00
+ 4122               	.LASF107:
+ 4123 067e 4B45 595F 		.string	"KEY_KP_7"
+ 4123      4B50 5F37 
+ 4123      00
+ 4124               	.LASF108:
+ 4125 0687 4B45 595F 		.string	"KEY_KP_8"
+ 4125      4B50 5F38 
+ 4125      00
+ 4126               	.LASF52:
+ 4127 0690 4B45 595F 		.string	"KEY_ENTER"
+ 4127      454E 5445 
+ 4127      5200 
+ 4128               	.LASF53:
+ 4129 069a 4B45 595F 		.string	"KEY_ESC"
+ 4129      4553 4300 
+ 4130               	.LASF110:
+ 4131 06a2 4B45 595F 		.string	"KEY_KP_0"
+ 4131      4B50 5F30 
+ 4131      00
+ 4132               	.LASF131:
+ 4133 06ab 4B45 595F 		.string	"KEY_SEL"
+ 4133      5345 4C00 
+ 4134               	.LASF9:
+ 4135 06b3 6368 6172 		.string	"char"
+ 4135      00
+ 4136               	.LASF155:
+ 4137 06b8 4B45 595F 		.string	"KEY_HANJA"
+ 4137      4841 4E4A 
+ 4137      4100 
+ 4138               	.LASF164:
+ 4139 06c2 4B45 595F 		.string	"KEY_WWW_FORWARD"
+ 4139      5757 575F 
+ 4139      464F 5257 
+ 4139      4152 4400 
+ 4140               	.LASF109:
+ 4141 06d2 4B45 595F 		.string	"KEY_KP_9"
+ 4141      4B50 5F39 
+ 4141      00
+ 4142               	.LASF104:
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 80
+
+
+ 4143 06db 4B45 595F 		.string	"KEY_KP_4"
+ 4143      4B50 5F34 
+ 4143      00
+ 4144               	.LASF160:
+ 4145 06e4 4B45 595F 		.string	"KEY_EMAIL"
+ 4145      454D 4149 
+ 4145      4C00 
+ 4146               	.LASF207:
+ 4147 06ee 6C61 7374 		.string	"lastMAKE_SIZE"
+ 4147      4D41 4B45 
+ 4147      5F53 495A 
+ 4147      4500 
+ 4148               	.LASF190:
+ 4149 06fc 5F5F 6164 		.string	"__addr16"
+ 4149      6472 3136 
+ 4149      00
+ 4150               	.LASF203:
+ 4151 0705 7265 6172 		.string	"rear"
+ 4151      00
+ 4152               	.LASF176:
+ 4153 070a 4B45 595F 		.string	"KEY_CALC"
+ 4153      4341 4C43 
+ 4153      00
+ 4154               	.LASF150:
+ 4155 0713 4B45 595F 		.string	"KEY_RCTRL"
+ 4155      5243 5452 
+ 4155      4C00 
+ 4156               	.LASF61:
+ 4157 071d 4B45 595F 		.string	"KEY_BKSLASH"
+ 4157      424B 534C 
+ 4157      4153 4800 
+ 4158               	.LASF189:
+ 4159 0729 6B65 7956 		.string	"keyVal"
+ 4159      616C 00
+ 4160               	.LASF167:
+ 4161 0730 4B45 595F 		.string	"KEY_WWW_FAVORITE"
+ 4161      5757 575F 
+ 4161      4641 564F 
+ 4161      5249 5445 
+ 4161      00
+ 4162               	.LASF218:
+ 4163 0741 6C61 7374 		.string	"lastSent"
+ 4163      5365 6E74 
+ 4163      00
+ 4164               	.LASF15:
+ 4165 074a 4572 726F 		.string	"ErrorUndefined"
+ 4165      7255 6E64 
+ 4165      6566 696E 
+ 4165      6564 00
+ 4166               	.LASF204:
+ 4167 0759 6672 6F6E 		.string	"front"
+ 4167      7400 
+ 4168               	.LASF140:
+ 4169 075f 4B45 595F 		.string	"KEY_VOLUP"
+ 4169      564F 4C55 
+ 4169      5000 
+ 4170               	.LASF132:
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 81
+
+
+ 4171 0769 4B45 595F 		.string	"KEY_STOP_HID"
+ 4171      5354 4F50 
+ 4171      5F48 4944 
+ 4171      00
+ 4172               	.LASF148:
+ 4173 0776 4B45 595F 		.string	"KEY_LALT"
+ 4173      4C41 4C54 
+ 4173      00
+ 4174               	.LASF70:
+ 4175 077f 4B45 595F 		.string	"KEY_F1"
+ 4175      4631 00
+ 4176               	.LASF71:
+ 4177 0786 4B45 595F 		.string	"KEY_F2"
+ 4177      4632 00
+ 4178               	.LASF72:
+ 4179 078d 4B45 595F 		.string	"KEY_F3"
+ 4179      4633 00
+ 4180               	.LASF73:
+ 4181 0794 4B45 595F 		.string	"KEY_F4"
+ 4181      4634 00
+ 4182               	.LASF74:
+ 4183 079b 4B45 595F 		.string	"KEY_F5"
+ 4183      4635 00
+ 4184               	.LASF75:
+ 4185 07a2 4B45 595F 		.string	"KEY_F6"
+ 4185      4636 00
+ 4186               	.LASF76:
+ 4187 07a9 4B45 595F 		.string	"KEY_F7"
+ 4187      4637 00
+ 4188               	.LASF77:
+ 4189 07b0 4B45 595F 		.string	"KEY_F8"
+ 4189      4638 00
+ 4190               	.LASF10:
+ 4191 07b7 7569 6E74 		.string	"uint8_t"
+ 4191      385F 7400 
+ 4192               	.LASF86:
+ 4193 07bf 4B45 595F 		.string	"KEY_HOME"
+ 4193      484F 4D45 
+ 4193      00
+ 4194               	.LASF211:
+ 4195 07c8 5459 5045 		.string	"TYPEMATIC_REPEAT"
+ 4195      4D41 5449 
+ 4195      435F 5245 
+ 4195      5045 4154 
+ 4195      00
+ 4196               	.LASF180:
+ 4197 07d9 4B45 595F 		.string	"KEY_REWIND"
+ 4197      5245 5749 
+ 4197      4E44 00
+ 4198               	.LASF113:
+ 4199 07e4 4B45 595F 		.string	"KEY_APPS"
+ 4199      4150 5053 
+ 4199      00
+ 4200               	.LASF161:
+ 4201 07ed 4B45 595F 		.string	"KEY_WWW_SEARCH"
+ 4201      5757 575F 
+ 4201      5345 4152 
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 82
+
+
+ 4201      4348 00
+ 4202               	.LASF94:
+ 4203 07fc 4B45 595F 		.string	"KEY_UP"
+ 4203      5550 00
+ 4204               	.LASF177:
+ 4205 0803 4B45 595F 		.string	"KEY_MYCOM"
+ 4205      4D59 434F 
+ 4205      4D00 
+ 4206               	.LASF133:
+ 4207 080d 4B45 595F 		.string	"KEY_AGAIN"
+ 4207      4147 4149 
+ 4207      4E00 
+ 4208               	.LASF139:
+ 4209 0817 4B45 595F 		.string	"KEY_MUTE_HID"
+ 4209      4D55 5445 
+ 4209      5F48 4944 
+ 4209      00
+ 4210               	.LASF78:
+ 4211 0824 4B45 595F 		.string	"KEY_F9"
+ 4211      4639 00
+ 4212               	.LASF149:
+ 4213 082b 4B45 595F 		.string	"KEY_LGUI"
+ 4213      4C47 5549 
+ 4213      00
+ 4214               	.LASF216:
+ 4215 0834 7478 5363 		.string	"txScanCode"
+ 4215      616E 436F 
+ 4215      6465 00
+ 4216               	.LASF145:
+ 4217 083f 4B45 595F 		.string	"KEY_Modifiers"
+ 4217      4D6F 6469 
+ 4217      6669 6572 
+ 4217      7300 
+ 4218               	.LASF92:
+ 4219 084d 4B45 595F 		.string	"KEY_LEFT"
+ 4219      4C45 4654 
+ 4219      00
+ 4220               	.global __do_copy_data
+ 4221               	.global __do_clear_bss
+GAS LISTING C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s 			page 83
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 ps2main.c
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:2      *ABS*:0000003f __SREG__
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:3      *ABS*:0000003e __SP_H__
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:4      *ABS*:0000003d __SP_L__
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:5      *ABS*:00000034 __CCP__
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:6      *ABS*:00000000 __tmp_reg__
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:7      *ABS*:00000001 __zero_reg__
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:18     .text:00000000 push
+                             .bss:00000001 lastMAKE_SIZE
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:1029   .bss:00000007 record.1872
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:1032   .bss:000000d1 lastMAKE
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:1028   .bss:00000005 rear
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:1020   .bss:00000003 front
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:1030   .bss:00000008 QUEUE
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:104    .text:00000088 pop
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:139    .text:000000c0 isEmpty
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:163    .text:000000de clear
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:1014   .bss:00000002 lastMAKE_IDX
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:1033   .bss:000000db loopCnt
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:199    .text:00000116 putKey
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:1031   .bss:000000d0 lastMAKE_keyidx
+                            *COM*:00000001 m_state
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:399    .text:00000230 tx_state
+                            *COM*:00000001 lastSent
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:428    .text:00000248 processTX
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:1018   .data:00000000 TYPEMATIC_DELAY
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:1023   .data:00000001 TYPEMATIC_REPEAT
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:693    .text:0000044c processRX
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:946    .text:000005cc ps2main
+C:\Users\21030\AppData\Local\Temp/ccRMLfyF.s:1012   .bss:00000000 txScanCode
+                            *COM*:00000001 lastState
+
+UNDEFINED SYMBOLS
+__divmodhi4
+MATRIX
+keycode_set2
+KFLA
+kbd_set_tx
+scankey
+__udivmodqi4
+__mulsi3
+__divmodsi4
+led_check
+led_mode_init
+kbd_get_rx_char
+LEDstate
+led_3lockupdate
+kbd_init
+kbd_flags
+__do_copy_data
+__do_clear_bss
