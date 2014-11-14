@@ -25,7 +25,7 @@
 #define KEYB_CLOCK_PORT		PORTD
 #define KEYB_CLOCK_DDR		DDRD
 #define KEYB_CLOCK_PINS		PIND
-#define KEYB_CLOCK_PIN		2	/* for cbi / sbi instructions */
+#define KEYB_CLOCK_PIN		2	    /* for cbi / sbi instructions */
 #define KEYB_CLOCK_BIT		0x04	/* for and/or ops */
 
 #define KEYB_DATA_PORT		PORTD

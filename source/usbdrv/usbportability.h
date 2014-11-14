@@ -105,7 +105,7 @@ static inline void  sei(void)
     #asm("sei");
 }
 #endif
-//#define _delay_ms(t)    delay_ms(t)
+#define _delay_ms(t)    delay_ms(t)
 #define _BV(x)          (1 << (x))
 #define USB_CFG_USE_SWITCH_STATEMENT 1  /* macro for if() cascase fails for unknown reason */
 

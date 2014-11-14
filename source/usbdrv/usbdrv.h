@@ -9,8 +9,6 @@
 
 #ifndef __usbdrv_h_included__
 #define __usbdrv_h_included__
-#include "usbconfig.h"
-#include "usbportability.h"
 
 /*
 Hardware Prerequisites:
@@ -116,6 +114,23 @@ the host conforms to the standard. The driver will consume CPU cycles for all
 USB messages, even if they address another (low-speed) device on the same bus.
 
 */
+
+
+#ifdef __cplusplus
+// This header should be included as C-header from C++ code. However if usbdrv.c
+// is incorporated into a C++ module with an include, function names are mangled
+// and this header must be parsed as C++ header, too. External modules should be
+// treated as C, though, because they are compiled separately as C code.
+extern "C" {
+#endif
+
+#include "usbconfig.h"
+#include "usbportability.h"
+
+#ifdef __cplusplus
+}
+#endif
+
 
 /* ------------------------------------------------------------------------- */
 /* --------------------------- Module Interface ---------------------------- */
@@ -301,12 +316,8 @@ USB_PUBLIC void usbFunctionWriteOut(uchar *data, uchar len);
 #define usbDeviceDisconnect()   ((USB_PULLUP_DDR &= ~(1<<USB_CFG_PULLUP_BIT)), \
                                   (USB_PULLUP_OUT &= ~(1<<USB_CFG_PULLUP_BIT)))
 #else /* USB_CFG_PULLUP_IOPORTNAME */
-//#define usbDeviceConnect()      (USBDDR &= ~(1<<USBMINUS))
-//#define usbDeviceDisconnect()   (USBDDR |= (1<<USBMINUS))
-#define usbDeviceConnect()      (USBDDR &= ~((1<<USBMINUS)|(1<<USBPLUS)))
-#define usbDeviceDisconnect()   ((USBOUT &= ~((1<<USBMINUS)|(1<<USBPLUS))), \
-                                 (USBDDR |= ((1<<USBMINUS)|(1<<USBPLUS))))
-
+#define usbDeviceConnect()      (USBDDR &= ~(1<<USBMINUS))
+#define usbDeviceDisconnect()   (USBDDR |= (1<<USBMINUS))
 #endif /* USB_CFG_PULLUP_IOPORTNAME */
 /* The macros usbDeviceConnect() and usbDeviceDisconnect() (intended to look
  * like a function) connect resp. disconnect the device from the host's USB.

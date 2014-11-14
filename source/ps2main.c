@@ -1,12 +1,5 @@
 #define KEYBD_EXTERN
 
-#include "timer.h"
-#include "keysta.h"
-#include "print.h"
-#include "keymap.h"
-#include "led.h"
-#include "matrix.h"
-
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/pgmspace.h>
@@ -15,50 +8,15 @@
 #include <avr/wdt.h>
 #include <util/delay.h>     /* for _delay_ms() */
 
+#include "timer.h"
+#include "keysta.h"
+#include "print.h"
 
-#define STA_NORMAL              0
-#define STA_RXCHAR              1
-#define STA_WAIT_SCAN_SET       2
-#define STA_WAIT_SCAN_REPLY     3
-#define STA_WAIT_ID             4
-#define STA_WAIT_ID1            5
-#define STA_WAIT_LEDS           6
-#define STA_WAIT_AUTOREP        7
-#define STA_WAIT_RESET          8
-#define STA_DISABLED            9
-#define STA_DELAY               11
-#define STA_REPEAT              12
+#include "keymap.h"
+#include "led.h"
+#include "matrix.h"
+#include "ps2main.h"
 
-#define SC_EXTENDED_CODE        0xE0
-
-#define SC_0 0x45
-#define SC_1 0x16
-#define SC_2 0x1E
-#define SC_3 0x26
-#define SC_4 0x25
-#define SC_5 0x2E
-#define SC_6 0x36
-#define SC_7 0x3D
-#define SC_8 0x3E
-#define SC_9 0x46
-#define SC_ENTER 0x5A
-
-#define START_MAKE 0xFF
-#define END_MAKE   0xFE
-#define NO_REPEAT  0xFD
-#define SPLIT      0xFC
-
-#define M_LALT  	0x01
-#define M_LSHIFT	0x02
-#define M_LCTRL		0x04
-#define M_LGUI		0x08
-#define M_RALT		0x10
-#define M_RSHIFT	0x20
-#define M_RCTRL		0x40
-#define M_RGUI		0x80
-
-
-#define QUEUE_SIZE 200
 static uint8_t QUEUE[QUEUE_SIZE];
 static int rear=0, front=0;
 
@@ -73,12 +31,9 @@ unsigned char m_state;
 unsigned char lastSent;
 unsigned char lastState;
 static uint8_t TYPEMATIC_DELAY=2;
-static long TYPEMATIC_REPEAT=5;
+static long TYPEMATIC_REPEAT=10;
 
 
-extern uint8_t MATRIX[];
-extern int8_t usbmode;
-extern unsigned char matrixFN;           // (col << 4 | row)
 // Queue operation -> push, pop
 void push(uint8_t item) {
 	static uint8_t record=0;
@@ -132,7 +87,7 @@ void clear(void) {
 	lastMAKE_IDX=0;
 	loopCnt=0;
 
-	for(i=0;i<17;i++)
+	for(i=0;i<MAX_COL;i++)
 		MATRIX[i] = 0x00;
 }
 
@@ -165,7 +120,7 @@ void putKey(uint8_t keyidx, uint8_t isPushed)
 
 		if(KFLA[keyidx]&KFLA_SPECIAL) {
 			switch(keyidx) {
-				case KEY_PRNSCR:
+				case K_PRNSCR:
 					push(START_MAKE);
 					push(0xE0);
 					push(0x12);
@@ -174,7 +129,7 @@ void putKey(uint8_t keyidx, uint8_t isPushed)
 					push(END_MAKE);
 					push(SPLIT); // SPLIT is for make sure all key codes are transmitted before disturbed by RX
 					break;
-				case KEY_PAUSE:
+				case K_PAUSE:
 					push(NO_REPEAT);
 					push(0xE1);
 					push(0x14);
@@ -207,7 +162,7 @@ void putKey(uint8_t keyidx, uint8_t isPushed)
 
 		if(KFLA[keyidx]&KFLA_SPECIAL) {
 			switch(keyidx) {
-				case KEY_PRNSCR:
+				case K_PRNSCR:
 					push(0xE0);
 					push(0xF0);
 					push(0x7C);
@@ -293,10 +248,9 @@ int processRX(void)
             else
             {
                 LEDstate &= ~LED_CAPS;
-
             }
-            led_3lockupdate(LEDstate);
     
+            led_3lockupdate(LEDstate);
             tx_state(0xFA, STA_NORMAL);
             break;
 
@@ -368,7 +322,7 @@ int processTX(void)
     		loopCnt++;
 
     		// if key is pressed until typmatic_delay, goes to repeat the last key
-    		if(loopCnt >= TYPEMATIC_DELAY*150+230) {
+    		if(loopCnt >= TYPEMATIC_DELAY*50+100) {
     			loopCnt=0;
     			lastMAKE_IDX=0;
     			m_state = STA_REPEAT;
@@ -425,17 +379,21 @@ int processTX(void)
 uint8_t ps2main(void)
 {
     int keyval=0;
-	m_state = STA_WAIT_RESET;
+	 m_state = STA_WAIT_RESET;
     cli();
 
-
     DEBUG_PRINT(("PS/2\n"));
- 	kbd_init();
+ 
+
+	kbd_init();
     
+    wdt_enable(WDTO_2S);
     sei();
 
 	while(1) {
-        // check that every key code for single keys are transmitted
+        
+        wdt_reset();
+													// check that every key code for single keys are transmitted
 		if ((kbd_flags & FLA_RX_BYTE) && (keyval==SPLIT || isEmpty())) {     // pokud nastaveny flag prijmu bytu, vezmi ho a zanalyzuj
 			// pokud law, the flag setting apart, take it and zanalyzuj
             processRX();

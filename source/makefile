@@ -13,33 +13,38 @@
 # I've added some extra comments above several of the makefile fields which
 # you will have to deal with.
 
-AVRLIB = ../avrlib
+AVRLIB = ./avrlib
 
 ########### change this lines according to your project ##################
-#put the name of the target mcu here (at90s8515, at90s8535, attiny22, atmega603 etc.)
+#put the name of the TRG mcu here (at90s8515, at90s8535, attiny22, atmega603 etc.)
 	MCU = atmega32
 #	MCU = atmega161
 #	MCU = atmega128
 
 F_CPU = 12000000
+#F_CPU = 16000000
+#F_CPU = 20000000
 
-#put the name of the target file here (without extension)
-#  Your "target" file is your C source file that is at the top level of your code.
+#JUMPSTART = 0x1FC00
+JUMPSTART = 0x7C00
+#put the name of the TRG file here (without extension)
+#  Your "TRG" file is your C source file that is at the top level of your code.
 #  In other words, this is the file which contains your main() function.
 
-	TRG = main
+	TRG = MX1830
 
 #put your C sourcefiles here 
-#  Here you must list any C source files which are used by your target file.
+#  Here you must list any C source files which are used by your TRG file.
 #  They will be compiled in the order you list them, so it's probably best
-#  to list $(TRG).c, your top-level target file, last.
+#  to list $(TRG).c, your top-level TRG file, last.
 
-	SRC = $(AVRLIB)/timer.c \
-			ps2main.c keysta.c \
-			usbmain.c usbdrv/usbdrv.c usbdrv/oddebug.c \
-			matrix.c led.c keymap.c \
-			$(TRG).c  \
-
+	SRC =   usbdrv/usbdrv.c usbdrv/oddebug.c \
+			matrix/matrix.c matrix/keymap.c \
+			macro/macro.c \
+			usbmain.c ps2main.c keysta.c \
+			main.c \
+			$(AVRLIB)/timer.c \
+			led/ledM3.c \
 #put additional assembler source file here
 #  The ASRC line allows you to list files which contain assembly code/routines that
 #  you would like to use from within your C programs.  The assembly code must be
@@ -50,21 +55,23 @@ F_CPU = 12000000
 #additional libraries and object files to link
 #  Libraries and object files are collections of functions which have already been
 #  compiled.  If you have such files, list them here, and you will be able to use
-#  use the functions they contain in your target program.
+#  use the functions they contain in your TRG program.
 
 	LIB	=
 
 #additional includes to compile
-	INC	= usbdrv
+	INC	= -Iusbdrv -Imatrix -Iled -Imacro
 
 #assembler flags
-	ASFLAGS = -Wa, -gstabs -DF_CPU=$(F_CPU)
-
+	ASFLAGS = -Wa, -gstabs -DF_CPU=$(F_CPU) -DKBDMOD_M3
+#TRG out
+	OUT = $(TRG)
 #compiler flags
-	CPFLAGS	= -g -Os -Wall -Wstrict-prototypes -I$(INC) -I$(AVRLIB) -DF_CPU=$(F_CPU)UL -Wa,-ahlms=$(<:.c=.lst)
+	CPFLAGS	= -g -Os -Wall -Wstrict-prototypes $(INC) -I$(AVRLIB) -DKBDMOD_M3 -DF_CPU=$(F_CPU)UL -Wa,-ahlms=$(<:.c=.lst)
 
 #linker flags
-	LDFLAGS = -Wl,-Map=$(TRG).map,--cref
+	LDFLAGS = -Wl,-Map=$(TRG).map,--cref,--section-start=.appinboot=$(JUMPSTART)
+
 #	LDFLAGS = -Wl,-Map=$(TRG).map,--cref -lm
 
 	
@@ -82,28 +89,44 @@ include $(AVRLIB)/make/avrproj_make
 #  in the dependecies too.  That way, if you alter global.h, uart.o will be
 #  recompiled to take into account the changes.
 
-buffer.o		: buffer.c		buffer.h
-uart.o		: uart.c			uart.h		global.h
+buffer.o	: buffer.c		buffer.h
+uart.o		: uart.c		uart.h		global.h
 uart2.o		: uart2.c		uart2.h		global.h
 rprintf.o	: rprintf.c		rprintf.h
-a2d.o			: a2d.c			a2d.h
+a2d.o		: a2d.c			a2d.h
 timer.o		: timer.c		timer.h		global.h
-pulse.o		: pulse.c		pulse.h		timer.h	global.h
-lcd.o			: lcd.c			lcd.h			global.h
-i2c.o			: i2c.c			i2c.h			global.h
-spi.o			: spi.c			spi.h			global.h
+pulse.o		: pulse.c		pulse.h		timer.h		global.h
+lcd.o		: lcd.c			lcd.h		global.h
+i2c.o		: i2c.c			i2c.h		global.h
+spi.o		: spi.c			spi.h		global.h
 swpwm.o		: swpwm.c		swpwm.h		global.h
 servo.o		: servo.c		servo.h		global.h
-swuart.o		: swuart.c		swuart.h		global.h
-tsip.o		: tsip.c			tsip.h		global.h
-nmea.o		: nmea.c			nmea.h		global.h
+swuart.o	: swuart.c		swuart.h	global.h
+tsip.o		: tsip.c		tsip.h		global.h
+nmea.o		: nmea.c		nmea.h		global.h
 vt100.o		: vt100.c		vt100.h		global.h
-gps.o			: gps.c			gps.h			global.h
-$(TRG).o		: $(TRG).c						global.h
-keysta.o: keysta.h keysta.c
+gps.o		: gps.c			gps.h		global.h
+main.o		: main.c		global.h	hwaddress.h	
+keysta.o	: keysta.c		keysta.h	common_inc.h
+matrix/keymap.o	: matrix/keymap.c	matrix/keymap.h		matrix/matrix.h		led/led.h	hwaddress.h
+matrix/matrix.o	: matrix/matrix.c	matrix/matrix.h		usbmain.h			ps2main.h	macro/macro.h
+macro/macro.o	: macro/macro.c		macro/macro.h
+led/led.o	: led/led.c		led/led.h
+usbmain.o 	: usbmain.c		usbmain.h 	usbconfig.h		matrix/matrix.h		usbdrv/usbdrv.h
+ps2main.o	: ps2main.c		ps2main.h	keysta.h	matrix/keymap.h	matrix/matrix.h	
+$(AVRLIB)/timer128.o	: $(AVRLIB)/timer128.c	$(AVRLIB)/timer128.h
+usbdrv/usbdrv.o	:	usbdrv/usbdrv.c		usbdrv/usbdrv.h	usbdrv/oddebug.h
+usbdrv/oddebug.o :	usbdrv/oddebug.c 	usbdrv/oddebug.h
+usbdrv/usbdrvasm.o : usbdrv/usbdrvasm.asm usbdrv/usbdrvasm.S usbdrv/usbportability.h	usbdrv/usbdrv.h  usbconfig.h
 
-
-prog: all
-	avrdude -c USBasp -P usbasp -p atmega32 -U hfuse:w:0xD7:m -U lfuse:w:0x0E:m
-	avrdude -c USBasp -P usbasp -p atmega32 -U flash:w:main.hex:i
-	pause;
+all:
+	rm -rf $(TRG)
+	mkdir $(TRG)
+	mv *.lst $(TRG)
+	mv *.bin $(TRG)
+	mv *.cof $(TRG)
+	mv *.eep $(TRG)
+	mv *.elf $(TRG)
+	mv *.hex $(TRG)
+	mv *.map $(TRG)
+	cp *.bat $(TRG)
