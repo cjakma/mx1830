@@ -130,3 +130,4 @@ all:
 	mv *.hex $(TRG)
 	mv *.map $(TRG)
 	cp *.bat $(TRG)
+	cp bootloadHID_M3.exe $(TRG)

@@ -1,2 +1,2 @@
-bootloadHID_M3.exe -r mx1830FW.hex
+bootloadHID_M3.exe -r MX1830.hex
 pause;
