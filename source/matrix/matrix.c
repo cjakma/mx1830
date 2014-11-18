@@ -287,7 +287,7 @@ uint8_t scanmatrix(void)
         kbdsleepmode = 1;
         ledmodeIndex = 4;       // hidden OFF index
 
-        for (ledblock = LED_PIN_PRT; ledblock < LED_PIN_VESEL; ledblock++)
+        for (ledblock = LED_PIN_BASE; ledblock < LED_PIN_WASD; ledblock++)
         {
             led_mode_change(ledblock, ledmode[ledmodeIndex][ledblock]);
         }

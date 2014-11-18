@@ -195,7 +195,7 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x3904
+.text           0x00000000     0x38da
  *(.vectors)
  .vectors       0x00000000       0x54 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
                 0x00000000                __vectors
@@ -300,166 +300,166 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                 0x00000980                usbSetInterrupt
                 0x000006f4                usbInit
  .text          0x0000098a        0x0 usbdrv/oddebug.o
- .text          0x0000098a      0xacc matrix/matrix.o
+ .text          0x0000098a      0xaa2 matrix/matrix.o
                 0x0000098a                getLayer
-                0x00000f1a                processReleasedFNkeys
+                0x00000ef0                processReleasedFNkeys
                 0x00000a9a                cntKey
                 0x00000d74                scanmatrix
-                0x0000128c                keymap_init
+                0x00001262                keymap_init
                 0x00000cca                processPushedFNkeys
                 0x00000a36                swap_key
                 0x00000a80                swap_save
-                0x00000faa                scankey
- .text          0x00001456        0x0 matrix/keymap.o
- .text          0x00001456      0x8b2 macro/macro.o
-                0x000016e8                usbSendReport
-                0x00001906                resetMacro
-                0x0000159a                playMacroPS2
-                0x00001732                clearKey
-                0x0000155e                flash_writeinpage
-                0x000019d0                recordMacro
-                0x0000155c                getkey
-                0x00001534                initMacroAddr
-                0x000018a8                sendString
-                0x00001744                sendKey
-                0x000017bc                playMacroUSB
-                0x00001952                printModifier
-                0x00001456                charToKey
- .text          0x00001d08      0x466 usbmain.o
-                0x00001d08                usbFunctionDescriptor
-                0x0000200e                clearReportBuffer
-                0x00002042                saveReportBuffer
-                0x00001d7c                usbFunctionSetup
-                0x00001e10                bufcmp
-                0x00001e3a                cmpReportBuffer
-                0x00002056                usbmain
-                0x0000202e                restoreReportBuffer
-                0x00001ea8                buildHIDreports
-                0x00001e84                togglescr
-                0x00001e60                togglecaps
-                0x0000214e                usbFunctionWrite
- .text          0x0000216e      0x62e ps2main.o
-                0x0000273a                ps2main
-                0x00002286                putKey
-                0x000023b8                processTX
-                0x000023a0                tx_state
-                0x000025bc                processRX
-                0x0000224c                clear
-                0x000021f6                pop
-                0x0000222e                isEmpty
-                0x0000216e                push
- .text          0x0000279c      0x280 keysta.o
-                0x000027ba                kbd_get_rx_char
-                0x000029ea                kbd_init
-                0x0000279c                kbd_set_tx
- .text          0x00002a1c       0xe8 main.o
-                0x00002a1c                enable_printf
-                0x00002a1e                DPpullEn
-                0x00002a52                checkInterface
-                0x00002a8e                main
-                0x00002a36                portInit
- .text          0x00002b04      0x6dc ./avrlib/timer.o
-                0x00002d98                timer2GetOverflowCount
-                0x00002c34                timerDetach
-                0x00002bbc                timer1SetPrescaler
-                0x00002e62                timer2PWMInit
-                0x00002e8e                timer2PWMSet
-                0x00002e54                timer1PWMBOff
-                0x00002c04                timer2GetPrescaler
-                0x00002baa                timer2IntEnable
-                0x0000312c                __vector_6
-                0x00002b64                timer0Init
-                0x00002e46                timer1PWMAOff
-                0x00002e98                timer1PWMBSet
-                0x00002e72                timer2PWMOn
-                0x00002e9e                __vector_11
-                0x00002dde                timer1PWMInitICR
-                0x00002bd0                timer0GetPrescaler
-                0x00003078                __vector_7
-                0x00002e80                timer2PWMOff
-                0x00002d70                timer0GetOverflowCount
-                0x00002f9e                __vector_5
-                0x00002b06                timerInit
-                0x00002bc6                timer2SetPrescaler
-                0x00002e2a                timer1PWMAOn
-                0x00002bb2                timer0SetPrescaler
-                0x00002b04                delay_us
-                0x00003186                __vector_4
-                0x00002d5e                timer0ClearOverflowCount
-                0x00002f44                __vector_9
-                0x00002b80                timer1Init
-                0x00002dae                timer1PWMInit
-                0x00002e38                timer1PWMBOn
-                0x00002b8e                timer2Init
-                0x000030d2                __vector_8
-                0x00002e92                timer1PWMASet
-                0x00002c1e                timerAttach
-                0x00002e04                timer1PWMOff
-                0x0000301e                __vector_10
-                0x00002bea                timer1GetPrescaler
-                0x00002d86                timer2ClearOverflowCount
-                0x00002c4a                timerPause
- .text          0x000031e0      0x5ca led/ledM3.o
-                0x000035fa                led_fader
-                0x00003218                led_PRTIndicater
-                0x00003456                led_blink
-                0x0000332a                led_3lockupdate
-                0x00003216                led_ESCIndicater
-                0x0000321a                led_pushed_level_cal
-                0x0000325e                led_wave_set
-                0x0000351c                led_mode_change
-                0x000034de                led_wave_on
-                0x000032ea                led_on
-                0x00003250                led_mode_save
-                0x000033cc                led_check
-                0x000031e0                led_off
-                0x000032ac                led_wave_off
-                0x00003588                led_mode_init
- .text          0x000037aa        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
- .text          0x000037aa        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
- .text          0x000037aa        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
- .text          0x000037aa        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
- .text          0x000037aa        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
- .text          0x000037aa        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
- .text          0x000037aa        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .text          0x000037aa        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .text          0x000037aa        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
- .text          0x000037aa        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(memset.o)
- .text          0x000037aa        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_byte_atmega32.o)
- .text          0x000037aa        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_byte_atmega32.o)
-                0x000037aa                . = ALIGN (0x2)
+                0x00000f80                scankey
+ .text          0x0000142c        0x0 matrix/keymap.o
+ .text          0x0000142c      0x8b2 macro/macro.o
+                0x000016be                usbSendReport
+                0x000018dc                resetMacro
+                0x00001570                playMacroPS2
+                0x00001708                clearKey
+                0x00001534                flash_writeinpage
+                0x000019a6                recordMacro
+                0x00001532                getkey
+                0x0000150a                initMacroAddr
+                0x0000187e                sendString
+                0x0000171a                sendKey
+                0x00001792                playMacroUSB
+                0x00001928                printModifier
+                0x0000142c                charToKey
+ .text          0x00001cde      0x466 usbmain.o
+                0x00001cde                usbFunctionDescriptor
+                0x00001fe4                clearReportBuffer
+                0x00002018                saveReportBuffer
+                0x00001d52                usbFunctionSetup
+                0x00001de6                bufcmp
+                0x00001e10                cmpReportBuffer
+                0x0000202c                usbmain
+                0x00002004                restoreReportBuffer
+                0x00001e7e                buildHIDreports
+                0x00001e5a                togglescr
+                0x00001e36                togglecaps
+                0x00002124                usbFunctionWrite
+ .text          0x00002144      0x62e ps2main.o
+                0x00002710                ps2main
+                0x0000225c                putKey
+                0x0000238e                processTX
+                0x00002376                tx_state
+                0x00002592                processRX
+                0x00002222                clear
+                0x000021cc                pop
+                0x00002204                isEmpty
+                0x00002144                push
+ .text          0x00002772      0x280 keysta.o
+                0x00002790                kbd_get_rx_char
+                0x000029c0                kbd_init
+                0x00002772                kbd_set_tx
+ .text          0x000029f2       0xe8 main.o
+                0x000029f2                enable_printf
+                0x000029f4                DPpullEn
+                0x00002a28                checkInterface
+                0x00002a64                main
+                0x00002a0c                portInit
+ .text          0x00002ada      0x6dc ./avrlib/timer.o
+                0x00002d6e                timer2GetOverflowCount
+                0x00002c0a                timerDetach
+                0x00002b92                timer1SetPrescaler
+                0x00002e38                timer2PWMInit
+                0x00002e64                timer2PWMSet
+                0x00002e2a                timer1PWMBOff
+                0x00002bda                timer2GetPrescaler
+                0x00002b80                timer2IntEnable
+                0x00003102                __vector_6
+                0x00002b3a                timer0Init
+                0x00002e1c                timer1PWMAOff
+                0x00002e6e                timer1PWMBSet
+                0x00002e48                timer2PWMOn
+                0x00002e74                __vector_11
+                0x00002db4                timer1PWMInitICR
+                0x00002ba6                timer0GetPrescaler
+                0x0000304e                __vector_7
+                0x00002e56                timer2PWMOff
+                0x00002d46                timer0GetOverflowCount
+                0x00002f74                __vector_5
+                0x00002adc                timerInit
+                0x00002b9c                timer2SetPrescaler
+                0x00002e00                timer1PWMAOn
+                0x00002b88                timer0SetPrescaler
+                0x00002ada                delay_us
+                0x0000315c                __vector_4
+                0x00002d34                timer0ClearOverflowCount
+                0x00002f1a                __vector_9
+                0x00002b56                timer1Init
+                0x00002d84                timer1PWMInit
+                0x00002e0e                timer1PWMBOn
+                0x00002b64                timer2Init
+                0x000030a8                __vector_8
+                0x00002e68                timer1PWMASet
+                0x00002bf4                timerAttach
+                0x00002dda                timer1PWMOff
+                0x00002ff4                __vector_10
+                0x00002bc0                timer1GetPrescaler
+                0x00002d5c                timer2ClearOverflowCount
+                0x00002c20                timerPause
+ .text          0x000031b6      0x5ca led/ledM3.o
+                0x000035d0                led_fader
+                0x000031ee                led_PRTIndicater
+                0x0000342c                led_blink
+                0x00003300                led_3lockupdate
+                0x000031ec                led_ESCIndicater
+                0x000031f0                led_pushed_level_cal
+                0x00003234                led_wave_set
+                0x000034f2                led_mode_change
+                0x000034b4                led_wave_on
+                0x000032c0                led_on
+                0x00003226                led_mode_save
+                0x000033a2                led_check
+                0x000031b6                led_off
+                0x00003282                led_wave_off
+                0x0000355e                led_mode_init
+ .text          0x00003780        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
+ .text          0x00003780        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+ .text          0x00003780        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
+ .text          0x00003780        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
+ .text          0x00003780        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+ .text          0x00003780        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
+ .text          0x00003780        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text          0x00003780        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text          0x00003780        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .text          0x00003780        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(memset.o)
+ .text          0x00003780        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_byte_atmega32.o)
+ .text          0x00003780        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_byte_atmega32.o)
+                0x00003780                . = ALIGN (0x2)
  *(.text.*)
- .text.libgcc   0x000037aa       0x3e c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
-                0x000037aa                __mulsi3
- .text.libgcc   0x000037e8       0x18 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
-                0x000037e8                __udivmodqi4
- .text.libgcc   0x00003800       0x28 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
-                0x00003800                __udivmodhi4
- .text.libgcc   0x00003828       0x26 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
-                0x00003828                __divmodhi4
-                0x00003828                _div
- .text.libgcc   0x0000384e       0x44 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
-                0x0000384e                __udivmodsi4
- .text.libgcc   0x00003892       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
-                0x00003892                __divmodsi4
- .text.libgcc   0x000038c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
- .text.libgcc   0x000038c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
- .text.libgcc   0x000038c8        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .text.libgcc   0x00003780       0x3e c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
+                0x00003780                __mulsi3
+ .text.libgcc   0x000037be       0x18 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+                0x000037be                __udivmodqi4
+ .text.libgcc   0x000037d6       0x28 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodhi4.o)
+                0x000037d6                __udivmodhi4
+ .text.libgcc   0x000037fe       0x26 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodhi4.o)
+                0x000037fe                __divmodhi4
+                0x000037fe                _div
+ .text.libgcc   0x00003824       0x44 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+                0x00003824                __udivmodsi4
+ .text.libgcc   0x00003868       0x36 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_divmodsi4.o)
+                0x00003868                __divmodsi4
+ .text.libgcc   0x0000389e        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x0000389e        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text.libgcc   0x0000389e        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
  .text.avr-libc
-                0x000038c8        0xe c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(memset.o)
-                0x000038c8                memset
+                0x0000389e        0xe c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(memset.o)
+                0x0000389e                memset
  .text.avr-libc
-                0x000038d6       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_byte_atmega32.o)
-                0x000038d6                __eerd_byte_m32
+                0x000038ac       0x10 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_byte_atmega32.o)
+                0x000038ac                __eerd_byte_m32
  .text.avr-libc
-                0x000038e6       0x1a c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_byte_atmega32.o)
-                0x000038e8                __eewr_r18_m32
-                0x000038e6                __eewr_byte_m32
-                0x00003900                . = ALIGN (0x2)
+                0x000038bc       0x1a c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_byte_atmega32.o)
+                0x000038be                __eewr_r18_m32
+                0x000038bc                __eewr_byte_m32
+                0x000038d6                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00003900        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
-                0x00003900                exit
-                0x00003900                _exit
+ .fini9         0x000038d6        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x000038d6                exit
+                0x000038d6                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -478,11 +478,11 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00003900        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .fini0         0x000038d6        0x4 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x00003904                _etext = .
+                0x000038da                _etext = .
 
-.data           0x00800060      0x104 load address 0x00003904
+.data           0x00800060      0x104 load address 0x000038da
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800060        0x0 c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm32.o
@@ -627,8 +627,8 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                 0x008006fe                ledESCIndicatorIndex
                 0x008006ff                ledPRTIndicatorTimer
                 0x00800700                PROVIDE (__bss_end, .)
-                0x00003904                __data_load_start = LOADADDR (.data)
-                0x00003a08                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000038da                __data_load_start = LOADADDR (.data)
+                0x000039de                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800700        0x0
                 0x00800700                PROVIDE (__noinit_start, .)
@@ -760,19 +760,19 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  .debug_abbrev  0x00001014      0x277 ./avrlib/timer.o
  .debug_abbrev  0x0000128b      0x1f7 led/ledM3.o
 
-.debug_line     0x00000000     0x33bf
+.debug_line     0x00000000     0x33b7
  *(.debug_line)
  .debug_line    0x00000000      0x418 usbdrv/usbdrv.o
  .debug_line    0x00000418       0x3e usbdrv/oddebug.o
- .debug_line    0x00000456      0x81d matrix/matrix.o
- .debug_line    0x00000c73       0x8a matrix/keymap.o
- .debug_line    0x00000cfd      0x942 macro/macro.o
- .debug_line    0x0000163f      0x501 usbmain.o
- .debug_line    0x00001b40      0x5d1 ps2main.o
- .debug_line    0x00002111      0x3d6 keysta.o
- .debug_line    0x000024e7      0x294 main.o
- .debug_line    0x0000277b      0x692 ./avrlib/timer.o
- .debug_line    0x00002e0d      0x5b2 led/ledM3.o
+ .debug_line    0x00000456      0x815 matrix/matrix.o
+ .debug_line    0x00000c6b       0x8a matrix/keymap.o
+ .debug_line    0x00000cf5      0x942 macro/macro.o
+ .debug_line    0x00001637      0x501 usbmain.o
+ .debug_line    0x00001b38      0x5d1 ps2main.o
+ .debug_line    0x00002109      0x3d6 keysta.o
+ .debug_line    0x000024df      0x294 main.o
+ .debug_line    0x00002773      0x692 ./avrlib/timer.o
+ .debug_line    0x00002e05      0x5b2 led/ledM3.o
 
 .debug_frame    0x00000000      0x7a0
  *(.debug_frame)
@@ -786,30 +786,30 @@ LOAD c:/winavr-20100110/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  .debug_frame   0x00000410      0x290 ./avrlib/timer.o
  .debug_frame   0x000006a0      0x100 led/ledM3.o
 
-.debug_str      0x00000000     0x1ae3
+.debug_str      0x00000000     0x1ac1
  *(.debug_str)
- .debug_str     0x00000000      0x3d0 usbdrv/usbdrv.o
-                                0x41f (size before relaxing)
- .debug_str     0x000003d0       0x11 usbdrv/oddebug.o
-                                 0xa6 (size before relaxing)
- .debug_str     0x000003e1      0xa23 matrix/matrix.o
+ .debug_str     0x00000000      0x3dc usbdrv/usbdrv.o
+                                0x42b (size before relaxing)
+ .debug_str     0x000003dc       0x11 usbdrv/oddebug.o
+                                 0xb2 (size before relaxing)
+ .debug_str     0x000003ed      0xa23 matrix/matrix.o
+                                0xb35 (size before relaxing)
+ .debug_str     0x00000e10       0x1d matrix/keymap.o
+                                0x141 (size before relaxing)
+ .debug_str     0x00000e2d      0x22b macro/macro.o
+                                0xb80 (size before relaxing)
+ .debug_str     0x00001058      0x1d5 usbmain.o
                                 0xb29 (size before relaxing)
- .debug_str     0x00000e04       0x1d matrix/keymap.o
-                                0x135 (size before relaxing)
- .debug_str     0x00000e21      0x22b macro/macro.o
-                                0xb74 (size before relaxing)
- .debug_str     0x0000104c      0x1d5 usbmain.o
-                                0xb1d (size before relaxing)
- .debug_str     0x00001221      0x10d ps2main.o
-                                0x8c4 (size before relaxing)
- .debug_str     0x0000132e      0x1e6 keysta.o
+ .debug_str     0x0000122d      0x10d ps2main.o
+                                0x8d0 (size before relaxing)
+ .debug_str     0x0000133a      0x1b8 keysta.o
                                 0x285 (size before relaxing)
- .debug_str     0x00001514       0x42 main.o
+ .debug_str     0x000014f2       0x42 main.o
                                 0x22e (size before relaxing)
- .debug_str     0x00001556      0x329 ./avrlib/timer.o
-                                0x404 (size before relaxing)
- .debug_str     0x0000187f      0x264 led/ledM3.o
-                                0x483 (size before relaxing)
+ .debug_str     0x00001534      0x329 ./avrlib/timer.o
+                                0x410 (size before relaxing)
+ .debug_str     0x0000185d      0x264 led/ledM3.o
+                                0x48f (size before relaxing)
 
 .debug_loc      0x00000000     0x1b6f
  *(.debug_loc)

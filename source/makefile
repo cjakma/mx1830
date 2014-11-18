@@ -122,7 +122,7 @@ usbdrv/usbdrvasm.o : usbdrv/usbdrvasm.asm usbdrv/usbdrvasm.S usbdrv/usbportabili
 all:
 	rm -rf $(TRG)
 	mkdir $(TRG)
-	mv *.lst $(TRG)
+#	mv *.lst $(TRG)
 	mv *.bin $(TRG)
 	mv *.cof $(TRG)
 	mv *.eep $(TRG)
