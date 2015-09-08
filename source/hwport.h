@@ -25,8 +25,6 @@
 #define LED_SCR_PORT        (uint8_t *const)&PORTD
 #define LED_SCR_PIN         5
 
-
-
 #define LED_WASD_PORT       (uint8_t *const)&PORTC
 #define LED_WASD_PIN        0
 

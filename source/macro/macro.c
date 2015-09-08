@@ -16,7 +16,6 @@
 #include "usbdrv.h"
 #include "usbmain.h"
 #include "ps2main.h"
-#include "keymap.h"
 #include "matrix.h"
 #include "macro.h"
 #include "led.h"
@@ -26,15 +25,12 @@
 
 
 uint8_t macrobuffer[256] = {};
-long MacroAddr[MAX_MACRO_INDEX] = {};
 
-const char PROGMEM macrostart[20] = "MACRO record mode@";
-const char PROGMEM macroend[20] = "@record done@";
-const char PROGMEM mresetstart[20] = "MACRO erase";
-const char PROGMEM macroresetdone[20]  = "done@";
-
-
-extern int8_t usbmode;
+const char PROGMEM macrostart[] = "MACRO REC@";
+const char PROGMEM macroend[] = "@DONE@";
+const char PROGMEM mresetstart[] = "RESET";
+const char PROGMEM macroresetdone[]  = "done@";
+extern MODIFIERS modifierBitmap[];
 
 
 /**
@@ -51,15 +47,6 @@ void usbSendReport(uint8_t mode, uint8_t key) {
     while (!usbInterruptIsReady()); // wait
     usbSetInterrupt(repBuffer, sizeof(repBuffer)); // send
 }
-
-/**
- * This structure can be used as a container for a single 'key'. It consists of
- * the key-code and the modifier-code.
- */
-typedef struct {
-    uint8_t mode;
-    uint8_t key;
-} Key;
 
 
 /**
@@ -193,6 +180,14 @@ Key charToKey(char character) {
     return key;
 } 
 
+void clearKey(void)
+{
+    if(kbdConf.ps2usb_mode)
+    {
+        usbSendReport(0, 0);
+    }
+}
+
 
 /**
  * Send a key to the computer, followed by the release of all keys. This can be
@@ -202,7 +197,7 @@ Key charToKey(char character) {
 void sendKey(Key keytosend) 
 {
     uint8_t keyval = 0;
-    if(usbmode)
+    if(kbdConf.ps2usb_mode)
     {
         usbSendReport(keytosend.mode, keytosend.key);
     }else
@@ -227,7 +222,6 @@ void sendKey(Key keytosend)
 
 void printModifier(uint8_t keytosend, uint8_t open)
 {
-   uint8_t keyval = 0;
    Key prtKey;
    
    prtKey.mode = 0;
@@ -293,23 +287,17 @@ void printModifier(uint8_t keytosend, uint8_t open)
 
 }
 
-void clearKey(void)
-{
-    if(usbmode)
-    {
-        usbSendReport(0, 0);
-    }
-}
+
 /**
  * Send a string to the computer. This function converts each character of an
  * ASCII-string to a key-structure and uses sendKey() to send it.
  * \param string string to send
  */
-void sendString(char* string) {
+void sendString(uint16_t pString) {
     uint8_t i = 0;
-    uint8_t keychar, oldkeychar;
+    uint8_t keychar, oldkeychar = 0;
     Key key;
-    while((keychar = pgm_read_byte(string))!= (uint8_t)NULL && i < 32) // limit to 64 charater to send at once.
+    while((keychar = pgm_read_byte(pString))!= 0 && i < 32) // limit to 64 charater to send at once.
     {
         key = charToKey(keychar);
 
@@ -319,32 +307,39 @@ void sendString(char* string) {
         }
         oldkeychar = keychar;
         sendKey(key);
-        string++;
+        pString++;
         i++;
     }
     
     clearKey();
 }
 
-
-uint8_t initMacroAddr(void)
+void sendMatrix(char row, char col)
 {
-    uint8_t i;
-    long address;
-    address = MACRO_ADDR_START;
+    Key a;
+
+	a.mode = 0;
+    a.key = K_LBR;
+    sendKey(a);
+	
+    a.mode = 0;
+    a.key = K_A + row;
+    sendKey(a);
+
+    a.key = K_MINUS;
+    sendKey(a);
+
+    a.key = K_A + col;
+    sendKey(a);
+
+	a.mode = 0;
+    a.key = K_RBR;
+    sendKey(a);
     
-    for (i = 0; i < MAX_MACRO_INDEX; i++)
-    {
-        MacroAddr[i] = address;
-        address += 0x100;           // 1024
-    }
-    return 0;
+    clearKey();
 }
 
-uint8_t getkey(uint8_t key, uint16_t index)
-{
 
-}
 void playMacroUSB(uint8_t macrokey)
 {
     uint8_t i;
@@ -362,30 +357,20 @@ void playMacroUSB(uint8_t macrokey)
     key.key = 0;
 
     mIndex = macrokey - K_M01;
-    if (mIndex >= MAX_MACRO_INDEX)
-      return;
-    address = MacroAddr[mIndex];
+    address = MACRO_ADDR_START + (0x100 * mIndex);
 
     macroSET = eeprom_read_byte(EEPADDR_MACRO_SET+mIndex);
-    if (macroSET != 1)      // MACRO not recorded
+    if (macroSET != EEPVAL_MACRO_BIT)      // MACRO not recorded
     {
         return;
     }
-#ifdef KBDMOD_M3
     keyidx = pgm_read_byte(address++);
-#else
-    keyidx = pgm_read_byte_far(address++);
-#endif
     for (i = 0; i < MAX_MACRO_LEN; i++)
     {
         if((K_Modifiers < keyidx) && (keyidx < K_Modifiers_end))
         {
-            key.mode ^= (0x01 << (keyidx-K_LCTRL));
-#ifdef KBDMOD_M3
+            key.mode ^= modifierBitmap[keyidx -K_Modifiers];
             keyidx = pgm_read_byte(address++);
-#else            
-            keyidx = pgm_read_byte_far(address++);
-#endif
         }
         while(((keyidx < K_Modifiers) || (K_Modifiers_end < keyidx)) && keyidx != K_NONE && keyidx < K_M01)
         {
@@ -409,11 +394,7 @@ void playMacroUSB(uint8_t macrokey)
             sendKey(key);
             
             wdt_reset();
-#ifdef KBDMOD_M3
             keyidx = pgm_read_byte(address++);
-#else            
-            keyidx = pgm_read_byte_far(address++);
-#endif
         }
         if(keyidx == K_NONE)
             break;
@@ -445,13 +426,11 @@ void playMacroPS2(uint8_t macrokey)
     uint8_t esctoggle =0;
 
     mIndex = macrokey - K_M01;
-   if (mIndex >= MAX_MACRO_INDEX)
-      return;
-    address = MacroAddr[mIndex];
+    address = MACRO_ADDR_START + (0x100 * mIndex);
     
 
     macroSET = eeprom_read_byte(EEPADDR_MACRO_SET+mIndex);
-     if (macroSET != 1)      // MACRO not recorded
+     if (macroSET != EEPVAL_MACRO_BIT)      // MACRO not recorded
      {
          return;
      }
@@ -467,18 +446,14 @@ void playMacroPS2(uint8_t macrokey)
             led_off(LED_PIN_ESC);
         }
         
-#ifdef KBDMOD_M3
         keyidx = pgm_read_byte(address++);
-#else            
-        keyidx = pgm_read_byte_far(address++);
-#endif
 
         if(keyidx == K_NONE)
             return;
         if((K_Modifiers < keyidx) && (keyidx < K_Modifiers_end))
         {
-            key.mode ^= (0x01 << (keyidx-K_LCTRL));
-            if(key.mode & (0x01 << (keyidx-K_LCTRL)))
+            key.mode ^= modifierBitmap[keyidx -K_Modifiers];
+            if(key.mode & modifierBitmap[keyidx -K_Modifiers])
             {
                 putKey(keyidx,1);
             }else
@@ -515,39 +490,26 @@ void playMacroPS2(uint8_t macrokey)
 
 #if 1
 
+#if (FLASHEND) > 0xffff /* we need long addressing */
+#   define addr_t           unsigned long
+#else
+#   define addr_t           unsigned int
+#endif
+
+
 typedef union ADDRESS_U{
-    long  l;
+    addr_t  l;
     unsigned int    s[sizeof(long)/2];
     uchar   c[sizeof(long)];
 }ADDRESS;
 
-int8_t flash_writeinpage (uint8_t *data, unsigned long addr)
-{
-   if (addr < 0x4400)      // FW code area
-   {
-      
-      wdt_disable();
-      while(1)
-      {
-         led_ESCIndicater(5);
-         _delay_ms(1);
-      }
-      return -1;
-   }else{
 
-      writepage(data, addr);
-   }
-
-}
-
-
-void writepage(uint8_t *data, unsigned long addr) 
+void writepage(uint8_t *data, addr_t addr) 
     __attribute__ ((section (".appinboot")));
 
-void writepage(uint8_t *data, unsigned long addr)
+void writepage(uint8_t *data, addr_t addr)
 {
-    uchar   isLast;
-    uchar len;
+    uchar len= SPM_PAGESIZE;
 #if 1
     ADDRESS address;
 
@@ -585,23 +547,40 @@ void writepage(uint8_t *data, unsigned long addr)
     return;
 }
 
+
+uint8_t flash_writeinpage (uint8_t *data, uint16_t addr)
+{
+   if (addr < 0x4400)      // FW code area
+   {
+      
+      wdt_disable();
+      while(1)
+      {
+         _delay_ms(1);
+      }
+      return -1;
+   }else{
+
+      writepage(data, addr);
+   }
+   return 0;
+}
+#endif
+
+
+
 void resetMacro(void)
 {
     uint8_t mIndex;
-    long address;
     
-    sendString(mresetstart);
+    sendString((uint16_t) &mresetstart);
     for (mIndex = 0; mIndex < MAX_MACRO_INDEX; mIndex++)
     {
       wdt_reset();
-      eeprom_write_byte(EEPADDR_MACRO_SET+mIndex, 0);
-      sendString("-");
+      eeprom_write_byte(EEPADDR_MACRO_SET+mIndex, (uint8_t)~(EEPVAL_MACRO_BIT));
+      sendString((uint16_t) "-");
     }
-    
-    eeprom_write_byte(EEPADDR_SWAPCTRLCAPS, 0x80);
-    eeprom_write_byte(EEPADDR_SWAPALTGUI, 0x80);
-
-    sendString(macroresetdone);
+    sendString((uint16_t) macroend);
 }
 
 
@@ -612,20 +591,14 @@ void recordMacro(uint8_t macrokey)
    uint8_t prevBit, curBit;
    uint8_t keyidx;
    uint8_t matrixState = 0;
-   uint8_t retVal = 0;
-   int16_t i;
    int16_t index;
    uint8_t mIndex;
    long page;
-   uint8_t t_layer;
    Key key;
    uint16_t address;
    mIndex = macrokey - K_M01;
+   address = MACRO_ADDR_START + (0x100 * mIndex);
 
-   if (mIndex >= MAX_MACRO_INDEX)
-      return;
-   
-   address = MacroAddr[mIndex];
    index = 0;
    page = 0;
 
@@ -636,19 +609,15 @@ void recordMacro(uint8_t macrokey)
    
    cntKey(K_FN, 0x0000);
 
-//   for (i = 0; i <= 255; i++)
-//      macrobuffer[i] = 0x00;
-   for(col = 0; col < MAX_COL; col++)
+
+   for(row = 0; row < MATRIX_MAX_ROW; row++)
    {
-      for(row = 0; row < MAX_ROW; row++)
+      for(col = 0; col < MATRIX_MAX_COL; col++)
       {
-         debounceMATRIX[col][row] = -1;
+         debounceMATRIX[row][col] = -1;
       }
    }
-
-   sendString(macrostart);
-
-
+   sendString((uint16_t)macrostart);
 
    while(1)
    {
@@ -656,40 +625,36 @@ void recordMacro(uint8_t macrokey)
       wdt_reset();
       matrixState = scanmatrix();
       
-      t_layer = layer;
-
       // debounce cleared => compare last matrix and current matrix
-      for(col = 0; col < MAX_COL; col++)
+      for(row = 0; row < MATRIX_MAX_ROW; row++)
       {
-         prev = MATRIX[col];
-         cur  = curMATRIX[col];
-         MATRIX[col] = curMATRIX[col];
-         for(i = 0; i < MAX_ROW; i++)
+         prev = MATRIX[row];
+         cur  = curMATRIX[row];
+         MATRIX[row] = curMATRIX[row];
+         for(col = 0; col < MATRIX_MAX_COL; col++)
          {
             prevBit = (uint8_t)prev & 0x01;
             curBit = (uint8_t)cur & 0x01;
             prev >>= 1;
             cur >>= 1;
 
-            row = i;
-
-            keyidx = pgm_read_byte(keymap[t_layer]+(col*MAX_ROW)+row);
+              keyidx = currentLayer[row][col];
 
          if ((keyidx <= ErrorUndefined) || (K_Modifiers_end <= keyidx))
             continue;
 
          if (!prevBit && curBit)   //pushed
          {
-            debounceMATRIX[col][row] = 0;    //triger
+            debounceMATRIX[row][col] = 0;       //triger
 
          }else if (prevBit && !curBit)  //released
          {
-            debounceMATRIX[col][row] = 0;    //triger
+            debounceMATRIX[row][col] = 0;    //triger
          }
 
-         if(debounceMATRIX[col][row] >= 0)
+         if(debounceMATRIX[row][col] >= 0)
          {                
-            if(debounceMATRIX[col][row]++ >= DEBOUNCE_MAX)
+            if(debounceMATRIX[row][col]++ >= kbdConf.matrix_debounce)
             {
                if(curBit)
                {
@@ -697,13 +662,12 @@ void recordMacro(uint8_t macrokey)
                   {
                      macrobuffer[index] = K_NONE;
 
-                     sendString(macroend);
                      wdt_reset();
                      flash_writeinpage(macrobuffer, address+(page*128));
                      wdt_reset();
-                     eeprom_write_byte(EEPADDR_MACRO_SET+mIndex, 1);
+                     eeprom_write_byte(EEPADDR_MACRO_SET+mIndex, EEPVAL_MACRO_BIT);
                      wdt_reset();
-
+                     sendString((uint16_t) macroend);
                      return;
                   }
                   else
@@ -718,7 +682,6 @@ void recordMacro(uint8_t macrokey)
                         sendKey(key);
                         clearKey();
                      }
-
 
                      if(index == 0x7F)
                      {
@@ -740,11 +703,10 @@ void recordMacro(uint8_t macrokey)
                   }
                }
 
-               debounceMATRIX[col][row] = -1;
+               debounceMATRIX[row][col] = -1;
             }
          }
       }
       }
    }
 }
-#endif

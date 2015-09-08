@@ -16,36 +16,54 @@
 #include "matrix.h"
 #include "usbmain.h"
 #include "hwport.h"
+#include "hwaddress.h"
+#ifdef SUPPORT_TINY_CMD
+#include "tinycmdapi.h"
+#endif
 
-uint8_t interfaceReady = 0;
+#define HID_DEBUG_CMD
+
 
 
 /* ------------------------------------------------------------------------- */
 /* ----------------------------- USB interface ----------------------------- */
 /* ------------------------------------------------------------------------- */
+uint8_t interfaceReady = 0;
 
 static uint8_t keyboardReport[8]; ///< buffer for HID reports
 static uint8_t oldReportBuffer[8]; ///< buufer for HID reports save on Overflower
-
 uint8_t reportIndex; // keyboardReport[0] contains modifiers
-
-
-
+uint8_t reportMatrix = 0 ;
 report_extra_t extraReport;
 report_extra_t oldextraReport;
-
-
-
 static uint8_t idleRate = 0;        ///< in 4ms units
 static uint8_t protocolVer = 1; ///< 0 = boot protocol, 1 = report protocol
 uint8_t expectReport = 0;       ///< flag to indicate if we expect an USB-report
-
 AppPtr_t Bootloader = (void *)BOOTLOADER_ADDRESS; 
+uint8_t bootRxRemains;
+HIDcommand_t hidCmd;
+HIDData_t hidData;
+uint8_t gbootCmdoffset;
+uint8_t version[] = "L150205";          // must be length of 7 bytes    HID report size
+uint8_t configUpdated = 0;
+
+uint16_t sleepTimeOut;
+extern uint8_t kbdsleepmode;
 
 
-extern uint8_t swapAltGui;
+MODIFIERS modifierBitmap[] = {
+    MOD_NONE ,
+    MOD_CONTROL_LEFT ,
+    MOD_SHIFT_LEFT ,
+    MOD_ALT_LEFT ,
+    MOD_GUI_LEFT ,
+    MOD_CONTROL_RIGHT ,
+    MOD_SHIFT_RIGHT ,
+    MOD_ALT_RIGHT ,
+    MOD_GUI_RIGHT
+};
 
-#define MOUSE_ENABLE 1
+
 
 /*------------------------------------------------------------------*
  * Descriptors                                                      *
@@ -60,6 +78,7 @@ PROGMEM uchar keyboard_hid_report[] = {
     0x05, 0x01,          // Usage Page (Generic Desktop),
     0x09, 0x06,          // Usage (Keyboard),
     0xA1, 0x01,          // Collection (Application),
+
     0x75, 0x01,          //   Report Size (1),
     0x95, 0x08,          //   Report Count (8),
     0x05, 0x07,          //   Usage Page (Key Codes),
@@ -88,6 +107,7 @@ PROGMEM uchar keyboard_hid_report[] = {
     0x19, 0x00,          //   Usage Minimum (0),
     0x29, 0xFF,          //   Usage Maximum (255),
     0x81, 0x00,          //   Input (Data, Array),
+ 
     0xc0                 // End Collection
 };
 
@@ -103,55 +123,26 @@ PROGMEM uchar keyboard_hid_report[] = {
  * http://www.microsoft.com/whdc/device/input/wheel.mspx
  */
 PROGMEM uchar mouse_hid_report[] = {
-#if MOUSE_ENABLE
-    /* mouse */
-    0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
-    0x09, 0x02,                    // USAGE (Mouse)
+    /* Boot HID */
+    0x06, 0x00, 0xff,              // USAGE_PAGE (Generic Desktop)
+    0x09, 0x01,                    // USAGE (Vendor Usage 1)
     0xa1, 0x01,                    // COLLECTION (Application)
-    0x85, REPORT_ID_MOUSE,         //   REPORT_ID (1)
-    0x09, 0x01,                    //   USAGE (Pointer)
-    0xa1, 0x00,                    //   COLLECTION (Physical)
-                                   // ----------------------------  Buttons
-    0x05, 0x09,                    //     USAGE_PAGE (Button)
-    0x19, 0x01,                    //     USAGE_MINIMUM (Button 1)
-    0x29, 0x05,                    //     USAGE_MAXIMUM (Button 5)
     0x15, 0x00,                    //     LOGICAL_MINIMUM (0)
-    0x25, 0x01,                    //     LOGICAL_MAXIMUM (1)
-    0x75, 0x01,                    //     REPORT_SIZE (1)
-    0x95, 0x05,                    //     REPORT_COUNT (5)
-    0x81, 0x02,                    //     INPUT (Data,Var,Abs)
-    0x75, 0x03,                    //     REPORT_SIZE (3)
-    0x95, 0x01,                    //     REPORT_COUNT (1)
-    0x81, 0x03,                    //     INPUT (Cnst,Var,Abs)
-                                   // ----------------------------  X,Y position
-    0x05, 0x01,                    //     USAGE_PAGE (Generic Desktop)
-    0x09, 0x30,                    //     USAGE (X)
-    0x09, 0x31,                    //     USAGE (Y)
-    0x15, 0x81,                    //     LOGICAL_MINIMUM (-127)
-    0x25, 0x7f,                    //     LOGICAL_MAXIMUM (127)
+    0x26, 0xff, 0x00,              //   LOGICAL_MAXIMUM (255)
     0x75, 0x08,                    //     REPORT_SIZE (8)
-    0x95, 0x02,                    //     REPORT_COUNT (2)
-    0x81, 0x06,                    //     INPUT (Data,Var,Rel)
-                                   // ----------------------------  Vertical wheel
-    0x09, 0x38,                    //     USAGE (Wheel)
-    0x15, 0x81,                    //     LOGICAL_MINIMUM (-127)
-    0x25, 0x7f,                    //     LOGICAL_MAXIMUM (127)
-    0x35, 0x00,                    //     PHYSICAL_MINIMUM (0)        - reset physical
-    0x45, 0x00,                    //     PHYSICAL_MAXIMUM (0)
-    0x75, 0x08,                    //     REPORT_SIZE (8)
-    0x95, 0x01,                    //     REPORT_COUNT (1)
-    0x81, 0x06,                    //     INPUT (Data,Var,Rel)
-                                   // ----------------------------  Horizontal wheel
-    0x05, 0x0c,                    //     USAGE_PAGE (Consumer Devices)
-    0x0a, 0x38, 0x02,              //     USAGE (AC Pan)
-    0x15, 0x81,                    //     LOGICAL_MINIMUM (-127)
-    0x25, 0x7f,                    //     LOGICAL_MAXIMUM (127)
-    0x75, 0x08,                    //     REPORT_SIZE (8)
-    0x95, 0x01,                    //     REPORT_COUNT (1)
-    0x81, 0x06,                    //     INPUT (Data,Var,Rel)
+
+    0x85, REPORT_ID_CMD,          //   REPORT_ID (1)
+    0x95, 0x07,                    //   REPORT_COUNT (7)
+    0x09, 0x00,                    //   USAGE (Undefined)
+    0xb2, 0x02, 0x01,              //   FEATURE (Data,Var,Abs,Buf)
+
+    0x85, REPORT_ID_DATA,          //   REPORT_ID (2)
+    0x95, 0x83,              		//   REPORT_COUNT (131)
+    0x09, 0x00,                    //   USAGE (Undefined)
+    0xb2, 0x02, 0x01,              //   FEATURE (Data,Var,Abs,Buf)
+
     0xc0,                          //   END_COLLECTION
-    0xc0,                          // END_COLLECTION
-#endif    
+
     /* system control */
     0x05, 0x01,                    // USAGE_PAGE (Generic Desktop)
     0x09, 0x80,                    // USAGE (System Control)
@@ -276,14 +267,6 @@ USB_PUBLIC usbMsgLen_t usbFunctionDescriptor(struct usbRequest *rq)
 {
     usbMsgLen_t len = 0;
 
-/*
-    debug("usbFunctionDescriptor: ");
-    debug_hex(rq->bmRequestType); debug(" ");
-    debug_hex(rq->bRequest); debug(" ");
-    debug_hex16(rq->wValue.word); debug(" ");
-    debug_hex16(rq->wIndex.word); debug(" ");
-    debug_hex16(rq->wLength.word); debug("\n");
-*/
     switch (rq->wValue.bytes[1]) {
 #if USB_CFG_DESCR_PROPS_CONFIGURATION
         case USBDESCR_CONFIG:
@@ -317,10 +300,80 @@ USB_PUBLIC usbMsgLen_t usbFunctionDescriptor(struct usbRequest *rq)
             }
             break;
     }
-    //debug("desc len: "); debug_hex(len); debug("\n");
     return len;
 }
 
+
+uint8_t txHIDCmd(void)
+{
+    switch(hidCmd.config.cmd)
+    {
+#ifdef HID_DEBUG_CMD
+        case CMD_DEBUG:
+        {
+            // TODO : upload to HOST(PC) by hidData.data
+            break;
+        }
+#endif
+        case CMD_CONFIG:
+        {
+            hidData.reportID = 2;
+            hidData.cmd = hidCmd.keymap.cmd;
+            hidData.parm1 = sizeof(kbdConf);
+            memcpy(hidData.data, &kbdConf, sizeof(kbdConf));
+            break;
+        }
+        case CMD_KEYMAP :
+        {
+            hidData.reportID = 2;
+            hidData.cmd = hidCmd.keymap.cmd;
+            hidData.parm0 = hidCmd.keymap.index;
+            hidData.parm1 = sizeof(currentLayer);
+
+            eeprom_read_block(hidData.data, (void *)(EEPADDR_KEYMAP_LAYER0 + (0x80 * hidCmd.keymap.index)), sizeof(currentLayer));
+            break;
+        }
+        case CMD_MACRO :
+        {
+
+        }
+        break;
+    }
+    return 0;
+}
+
+void rxHIDCmd(void)
+{
+    switch(hidCmd.config.cmd)
+    {
+#ifdef HID_DEBUG_CMD
+         case CMD_DEBUG:
+            {
+                // TODO : debugging action by hidData.data downloaded from HOST(PC)
+            }
+            break;
+#endif            
+        case CMD_CONFIG:
+            {
+                memcpy(&kbdConf, hidData.data, sizeof(kbdConf));
+                configUpdated = 15;
+            }
+            break;
+        case CMD_KEYMAP :
+            {
+               eeprom_update_block(hidData.data, EEPADDR_KEYMAP_LAYER0 + (0x80 * hidCmd.keymap.index), sizeof(currentLayer));
+               keymap_init();
+            }
+            break;
+
+        case CMD_MACRO :
+            {
+
+
+            }
+            break;
+    }
+}
 
 
 /**
@@ -329,44 +382,77 @@ USB_PUBLIC usbMsgLen_t usbFunctionDescriptor(struct usbRequest *rq)
  * \return number of bytes to use, or 0xff if usbFunctionWrite() should be
  * called
  */
+
 uint8_t usbFunctionSetup(uint8_t data[8]) {
     usbRequest_t *rq = (void *)data;
 
-    
 	interfaceReady = 1;
 
     usbMsgPtr = (usbMsgPtr_t)keyboardReport;
     if ((rq->bmRequestType & USBRQ_TYPE_MASK) == USBRQ_TYPE_CLASS) {
         // class request type
         if (rq->bRequest == USBRQ_HID_GET_REPORT) {
+
             // wValue: ReportType (highbyte), ReportID (lowbyte)
             // we only have one report type, so don't look at wValue
+            if (rq->wValue.word == HID_REPORT_KEBOARD)
+            {
             usbMsgPtr = (usbMsgPtr_t)keyboardReport;
             return sizeof(keyboardReport);
-        } else if (rq->bRequest == USBRQ_HID_SET_REPORT) {
-            if (rq->wValue.word == 0x0200 && rq->wIndex.word == 0) {
+            }else if (rq->wValue.word == HID_REPORT_CMD)
+            {
+                usbMsgPtr = (usbMsgPtr_t)version;
+                return sizeof(version);                
+            }else if (rq->wValue.word == HID_REPORT_DATA)
+            {
+                txHIDCmd();
+                usbMsgPtr = (usbMsgPtr_t)&hidData;
+                return sizeof(hidData);
+            }
+        }
+
+        else if (rq->bRequest == USBRQ_HID_SET_REPORT) {
+            if (rq->wValue.word == HID_REPORT_KEBOARD && rq->wIndex.word == 0) {
                 // We expect one byte reports
                 expectReport = 1;
+            }else if (rq->wValue.word == HID_REPORT_CMD)
+            {
+                expectReport = 2;
+                bootRxRemains = HID_BOOT_CMD_LEN;
+            }else if (rq->wValue.word == HID_REPORT_DATA)
+            {
+                expectReport = 3;
+                bootRxRemains = HID_BOOT_DATA_LEN;
             }
-            return 0xff; // Call usbFunctionWrite with data
-        } else if (rq->bRequest == USBRQ_HID_GET_IDLE) {
+                return USB_NO_MSG; // Call usbFunctionWrite with data
+            }
+
+
+        else if (rq->bRequest == USBRQ_HID_GET_IDLE) {
             usbMsgPtr = (usbMsgPtr_t)&idleRate;
             return 1;
-        } else if (rq->bRequest == USBRQ_HID_SET_IDLE) {
+            }
+
+
+        else if (rq->bRequest == USBRQ_HID_SET_IDLE) {
             idleRate = rq->wValue.bytes[1];
             if(idleRate > 0)    // not windows
             {
-               swapAltGui = 1;
+               kbdConf.swapAltGui = 1;
             }else
             {
-               swapAltGui = 0;
+               kbdConf.swapAltGui = 0;
             }
             DEBUG_PRINT(("idleRate = %2x\n", idleRate));
-        } else if (rq->bRequest == USBRQ_HID_GET_PROTOCOL) {
+        } 
+
+        else if (rq->bRequest == USBRQ_HID_GET_PROTOCOL) {
             if (rq->wValue.bytes[1] < 1) {
                 protocolVer = rq->wValue.bytes[1];
             }
-        } else if(rq->bRequest == USBRQ_HID_SET_PROTOCOL) {
+        } 
+
+        else if(rq->bRequest == USBRQ_HID_SET_PROTOCOL) {
             usbMsgPtr = (usbMsgPtr_t)&protocolVer;
             return 1;
         }
@@ -376,6 +462,39 @@ uint8_t usbFunctionSetup(uint8_t data[8]) {
     return 0;
 }
 
+uint8_t usbFuncDebugCmdHandler(void)
+{
+
+    switch (hidCmd.debug.subcmd)
+    {
+        case HID_DEBUG_LED: 
+
+            break;
+        case HID_DEBUG_RGB: 
+            if(hidCmd.debug.arg3 < 20)
+            {
+//                tinycmd_rgb_pos(hidCmd.debug.arg3, hidCmd.debug.arg4, hidCmd.debug.arg5, hidCmd.debug.arg6, TRUE);
+            }else if(hidCmd.debug.arg3 == 21)
+            {
+//                tinycmd_rgb_range(hidCmd.debug.arg4, hidCmd.debug.arg5, hidCmd.debug.arg6, hidCmd.debug.arg7, 0, TRUE);
+            }else
+            {
+//                tinycmd_rgb_all(1, hidCmd.debug.arg3, hidCmd.debug.arg4, hidCmd.debug.arg5, TRUE);
+            }
+            break;
+        case HID_DEBUG_KEYMAPER: 
+            reportMatrix = hidCmd.debug.arg3;
+            break;
+        case HID_DEBUG_JMP_BOOTLOADER:
+            eeprom_write_byte(EEPADDR_BOOTLOADER_ACT, 0xCA);
+            Reset_AVR();
+            break;
+    }
+    return 0;
+}
+
+volatile uint8_t gLEDstate;     ///< current state of the LEDs
+extern uint32_t scankeycntms;
 /**
  * The write function is called when LEDs should be set. Normally, we get only
  * one byte that contains info about the LED states.
@@ -383,13 +502,83 @@ uint8_t usbFunctionSetup(uint8_t data[8]) {
  * \param len number ob bytes received
  * \return 0x01
  */
-uint8_t usbFunctionWrite(uchar *data, uchar len) {
-    if (expectReport && (len == 1)) {
-        LEDstate = data[0]; // Get the state of all 5 LEDs
+uint8_t usbFunctionWrite(uchar *data, uchar len) 
+{
+    uint8_t result = 1;
+    uint8_t LEDstate;
+
+    if ((expectReport) && (len == 1)) {
+        
+        LEDstate = (data[0] & LED_NUM) | (data[0] & LED_CAPS) | (data[0] & LED_SCROLL);
+
+        if(kbdsleepmode == LED_POWERDOWN)
+        {
+           led_restore();
+           kbdsleepmode = LED_ACTIVE;
+           sleepTimeOut = 5000;
+           scankeycntms = SCAN_COUNT_IN_MIN * kbdConf.sleepTimerMin;
+        }
+
+
+        if(gLEDstate != LEDstate)
+        {
+            gLEDstate = LEDstate;            // Get the state of all 5 LEDs
         led_3lockupdate(LEDstate);
+
+           
     }
     expectReport = 0;
-    return 0x01;
+        result = 1;     // last block received
+    }else if (expectReport == 2){
+    
+        memcpy(&hidCmd, &data[0], len);
+#ifdef HID_DEBUG_CMD
+        if(hidCmd.debug.cmd == CMD_DEBUG)
+        {
+            usbFuncDebugCmdHandler();
+
+        }else
+#endif
+            {
+            if(hidCmd.keymap.cmd == CMD_KEYMAP)
+            {
+                reportMatrix = hidCmd.keymap.reportMatrix;
+            }
+            result = 1;     // last block received
+        }
+
+    }else if (expectReport == 3)
+    {
+        
+        if(bootRxRemains == HID_BOOT_DATA_LEN)
+        {
+            hidData.cmd = data[1];
+            hidData.parm0 = data[2];
+            hidData.parm1 = data[3];
+            bootRxRemains -=4;
+            len -=4;
+            data += 4;
+            gbootCmdoffset = 0;
+            
+        }
+        
+        for(;len>0; len--)
+        {
+            hidData.data[gbootCmdoffset++] = *data++;
+            bootRxRemains--;
+        }
+
+        if(bootRxRemains < 8)
+        {
+            expectReport = 0;
+            result = 1;     // last block received
+            rxHIDCmd();
+        }else
+        {
+            result = 0;
+        }
+    }
+    return result;
 }
 
 
@@ -449,16 +638,16 @@ uint8_t cmpReportBuffer(void)
 }
 
 
-uint8_t usbRollOver = 0;
+//extern void testTinyCmd(uint8_t keyidx);
+
 
 uint8_t buildHIDreports(uint8_t keyidx)
 {
     uint8_t retval = 0;
 
-   
     if((keyidx > K_Modifiers) && (keyidx < K_Modifiers_end))
     {
-        keyboardReport[0] |= (0x01 << (keyidx-K_LCTRL));
+        keyboardReport[0] |= modifierBitmap[keyidx-K_Modifiers];
     }else if((keyidx >= K_NEXT_TRK) && (keyidx <= K_MINIMIZE))
     {
         extraReport.report_id = REPORT_ID_CONSUMER;
@@ -484,6 +673,8 @@ uint8_t buildHIDreports(uint8_t keyidx)
         {
             keyboardReport[reportIndex] = keyidx; // set next available entry
             reportIndex++;
+
+//            testTinyCmd(keyidx);
         }
         
     }
@@ -491,56 +682,49 @@ uint8_t buildHIDreports(uint8_t keyidx)
     return retval;
 }
 
-#ifdef DEBUG
-uint8_t toggle1 = 0;
 
-void dumpreportBuffer(void)
+
+uint8_t checkSleep(void)
 {
-    uint8_t i;
-
-    DEBUG_PRINT(("RBuf "));
-    for (i = 0; i < sizeof(keyboardReport); i++)
+// Power down
+    if(usbSofCount == 0)
+{
+        if((--sleepTimeOut == 0))
     {
-        DEBUG_PRINT(("%02x", keyboardReport[i]));
+            kbdsleepmode = LED_POWERDOWN;
+            sleepTimeOut = 1000;
+            led_sleep();
     }
-    DEBUG_PRINT(("\n"));
+    }else 
+    {
+        sleepTimeOut = 1000;
+        usbSofCount = 0;
 }
-#endif
-
-
-uint8_t toggle =0;
-uint8_t toggle2 =0;
-
-void togglescr(void)
+// Timer Sleep   
+    if ((--scankeycntms == 0) && (kbdsleepmode == LED_ACTIVE))   // 5min
 {
-   if(toggle ^= 1)
-   led_on(LED_PIN_SCROLLOCK);
-else
-   led_off(LED_PIN_SCROLLOCK);
+        led_sleep();
+        kbdsleepmode = LED_SLEEP;
 }
 
-void togglecaps(void)
-{
-   if(toggle2 ^= 1)
-   led_on(LED_PIN_CAPSLOCK);
-else
-   led_off(LED_PIN_CAPSLOCK);
 }
-
-
 uint8_t usbmain(void) {
+    uint8_t i;
     uint8_t updateNeeded = 0;
     uint8_t idleCounter = 0;
-    uint32_t interfaceCount = 0;
+    uint16_t interfaceCount = 0;
 	interfaceReady = 0;
-
-    DEBUG_PRINT(("USB\n"));
-    
+    configUpdated = 0;
 
     cli();
     usbInit();
     usbDeviceDisconnect();  /* enforce re-enumeration, do this while interrupts are disabled! */
-    _delay_ms(20);
+    i = 0;
+    while(--i){             /* fake USB disconnect for > 250 ms */
+        wdt_reset();
+        _delay_ms(1);
+    }
+
     usbDeviceConnect();
     sei();
     
@@ -549,14 +733,26 @@ uint8_t usbmain(void) {
     while (1) {
         // main event loop
 
-        if(interfaceReady == 0 && interfaceCount++ > 12000){
-//		   Reset_AVR();
-			//break;
+        checkSleep();
+
+        if(interfaceReady == 0 && interfaceCount++ > 8000 && (kbdsleepmode != LED_POWERDOWN)){
+		   Reset_AVR();
+		   break;
 		}
                 
         wdt_reset();
         usbPoll();
 
+        if (configUpdated)
+        {
+            if(--configUpdated == 0)
+            {
+                eeprom_update_block(&kbdConf, EEPADDR_KBD_CONF, sizeof(kbdConf));
+                keymap_init();
+                led_restore();
+                configUpdated = 0;
+            }
+        }
         updateNeeded = scankey();   // changes?
         if (updateNeeded == 0)      //debounce
         {
@@ -594,8 +790,17 @@ uint8_t usbmain(void) {
       
         if((updateNeeded & 0x01)  && usbInterruptIsReady())
         {
+        
             usbSetInterrupt(keyboardReport, sizeof(keyboardReport));
             saveReportBuffer();
+            if (kbdsleepmode == LED_SLEEP)
+            {
+                led_restore();
+               kbdsleepmode = LED_ACTIVE;
+            }else
+            {
+               scankeycntms = (uint32_t)SCAN_COUNT_IN_MIN * (uint32_t)kbdConf.sleepTimerMin;
+            }
         }
 
         if((updateNeeded & 0x04)  && usbInterruptIsReady3())

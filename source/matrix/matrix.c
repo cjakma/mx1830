@@ -21,140 +21,91 @@
 #include "macro.h"
 
 #include "ps2main.h"
+//#include "tinycmdapi.h"
 
-#define STANDBY_LOOP    130000  // scan matix entry is 2.2msec @ 12Mh x-tal : 5min
-uint32_t scankeycntms = 0;
+uint32_t scankeycntms;
 	
 // 17*8 bit matrix
-uint16_t MATRIX[MAX_COL];
-uint16_t curMATRIX[MAX_COL];
-int8_t debounceMATRIX[MAX_COL][MAX_ROW];
-uint8_t svkeyidx[MAX_COL][MAX_ROW];
-
+uint32_t MATRIX[VIRTUAL_MAX_ROW];
+uint32_t curMATRIX[VIRTUAL_MAX_ROW];
+int8_t debounceMATRIX[VIRTUAL_MAX_ROW][VIRTUAL_MAX_COL];
+uint8_t svlayer;
+uint8_t currentLayer[VIRTUAL_MAX_ROW][VIRTUAL_MAX_COL];
 uint8_t matrixFN[MAX_LAYER];           // (col << 4 | row)
-uint8_t layer = 0;
-uint8_t kbdsleepmode = 0;
-uint8_t ledPortBackup = 0;
+uint8_t kbdsleepmode = 0;              // 1 POWERDOWN, 2 LED SLEEP
 uint16_t macrokeypushedcnt;
 uint16_t ledkeypushedcnt;
 uint16_t macroresetcnt;
 uint16_t winkeylockcnt;
 uint16_t keylockcnt;
 uint8_t keylock = 0;
-#define SWAP_TIMER  0x400
-#define KEYLOCK_TIMER  0x600
-#define KEYLOCK_COUNTER_START 0x8000
 
-uint8_t swapCtrlCaps = 0x80;
-uint8_t swapAltGui =  0x80;
 uint16_t cntLcaps = 0;
 uint16_t cntLctrl = 0;
 uint16_t cntLAlt = 0;
 uint16_t cntLGui = 0;
 
-uint8_t isLED3000 = 0;
-
 int8_t isFNpushed = 0;
-extern int8_t usbmode;
+uint8_t fn_col;
+uint8_t fn_row;
+
+static uint8_t gDirty;
 
 
-static void swap_load(void)
-{
-    swapAltGui = eeprom_read_byte(EEPADDR_SWAPALTGUI);
-    if(swapAltGui != 1)
-        swapAltGui = 0;     
-    swapCtrlCaps = eeprom_read_byte(EEPADDR_SWAPCTRLCAPS);
-    if(swapCtrlCaps != 1)
-        swapCtrlCaps = 0; 
-}
 
 static uint8_t findFNkey(void)
 {
-    uint8_t col, row;
-    uint8_t keyidx;
-    uint8_t i;
-    for(i = 0; i < MAX_LAYER; i++)
-    {
-        matrixFN[i] = 0x00;
-    	for(col=0;col<MAX_COL;col++)
-    	{
-    		for(row=0;row<MAX_ROW;row++)
+   uint8_t col, row;
+   uint8_t keyidx;
+   uint8_t i;
+   for(i = 0; i < MAX_LAYER; i++)
+   {
+      eeprom_read_block(currentLayer, EEP_KEYMAP_ADDR(i), sizeof(currentLayer));
+      matrixFN[i] = 0xff;
+      for(row=0;row<MATRIX_MAX_ROW;row++)
+      {
+         for(col=0;col<MATRIX_MAX_COL;col++)
+         {
+            keyidx = currentLayer[row][col];
+            if(keyidx == K_FN)
             {
-               keyidx = pgm_read_byte(keymap[i]+(col*MAX_ROW)+row);
-    			if(keyidx == K_FN)
-    			{
-                    matrixFN[i] = col << 5 | row;
-    			}
-    		}
-        }
-        if (matrixFN[i] == 0x00)
-        {
-            matrixFN[i] = matrixFN[0];  // default FN position
-        }
-        
-    }
-    return 0;
+               matrixFN[i] = row << 5 | col;
+            }
+         }
+      }
+
+   }
+   fn_col = 0xff;
+   fn_row = 0xff;
+   eeprom_read_block(currentLayer, EEP_KEYMAP_ADDR(kbdConf.keymapLayerIndex), sizeof(currentLayer));
+   return 0;
 }
 
 
 void keymap_init(void) 
 {
 	int16_t i, j, keyidx;
-#if 1
-	// set zero for every flags
-	for(i=0;i<MAX_KEY;i++)
-		KFLA[i]=0;
-#endif
-    keyidx = KEYMAP_LAYER0;
-    for (i = 0; i < 8; i++)
-    {
-        keymap[i] = keyidx;
-        keyidx += 0x100;
-    }
-        
-	// set flags
-	for(i=0;(keyidx=pgm_read_byte((uint16_t)(&keycode_set2_special[i])))!=K_NONE;i++)
-		KFLA[keyidx] |= KFLA_SPECIAL;
-    
-	for(i=0;(keyidx=pgm_read_byte((uint16_t)(&keycode_set2_makeonly[i])))!=K_NONE;i++)
-		KFLA[keyidx] |= KFLA_MAKEONLY;
-    
-	for(i=0;(keyidx=pgm_read_byte((uint16_t)(&keycode_set2_make_break[i])))!=K_NONE;i++)
-		KFLA[keyidx] |= KFLA_MAKE_BREAK;
-	for(i=0;(keyidx=pgm_read_byte((uint16_t)(&keycode_set2_extend[i])))!=K_NONE;i++)
-		KFLA[keyidx] |= KFLA_EXTEND;
-	for(i=0;(keyidx=pgm_read_byte((uint16_t)(&keycode_set2_proc_shift[i])))!=K_NONE;i++)
-		KFLA[keyidx] |= KFLA_PROC_SHIFT;
 
-
-
-
-	for(i=0;i<MAX_ROW;i++)
+	for(i=0; i<VIRTUAL_MAX_ROW; i++)
 		MATRIX[i]=0;
 
 
-    findFNkey();
-
-	for(i=0;i<MAX_COL;i++)
+	for(i=0;i<VIRTUAL_MAX_ROW;i++)
 	{
-        for(j=0;j<MAX_ROW;j++)
+        for(j=0;j<VIRTUAL_MAX_COL;j++)
         {
             debounceMATRIX[i][j] = -1;
         }
         curMATRIX[i] = 0;
 	}
-   layer = eeprom_read_byte(EEPADDR_KEYLAYER);
-    if (layer >= MAX_LAYER)
-        layer = 0;
 
-   swap_load();
+    findFNkey();
 }
 
 
 uint8_t processPushedFNkeys(uint8_t keyidx)
 {
     uint8_t retVal = 0;
-    uint8_t key;
     
     if(keyidx >= K_LED0 && keyidx <= K_LED3)
     {
@@ -164,13 +115,9 @@ uint8_t processPushedFNkeys(uint8_t keyidx)
         retVal = 1;
     }else if(keyidx >= K_L0 && keyidx <= K_L6)
     {
-        layer = keyidx - K_L0;
-        
-        key = pgm_read_byte(keymap[layer]+(5*MAX_ROW)+15);
-        isLED3000 = (key == K_LEFT)? 1 : 0;
-        
-        eeprom_write_byte(EEPADDR_KEYLAYER, layer);
-        led_mode_init();
+        kbdConf.keymapLayerIndex = keyidx - K_L0;
+        updateConf();
+        keymap_init();
         retVal = 1;
     }else if(keyidx >= K_M01 && keyidx <= K_M52)
     {
@@ -204,15 +151,15 @@ uint8_t processReleasedFNkeys(uint8_t keyidx)
     if(keyidx >= K_LED0 && keyidx <= K_LED3)
     {
 
-        led_mode_change(LED_PIN_BASE, ledmode[ledmodeIndex][LED_PIN_BASE]++);
-        flash_writeinpage(ledmode, LEDMODE_ADDRESS);
+        led_mode_change(LED_PIN_BASE, kbdConf.led_preset[kbdConf.led_preset_index][LED_PIN_BASE]++);
+        updateConf();
         retVal = 1;
     }else if(keyidx >= K_LFX && keyidx <= K_LARR)
     {
         retVal = 1;
     }else if(keyidx >= K_M01 && keyidx <= K_M52)
     {
-        if(usbmode)
+        if(kbdConf.ps2usb_mode)
              playMacroUSB(keyidx);
          else
              playMacroPS2(keyidx);
@@ -227,111 +174,95 @@ uint8_t processReleasedFNkeys(uint8_t keyidx)
     return retVal;
 }
 
+uint32_t scanRow(uint8_t row)
+{
+    uint8_t vPinA, vPinB, vPinC;
+    uint32_t rowValue, vPintmp;
 
+   rowValue = 0;
+    // Col -> set only one port as input and all others as output low
+   DDRB  = BV(row);        //  only target col bit is output and others are input
+   PORTB = ~BV(row);       //  only target col bit is LOW and other are pull-up
+
+   _delay_us(10);
+
+   vPinA = ~PINA;
+   vPinC = ~PINC;
+   vPintmp = (uint16_t)((vPinC >> 1 & 0x08) |  (vPinC >> 3 & 0x04) |  (vPinC >> 5 & 0x02) | (vPinC >> 7 & 0x01) | (vPinC << 1 & 0x10));
+   rowValue = (vPintmp << 8) | (uint16_t)vPinA;
+
+    return rowValue;
+}
 
 uint8_t getLayer(uint8_t FNcolrow)
 {
-    uint8_t col;
-    uint8_t row;
-    uint8_t vPinA, vPinC;
-    uint16_t cur, vPintmp;
-    
-    col = (FNcolrow >> 5) & 0x0f;
-    row = FNcolrow & 0x1f;
-	
-    DDRB  = BV(col);        //  only target col bit is output and others are input
-    PORTB &= ~BV(col);       //  only target col bit is LOW and other are pull-up
+   uint32_t tmp;
 
-	
-	_delay_us(10);
+   if(FNcolrow != 0xFF)
+   {
+      fn_row = (FNcolrow >> 5) & 0x07;
+      fn_col = FNcolrow & 0x1f;
 
-      vPinA = ~PINA;
-      vPinC = ~PINC;
+      tmp = scanRow(fn_row);
 
-      vPintmp = (uint16_t)((vPinC >> 1 & 0x08) |  (vPinC >> 3 & 0x04) |  (vPinC >> 5 & 0x02) | (vPinC >> 7 & 0x01) | (vPinC << 1 & 0x10));
-    
-      cur = (((vPintmp << 8) | (uint16_t)vPinA) >> row) & 0x0001;
-    
-
-    if(cur)
-    {
-      isFNpushed = DEBOUNCE_MAX*2;
-      return (MAX_LAYER - 1);        // FN layer or beyondFN layer
-    }
-    else
-    {
-      if(isFNpushed)
+      if((tmp >> fn_col) & 0x00000001)
       {
-         return (MAX_LAYER - 1);        // FN layer or beyondFN layer
-      }else
-      {
-         return layer;                   // Normal layer
+         isFNpushed = (uint8_t)kbdConf.matrix_debounce*2;
+         return KEY_LAYER_FN;                // FN layer
       }
-    }
+      else
+      {
+         if(isFNpushed)
+         {
+            return KEY_LAYER_FN;             // FN layer
+         }else
+         {
+            return kbdConf.keymapLayerIndex; // Normal layer
+         }
+      }
+   }else
+   {
+      return kbdConf.keymapLayerIndex;       // Normal layer
+   }
 }
 
 
 uint8_t scanmatrix(void)
 {
-   uint8_t col;
-   uint8_t vPinA, vPinC;
-   uint16_t vPintmp;
+   uint8_t row;
    uint8_t matrixState = 0;
-   uint8_t ledblock;
-
-    if (scankeycntms++ >= STANDBY_LOOP)
-        scankeycntms = STANDBY_LOOP;
-    
-    if (scankeycntms == STANDBY_LOOP && kbdsleepmode == 0)   // 5min
-    {
-        kbdsleepmode = 1;
-        ledmodeIndex = 4;       // hidden OFF index
-
-        for (ledblock = LED_PIN_BASE; ledblock < LED_PIN_WASD; ledblock++)
-        {
-            led_mode_change(ledblock, ledmode[ledmodeIndex][ledblock]);
-        }
-    }
-    
-
+   uint32_t tmpMatrix, tmpRaw;    
+   uint8_t i;
 	// scan matrix 
-	for(col=0; col<MAX_COL; col++)
+	for(row=0; row<VIRTUAL_MAX_ROW; row++)
 	{
-      // Col -> set only one port as input and all others as output low
-        DDRB  = BV(col);        //  only target col bit is output and others are input
-        PORTB = ~BV(col);       //  only target col bit is LOW and other are pull-up
-
-       _delay_us(10);
+      curMATRIX[row] = scanRow(row);
        
-        vPinA = ~PINA;
-        vPinC = ~PINC;
-        vPintmp = (uint16_t)((vPinC >> 1 & 0x08) |  (vPinC >> 3 & 0x04) |  (vPinC >> 5 & 0x02) | (vPinC >> 7 & 0x01) | (vPinC << 1 & 0x10));
-
-      curMATRIX[col] = (vPintmp << 8) | (uint16_t)vPinA;
-
-      if(curMATRIX[col])
+      if(curMATRIX[row])
       {
          matrixState |= SCAN_DIRTY;
-         
-         scankeycntms = 0;
-         if (kbdsleepmode == 1)
-         {
-             led_mode_init();
-             led_3lockupdate(LEDstate);
-             kbdsleepmode = 0;
-         }
       }
  	}
+   
+   tmpMatrix = scanRow(6);
+   tmpRaw = tmpMatrix << 13;
+   curMATRIX[0] |= (tmpRaw & 0x000FE000);
+   
+   tmpRaw = tmpMatrix << 6; 
+   curMATRIX[1] |= (tmpRaw & 0x0007E000);
 
+
+   tmpMatrix = scanRow(7);  
+   
+   tmpRaw = tmpMatrix << 13;
+   curMATRIX[2] |= (tmpRaw & 0x000FE000);
+   
+   tmpRaw = tmpMatrix << 6; 
+   curMATRIX[3] |= (tmpRaw & 0x0007E000);
     
     return matrixState;
 }
 
-void swap_save(void)
-{
-   eeprom_write_byte(EEPADDR_SWAPALTGUI, swapAltGui);
-   eeprom_write_byte(EEPADDR_SWAPCTRLCAPS, swapCtrlCaps);
-}
 
 uint8_t cntKey(uint8_t keyidx, uint8_t clearmask)
 {
@@ -340,7 +271,7 @@ uint8_t cntKey(uint8_t keyidx, uint8_t clearmask)
         case K_CAPS:
             if (clearmask == 0)
             {
-                swapCtrlCaps |= 0x80;
+                kbdConf.swapCtrlCaps |= 0x80;
                 cntLcaps = 0;
             }
             if (cntLcaps++ >= SWAP_TIMER)
@@ -349,7 +280,7 @@ uint8_t cntKey(uint8_t keyidx, uint8_t clearmask)
         case K_LCTRL:
             if (clearmask == 0)
             {
-                swapCtrlCaps |= 0x80;
+                kbdConf.swapCtrlCaps |= 0x80;
                 cntLctrl = 0;
             }
             if (cntLctrl++ >= SWAP_TIMER)
@@ -358,7 +289,7 @@ uint8_t cntKey(uint8_t keyidx, uint8_t clearmask)
         case K_LALT:
             if (clearmask == 0)
             {
-                swapAltGui |= 0x80;
+                kbdConf.swapAltGui |= 0x80;
                 cntLAlt = 0;
             }
             if (cntLAlt++ >= SWAP_TIMER)
@@ -367,24 +298,24 @@ uint8_t cntKey(uint8_t keyidx, uint8_t clearmask)
         case K_LGUI:
             if (clearmask == 0)
             {
-                swapAltGui |= 0x80;
+                kbdConf.swapAltGui |= 0x80;
                 cntLGui = 0;
             }
             if (cntLGui++ >= SWAP_TIMER)
                 cntLGui = SWAP_TIMER;
             break;
     }
-    if((cntLcaps == SWAP_TIMER) && (cntLctrl == SWAP_TIMER) && (swapCtrlCaps & 0x80))
+    if((cntLcaps == SWAP_TIMER) && (cntLctrl == SWAP_TIMER) && (kbdConf.swapCtrlCaps & 0x80))
     {
-        swapCtrlCaps ^= 1;
-        swapCtrlCaps &= 0x7F;
-        swap_save();
+        kbdConf.swapCtrlCaps ^= 1;
+        kbdConf.swapCtrlCaps &= 0x7F;
+        updateConf();
     }
-    if((cntLGui == SWAP_TIMER) && (cntLAlt == SWAP_TIMER) && (swapAltGui & 0x80))
+    if((cntLGui == SWAP_TIMER) && (cntLAlt == SWAP_TIMER) && (kbdConf.swapAltGui & 0x80))
     {
-        swapAltGui ^= 1;
-        swapAltGui &= 0x7F;
-        swap_save();
+        kbdConf.swapAltGui ^= 1;
+        kbdConf.swapAltGui &= 0x7F;
+        updateConf();
     }
     if(keyidx >= K_M01 && keyidx <= K_M48)
     {
@@ -398,7 +329,9 @@ uint8_t cntKey(uint8_t keyidx, uint8_t clearmask)
             macrokeypushedcnt = 0;
         }
         
-    }else if (keyidx >= K_LED0 && keyidx <= K_LED3)
+    }
+#if 0    
+    else if (keyidx >= K_LED0 && keyidx <= K_LED3)
     {
         if(clearmask == 0x0000)
         {
@@ -406,11 +339,13 @@ uint8_t cntKey(uint8_t keyidx, uint8_t clearmask)
         }
         if (ledkeypushedcnt++ == SWAP_TIMER)
         {
-            //recordLED(keyidx);
+            recordLED(keyidx);
             ledkeypushedcnt = 0;
         }
         
-    }else if (keyidx == K_MRESET)
+    }
+#endif    
+    else if (keyidx == K_MRESET)
     {
          if(clearmask == 0x0000)
         {
@@ -432,7 +367,7 @@ uint8_t swap_key(uint8_t keyidx)
       keyidx = K_NONE;
       return keyidx;
     }
-    if(swapCtrlCaps & 0x01)
+    if(kbdConf.swapCtrlCaps & 0x01)
     {
         if(keyidx == K_CAPS)
         {
@@ -443,7 +378,7 @@ uint8_t swap_key(uint8_t keyidx)
             keyidx = K_CAPS;
         }
     }
-    if(swapAltGui & 0x01)
+    if(kbdConf.swapAltGui & 0x01)
     {
         if(keyidx == K_LALT)
         {
@@ -462,6 +397,84 @@ uint8_t swap_key(uint8_t keyidx)
     return keyidx;
 }
 
+
+
+#if 0//def SUPPORT_TINY_CMD
+
+void testTinyCmd(uint8_t keyidx)
+{
+/*
+    RGB_EFFECT_FADE_BUF,
+    RGB_EFFECT_FADE_LOOP,
+    RGB_EFFECT_HEARTBEAT_BUF,
+    RGB_EFFECT_HEARTBEAT_LOOP,
+    RGB_EFFECT_MAX
+
+*/
+    switch (keyidx)
+    {
+        case K_F1:
+            tinycmd_rgb_effect_on(FALSE, TRUE);
+            tinycmd_rgb_all(0, 0, 0, 0, TRUE);
+            break;
+        case K_F2:
+            tinycmd_rgb_buffer(MAX_RGB_CHAIN, 0, (uint8_t *)kbdConf.rgb_preset, TRUE);
+            tinycmd_rgb_effect_on(TRUE, TRUE);
+            break;
+        case K_F3:
+            tinycmd_rgb_set_preset(RGB_EFFECT_BOOTHID, &kbdConf.rgb_effect_param[RGB_EFFECT_BOOTHID], TRUE); // RGB_EFFECT_BOOTHID
+            tinycmd_rgb_set_effect(0, TRUE); // RGB_EFFECT_BOOTHID
+            break;
+        case K_F4:
+            tinycmd_rgb_set_preset(RGB_EFFECT_FADE_BUF, &kbdConf.rgb_effect_param[RGB_EFFECT_FADE_BUF], TRUE); // RGB_EFFECT_FADE_BUF
+            tinycmd_rgb_set_effect(0, TRUE); // RGB_EFFECT_FADE_BUF
+            break;
+        case K_F5:
+            tinycmd_rgb_set_preset(RGB_EFFECT_FADE_LOOP, &kbdConf.rgb_effect_param[RGB_EFFECT_FADE_LOOP], TRUE); // RGB_EFFECT_FADE_LOOP
+            tinycmd_rgb_set_effect(0, TRUE); // RGB_EFFECT_FADE_LOOP
+            break;
+        case K_F6:
+            tinycmd_rgb_set_preset(RGB_EFFECT_HEARTBEAT_BUF, &kbdConf.rgb_effect_param[RGB_EFFECT_HEARTBEAT_BUF], TRUE); // RGB_EFFECT_HEARTBEAT_BUF
+            tinycmd_rgb_set_effect(0, TRUE); // RGB_EFFECT_HEARTBEAT_BUF
+            break;
+        case K_F7:
+            tinycmd_rgb_set_preset(RGB_EFFECT_HEARTBEAT_LOOP, &kbdConf.rgb_effect_param[RGB_EFFECT_HEARTBEAT_LOOP], TRUE); // RGB_EFFECT_HEARTBEAT_LOOP
+            tinycmd_rgb_set_effect(0, TRUE); // RGB_EFFECT_HEARTBEAT_LOOP
+            break;
+        case K_F8:
+            
+            tinycmd_rgb_all(1, 255, 255, 255, TRUE);
+            tinycmd_rgb_set_preset(RGB_EFFECT_BASIC, &kbdConf.rgb_effect_param[RGB_EFFECT_BASIC], TRUE); // RGB_EFFECT_BOOTHID
+            tinycmd_config(kbdConf.rgb_chain + 1, 100, TRUE);
+            break;
+        case K_F9:
+            
+            tinycmd_config(15, 40, TRUE);
+            break;
+        case K_F10:
+            
+            tinycmd_config(15, 150, TRUE);
+            //tinycmd_led_set_effect(0, TRUE);
+            tinycmd_rgb_effect_speed(100, TRUE); // fast
+            break;
+        case K_F11:
+            
+            tinycmd_config(15, 250, TRUE);
+            //tinycmd_led_set_effect(1, TRUE);
+            tinycmd_rgb_effect_speed(400, TRUE); // normal
+
+            break;
+        case K_F12:
+            
+            tinycmd_config(15, 500, TRUE);
+            //tinycmd_led_set_effect(2, TRUE);
+            tinycmd_rgb_effect_speed(600, TRUE); //slow
+            break;
+    }
+}
+#endif // SUPPORT_TINY_CMD
+
+
 // return : key modified
 uint8_t scankey(void)
 {
@@ -471,21 +484,20 @@ uint8_t scankey(void)
 	uint8_t keyidx;
 	uint8_t matrixState = 0;
 	uint8_t retVal = 0;
-    int8_t i;
-    long keyaddr;
+   uint8_t t_layer;
 
     matrixState = scanmatrix();
+    if(matrixState != gDirty)
+    {
+        gDirty = matrixState;
+//        tinycmd_dirty(matrixState);
+    }
 
    if (matrixState == 0 && isFNpushed > 0)
    {
       isFNpushed--;
    }
 
-   if(!kbdsleepmode)
-   {
-      led_PRTIndicater(keylock);
-      led_ESCIndicater(layer);
-   }
    //static int pushedLevel_prev = 0;
 
     /* LED Blinker */
@@ -496,28 +508,37 @@ uint8_t scankey(void)
 
     clearReportBuffer();
    
-	uint8_t t_layer = getLayer(matrixFN[layer]);
+	t_layer = getLayer(matrixFN[kbdConf.keymapLayerIndex]);
 
 	// debounce cleared => compare last matrix and current matrix
-	for(col = 0; col < MAX_COL; col++)
+	for(row = 0; row < VIRTUAL_MAX_ROW; row++)
 	{
 
-        prev = MATRIX[col];
-        cur  = curMATRIX[col];
-        MATRIX[col] = curMATRIX[col];
-		for(i = 0; i < MAX_ROW; i++)
+        prev = MATRIX[row];
+        cur  = curMATRIX[row];
+        MATRIX[row] = curMATRIX[row];
+		for(col = 0; col < VIRTUAL_MAX_COL; col++)
 		{
-            prevBit = (uint8_t)prev & 0x01;
-            curBit = (uint8_t)cur & 0x01;
+            prevBit = (uint8_t)(prev & 0x01);
+            curBit = (uint8_t)(cur & 0x01);
             prev >>= 1;
             cur >>= 1;
 
-            row = i;
+            if (reportMatrix == HID_REPORT_MATRIX)
+            {
+                if(prevBit && !curBit)
+                    sendMatrix(row, col);
+                continue;
+            }
 
- //           keyidx = pgm_read_byte(keyaddr); //keymap[t_layer]+(col*MAX_ROW)+row);
-            keyidx = pgm_read_byte(keymap[t_layer]+(col*MAX_ROW)+row);
 
-            if (keyidx == K_NONE)
+            if(t_layer != KEY_LAYER_FN)
+                keyidx = currentLayer[row][col];
+            else
+                keyidx = eeprom_read_byte(EEP_KEYMAP_ADDR(t_layer)+(row*VIRTUAL_MAX_COL)+col);
+            
+
+            if ((keyidx == K_NONE) || ((fn_col == col) && (fn_row == row)))
                 continue;
 
             if(curBit && !(keylock & 0x02))
@@ -540,51 +561,53 @@ uint8_t scankey(void)
             if ((K_L0 <= keyidx && keyidx <= K_L6) || (K_LED0 <= keyidx && keyidx <= K_FN) || (K_M01 <= keyidx) || (keyidx == K_NONE))
                continue;
             
-            if(usbmode)
+            if(kbdConf.ps2usb_mode)
             {
                 if(curBit)
                 {
-                    if(debounceMATRIX[col][row]++ >= DEBOUNCE_MAX)
+                    if(debounceMATRIX[row][col]++ >= (uint8_t)kbdConf.matrix_debounce)
                     {
                         retVal = buildHIDreports(keyidx);
-                        debounceMATRIX[col][row] = DEBOUNCE_MAX*2;
+                        debounceMATRIX[row][col] = (uint8_t)kbdConf.matrix_debounce*2;
                     }
                 }else
                 {
-                    if(debounceMATRIX[col][row]-- >= DEBOUNCE_MAX)
+                    if(debounceMATRIX[row][col]-- >= (uint8_t)kbdConf.matrix_debounce)
                     {
                         retVal = buildHIDreports(keyidx);
                     }else
                     {
-                        debounceMATRIX[col][row] = 0;
+                        debounceMATRIX[row][col] = 0;
                     }
                 }
             }else
             {
                 if (!prevBit && curBit)   //pushed
                 {
-                    debounceMATRIX[col][row] = 0;    //triger
+                    debounceMATRIX[row][col] = 0;    //triger
 
                 }else if (prevBit && !curBit)  //released
                 {
-                    debounceMATRIX[col][row] = 0;    //triger
+                    debounceMATRIX[row][col] = 0;    //triger
     			   }
                 
-                if(debounceMATRIX[col][row] >= 0)
+                if(debounceMATRIX[row][col] >= 0)
                 {                
-                   if(debounceMATRIX[col][row]++ >= DEBOUNCE_MAX)
+                   if(debounceMATRIX[row][col]++ >= (uint8_t)kbdConf.matrix_debounce)
                    {
                         if(curBit)
                         {
                             putKey(keyidx, 1);
-                            svkeyidx[col][row] = keyidx;
+                            svlayer = t_layer;
                         }else
                         {
                             if (keyidx <= K_M01)  // ignore FN keys
-                              putKey(svkeyidx[col][row], 0);
+                               keyidx = eeprom_read_byte(EEP_KEYMAP_ADDR(svlayer)+(row*VIRTUAL_MAX_COL)+col);
+                               keyidx = swap_key(keyidx);
+                               putKey(keyidx, 0);
                         }
                                                
-                        debounceMATRIX[col][row] = -1;
+                        debounceMATRIX[row][col] = -1;
                    }
   
                 }

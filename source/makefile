@@ -14,6 +14,7 @@
 # you will have to deal with.
 
 AVRLIB = ./avrlib
+AVRLIB_CONF = ./avrlib/conf
 
 ########### change this lines according to your project ##################
 #put the name of the TRG mcu here (at90s8515, at90s8535, attiny22, atmega603 etc.)
@@ -120,14 +121,17 @@ usbdrv/oddebug.o :	usbdrv/oddebug.c 	usbdrv/oddebug.h
 usbdrv/usbdrvasm.o : usbdrv/usbdrvasm.asm usbdrv/usbdrvasm.S usbdrv/usbportability.h	usbdrv/usbdrv.h  usbconfig.h
 
 all:
+	avr-size -C --mcu=atmega32 $(TRG).elf
 	rm -rf $(TRG)
 	mkdir $(TRG)
-#	mv *.lst $(TRG)
+	mv -v *.lst $(TRG)
 	mv *.bin $(TRG)
 	mv *.cof $(TRG)
 	mv *.eep $(TRG)
-	mv *.elf $(TRG)
+	cp *.elf $(TRG)
 	mv *.hex $(TRG)
 	mv *.map $(TRG)
 	cp *.bat $(TRG)
 	cp bootloadHID_M3.exe $(TRG)
+	cp l3cmd.exe $(TRG)
+   

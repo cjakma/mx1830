@@ -25,31 +25,6 @@ static uint8_t *const ledport[] = {LED_NUM_PORT, LED_CAP_PORT,LED_SCR_PORT, LED_
 static uint8_t const ledpin[] = {LED_NUM_PIN, LED_CAP_PIN, LED_SCR_PIN, LED_PRT_PIN, 
                                     LED_ESC_PIN,LED_Fx_PIN,LED_PAD_PIN,LED_BASE_PIN, 
                                     LED_WASD_PIN,LED_ARROW18_PIN, LED_VESEL_PIN};
-uint8_t ledmodeIndex;
-
-#define LEDMODE_ARRAY_SIZE 5*11
-uint8_t ledmode[5][11] ={ 
-        {LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, 
-        LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, 
-        LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS},
-        
-        {LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, 
-        LED_EFFECT_ALWAYS, LED_EFFECT_FADING, LED_EFFECT_FADING, LED_EFFECT_FADING, 
-        LED_EFFECT_FADING, LED_EFFECT_FADING, LED_EFFECT_FADING},
-        
-        {LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, 
-        LED_EFFECT_ALWAYS, LED_EFFECT_FADING_PUSH_ON, LED_EFFECT_FADING_PUSH_ON, LED_EFFECT_FADING_PUSH_ON, 
-        LED_EFFECT_FADING_PUSH_ON, LED_EFFECT_FADING_PUSH_ON, LED_EFFECT_FADING_PUSH_ON},
-        
-        {LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, LED_EFFECT_ALWAYS, 
-        LED_EFFECT_ALWAYS, LED_EFFECT_PUSHED_LEVEL, LED_EFFECT_PUSHED_LEVEL, LED_EFFECT_PUSHED_LEVEL, 
-        LED_EFFECT_PUSHED_LEVEL, LED_EFFECT_PUSHED_LEVEL, LED_EFFECT_PUSHED_LEVEL},
-        
-        {LED_EFFECT_OFF, LED_EFFECT_OFF, LED_EFFECT_OFF, LED_EFFECT_OFF, 
-        LED_EFFECT_FADING, LED_EFFECT_OFF, LED_EFFECT_OFF, LED_EFFECT_OFF, 
-        LED_EFFECT_OFF, LED_EFFECT_OFF, LED_EFFECT_OFF}
-};
-
 
 static uint8_t speed[] = {1, 1, 1, 1, 5, 5, 5, 5, 5, 5, 5};
 static uint8_t brigspeed[] = {1, 1, 1, 1, 3, 3, 3, 3, 3, 3, 3};
@@ -318,7 +293,7 @@ void led_blink(int matrixState)
         
         if(matrixState & SCAN_DIRTY)      // 1 or more key is pushed
         {
-            switch(ledmode[ledmodeIndex][ledblock])
+            switch(kbdConf.led_preset[kbdConf.led_preset_index][ledblock])
             {
 
                 case LED_EFFECT_FADING_PUSH_ON:
@@ -334,7 +309,7 @@ void led_blink(int matrixState)
                     break;
             }             
         }else{          // none of keys is pushed
-            switch(ledmode[ledmodeIndex][ledblock])
+            switch(kbdConf.led_preset[kbdConf.led_preset_index][ledblock])
                  {
                      case LED_EFFECT_FADING_PUSH_ON:
                      case LED_EFFECT_PUSH_ON:
@@ -356,7 +331,7 @@ void led_fader(void)
     uint8_t ledblock;
     for (ledblock = LED_PIN_ESC; ledblock < LED_PIN_VESEL; ledblock++)
     {
-        if((ledmode[ledmodeIndex][ledblock] == LED_EFFECT_FADING) || ((ledmode[ledmodeIndex][ledblock] == LED_EFFECT_FADING_PUSH_ON) && (scankeycntms > 1000)))
+        if((kbdConf.led_preset[kbdConf.led_preset_index][ledblock] == LED_EFFECT_FADING) || ((kbdConf.led_preset[kbdConf.led_preset_index][ledblock] == LED_EFFECT_FADING_PUSH_ON) && (scankeycntms > 1000)))
         {
             if(pwmDir[ledblock]==0)
             {
@@ -395,7 +370,7 @@ void led_fader(void)
        
             pwmCounter[ledblock]++;
 
-        }else if (ledmode[ledmodeIndex][ledblock] == LED_EFFECT_PUSHED_LEVEL)
+        }else if (kbdConf.led_preset[kbdConf.led_preset_index][ledblock] == LED_EFFECT_PUSHED_LEVEL)
         {
     		// 일정시간 유지
 
@@ -467,14 +442,14 @@ void led_3lockupdate(uint8_t LEDstate)
             led_on(LED_PIN_CAPSLOCK);
             for(ledblock = LED_PIN_Fx; ledblock <= LED_PIN_ARROW18; ledblock++)
             {
-                if (ledmode[ledmodeIndex][ledblock] == LED_EFFECT_BASECAPS)
+                if (kbdConf.led_preset[kbdConf.led_preset_index][ledblock] == LED_EFFECT_BASECAPS)
                     led_on(ledblock);
             }
         } else {
             led_off(LED_PIN_CAPSLOCK);
             for(ledblock = LED_PIN_Fx; ledblock <= LED_PIN_ARROW18; ledblock++)
             {
-                if (ledmode[ledmodeIndex][ledblock] == LED_EFFECT_BASECAPS)
+                if (kbdConf.led_preset[kbdConf.led_preset_index][ledblock] == LED_EFFECT_BASECAPS)
                     led_off(ledblock);
             }
         }
@@ -559,10 +534,10 @@ void led_mode_init(void)
     LED_BLOCK ledblock;
     int16_t i;
     uint8_t *buf;
-    ledmodeIndex = eeprom_read_byte(EEPADDR_LED_STATUS); 
-    if (ledmodeIndex > 4)
-        ledmodeIndex = 0;
-    buf = ledmode;
+    kbdConf.led_preset_index = eeprom_read_byte(EEPADDR_LED_STATUS); 
+    if (kbdConf.led_preset_index > 4)
+        kbdConf.led_preset_index = 0;
+    buf = kbdConf.led_preset;
     for (i = 0; i < LEDMODE_ARRAY_SIZE; i++)
     {
 //        *buf++ = pgm_read_byte_far(LEDMODE_ADDRESS+i);
@@ -572,7 +547,7 @@ void led_mode_init(void)
     {
       pwmDir[ledblock ] = 0;
       pwmCounter[ledblock] = 0;
-        led_mode_change(ledblock, ledmode[ledmodeIndex][ledblock]);
+        led_mode_change(ledblock, kbdConf.led_preset[kbdConf.led_preset_index][ledblock]);
     }
 }
 
@@ -596,14 +571,14 @@ void led_mode_change (LED_BLOCK ledblock, int mode)
             led_wave_on(ledblock);
             break;
         default :
-            ledmode[ledmodeIndex][ledblock] = LED_EFFECT_FADING;
+            kbdConf.led_preset[kbdConf.led_preset_index][ledblock] = LED_EFFECT_FADING;
             break;
      }
 }
 
 void led_mode_save(void)
 {
-    eeprom_write_byte(EEPADDR_LED_STATUS, ledmodeIndex);
+    eeprom_write_byte(EEPADDR_LED_STATUS, kbdConf.led_preset_index);
 }
 
 void led_pushed_level_cal(void)
@@ -629,7 +604,7 @@ uint8_t sledblk[5][7] = {"Fx----", "Pad---", "Base--", "WASD--", "Arrow-"};
 
 void recordLED(uint8_t ledkey)
 {
-    ledmodeIndex = ledkey - K_LED0;
+    kbdConf.led_preset_index = ledkey - K_LED0;
     int8_t col, row;
     uint32_t prev, cur;
     uint8_t prevBit, curBit;
@@ -724,7 +699,7 @@ void recordLED(uint8_t ledkey)
                {
                     if (keyidx == K_FN)
                     {
-                        flash_writeinpage(ledmode, LEDMODE_ADDRESS);
+                        flash_writeinpage(kbdConf.led_preset, LEDMODE_ADDRESS);
                         led_mode_save();
 
                         wdt_reset();
@@ -734,7 +709,7 @@ void recordLED(uint8_t ledkey)
                         {
                            wdt_reset();
                            sendString(sledblk[ledblk-5]);
-                           sendString(sledmode[ledmode[ledmodeIndex][ledblk]]);
+                           sendString(sledmode[kbdConf.led_preset[kbdConf.led_preset_index][ledblk]]);
                         }
                         sendString("===========================@");
                         wdt_reset();
@@ -745,22 +720,22 @@ void recordLED(uint8_t ledkey)
                     {
                         ledblk = keyidx - K_LFX + 5;
                         
-                        if(++ledmode[ledmodeIndex][ledblk] >= LED_EFFECT_NONE)
+                        if(++kbdConf.led_preset[kbdConf.led_preset_index][ledblk] >= LED_EFFECT_NONE)
                         {
-                            ledmode[ledmodeIndex][ledblk] = LED_EFFECT_FADING;
+                            kbdConf.led_preset[kbdConf.led_preset_index][ledblk] = LED_EFFECT_FADING;
                         }
                         
                         wdt_reset();
                         sendString(sledblk[ledblk-5]);
                         
                         wdt_reset();
-                        sendString(sledmode[ledmode[ledmodeIndex][ledblk]]);
+                        sendString(sledmode[kbdConf.led_preset[kbdConf.led_preset_index][ledblk]]);
 
                          for (ledblk = LED_PIN_Fx; ledblk < LED_PIN_VESEL; ledblk++)
                          {
                               pwmDir[ledblk ] = 0;
                               pwmCounter[ledblk] = 0;
-                             led_mode_change(ledblk, ledmode[ledmodeIndex][ledblk]);
+                             led_mode_change(ledblk, kbdConf.led_preset[kbdConf.led_preset_index][ledblk]);
                          }                    
                      }
                }else

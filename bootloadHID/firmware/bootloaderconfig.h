@@ -115,53 +115,7 @@ these macros are defined, the boot loader usees them.
 #ifndef __ASSEMBLER__   /* assembler cannot parse function definitions */
 #include <util/delay.h>
 
-#ifdef KBDMOD_M7
-#define DDR_ROW0    DDRC
-#define PORT_ROW0   PORTC
-#define PIN_ROW0    PINC
-#define DDR_COL0    DDRA
-#define PORT_COL0   PORTA
 
-#define DDR_LED0    DDRB
-#define DDR_LED1    DDRB
-#define DDR_LED2    DDRB
-#define DDR_LED3    DDRD
-
-#define PORT_LED0   PORTB
-#define PORT_LED1   PORTB
-#define PORT_LED2   PORTB
-#define PORT_LED3   PORTD
-
-#define PIN_LED0    1 << 0
-#define PIN_LED1    1 << 2
-#define PIN_LED2    1 << 3
-#define PIN_LED3    1 << 2
-#endif
-
-#ifdef KBDMOD_M5
-#define DDR_ROW0    DDRG
-#define PORT_ROW0   PORTG
-#define PIN_ROW0    PING
-#define DDR_COL0    DDRA
-#define PORT_COL0   PORTA
-
-#define DDR_LED0    DDRD
-#define DDR_LED1    DDRD
-#define DDR_LED2    DDRD
-#define DDR_LED3    DDRD
-
-#define PORT_LED0   PORTD
-#define PORT_LED1   PORTD
-#define PORT_LED2   PORTD
-#define PORT_LED3   PORTD
-
-#define PIN_LED0    1 << 2
-#define PIN_LED1    1 << 2
-#define PIN_LED2    1 << 5
-#define PIN_LED3    1 << 3
-#endif
-
-#ifdef KBDMOD_M3
 #define DDR_ROW0    DDRA
 #define PORT_ROW0   PORTA
 #define PIN_ROW0    PINA
@@ -182,7 +136,7 @@ these macros are defined, the boot loader usees them.
 #define PIN_LED1    1 << 1
 #define PIN_LED2    1 << 5
 #define PIN_LED3    1 << 1
-#endif
+
 
 
 uint8_t ledcounter = 0; ///< counter used to set the speed of the running light
@@ -274,6 +228,11 @@ static inline uint8_t bootLoaderCondition() {
 		prevState = (PIN_ROW0 & (1 << PINA0));
 	}
 	if(!prevState) isBootloader = 1;
+    if(eeprom_read_byte(0) == 0xCA) // bootloade signature
+    {
+        isBootloader = 1;
+        eeprom_write_byte(0, 0);    // clear
+    }
 
     if (isBootloader) {
         // boot loader active, blink leds

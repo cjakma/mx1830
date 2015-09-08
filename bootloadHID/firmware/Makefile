@@ -43,7 +43,7 @@ FUSEL = 0xEF
 #			   |	   | +---- WDTON (watchdog timer always on)
 #         don't care   +------ M103C (M103C compatibility mode) 1=NOT, 0=COMPATIBLE	   
 # Fuse high byte:
-# 0xc0 = 1 1 0 1   1 0 1 0 <-- BOOTRST (1=>starts @0x0000, 0=>starts @0xbootsz)
+# 0xD0 = 1 1 0 1   0 0 0 0 <-- BOOTRST (1=>starts @0x0000, 0=>starts @0xbootsz)
 #        ^ ^ ^ ^   ^ ^ ^------ BOOTSZ0
 #        | | | |   | +-------- BOOTSZ1 (11/512words(0xFE00x2), 10/1024words(0xFC00x2), 01/2048words(0xF800x2), 00/4096words(0xF000x2) 
 #        | | | |   + --------- EESAVE (preserve EEPROM over chip erase)
@@ -52,7 +52,7 @@ FUSEL = 0xEF
 #        | +------------------ JTAGEN (0=>enable, 1=>disable)
 #        +-------------------- OCDEN (0=>enable, 1=>disable)
 # Fuse low byte:
-# 0x9f = 1 1 1 0   1 1 1 1
+# 0xEF = 1 1 1 0   1 1 1 1
 #        ^ ^ \ /   \--+--/
 #        | |  |       +------- CKSEL 3..0 (external >8M crystal)
 #        | |  +--------------- SUT 1..0 (Fast rising power)

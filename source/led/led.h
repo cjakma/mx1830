@@ -5,18 +5,20 @@ typedef enum
     LED_PIN_NUMLOCK,            // On/Off
     LED_PIN_CAPSLOCK,           // On/Off
     LED_PIN_SCROLLOCK,          // On/Off
+    LED_PIN_BASE,
+    LED_PIN_WASD,                   
+
     LED_PIN_PRT,                // On/Off
-    
+
     LED_PIN_ESC,
     
     LED_PIN_Fx,
     LED_PIN_PAD,
-    LED_PIN_BASE,
-    LED_PIN_WASD,                   
     LED_PIN_ARROW18,
     LED_PIN_VESEL,
     LED_PIN_ALL
-}LED_BLOCK;    
+}LED_BLOCK;   
+
 
 typedef enum
 {
@@ -37,9 +39,24 @@ typedef enum
 #define LED_COMPOSE 0x08  ///< compose LED on a boot-protocol keyboard
 #define LED_KANA    0x10  ///< kana LED on a boot-protocol keyboard
 
-extern uint8_t LEDstate;     ///< current state of the LEDs
-extern uint8_t ledmodeIndex;
-extern uint8_t ledmode[5][11];
+#define PWM_DUTY_MIN            0
+#define PWM_DUTY_MAX            255
+
+#define LEDMODE_INDEX_MAX       3
+#define LED_BLOCK_MAX           5
+#define LEDMODE_ARRAY_SIZE      (LEDMODE_INDEX_MAX*LED_BLOCK_MAX)
+
+#define RGBMODE_INDEX_MAX       1
+
+#define PUSHED_LEVEL_MAX        20
+
+#define LED_ACTIVE         0
+#define LED_POWERDOWN      1
+#define LED_SLEEP          2
+
+
+extern uint8_t tinyExist;
+extern volatile uint8_t gLEDstate;     ///< current state of the LEDs
 void led_blink(int matrixState);
 void led_fader(void);
 void led_check(uint8_t forward);
@@ -60,4 +77,7 @@ void led_ESCIndicater(uint8_t layer);
 void led_PRTIndicater(uint8_t index);
 
 void recordLED(uint8_t ledkey);
+void led_sleep(void);
+void led_restore(void);
+
 

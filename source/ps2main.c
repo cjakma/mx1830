@@ -33,6 +33,17 @@ unsigned char lastState;
 static uint8_t TYPEMATIC_DELAY=2;
 static long TYPEMATIC_REPEAT=10;
 
+uint8_t checkExtended(uint8_t keyidx)
+{
+   uint8_t i;
+
+	for(i=0; i< 46; i++)
+	{
+      if(keyidx == pgm_read_byte((uint16_t)(&keycode_set2_extend[i])))
+         return 1;
+	}
+   return 0;
+}
 
 // Queue operation -> push, pop
 void push(uint8_t item) {
@@ -87,7 +98,7 @@ void clear(void) {
 	lastMAKE_IDX=0;
 	loopCnt=0;
 
-	for(i=0;i<MAX_COL;i++)
+	for(i=0;i<VIRTUAL_MAX_COL;i++)
 		MATRIX[i] = 0x00;
 }
 
@@ -118,8 +129,8 @@ void putKey(uint8_t keyidx, uint8_t isPushed)
 		loopCnt=0;
 		m_state = STA_NORMAL;
 
-		if(KFLA[keyidx]&KFLA_SPECIAL) {
-			switch(keyidx) {
+		switch(keyidx)
+      {
 				case K_PRNSCR:
 					push(START_MAKE);
 					push(0xE0);
@@ -141,27 +152,24 @@ void putKey(uint8_t keyidx, uint8_t isPushed)
 					push(0x77);
 					push(SPLIT);
 					break;
-			}
-		}
-		else 
-		{
+         default:
             push(START_MAKE);
-            if(KFLA[keyidx]&KFLA_EXTEND) 
+            if(checkExtended(keyidx) == 1)
             push(0xE0);
             push(keyVal);
-
             push(END_MAKE);
             push(SPLIT);
+            break;
 
 		}
-	}
-	else			// break code - key realeased
+      
+	}else			// break code - key realeased
 	{
 		if(lastMAKE_keyidx == keyidx)		// repeat is resetted only if last make key is released
 			lastMAKE_SIZE=0;
 
-		if(KFLA[keyidx]&KFLA_SPECIAL) {
-			switch(keyidx) {
+			switch(keyidx) 
+         {
 				case K_PRNSCR:
 					push(0xE0);
 					push(0xF0);
@@ -171,16 +179,14 @@ void putKey(uint8_t keyidx, uint8_t isPushed)
 					push(0x12);
 					push(SPLIT);
 					break;
-			}
-		}
-		else 
-		{
  
-			if(KFLA[keyidx]&KFLA_EXTEND)
+            default:
+               if(checkExtended(keyidx) == 1)
 				push(0xE0);
 			push(0xF0);
 			push(keyVal);
 			push(SPLIT);
+               break;
 		}
 	}
 }
@@ -228,29 +234,29 @@ int processRX(void)
             // Reflect LED states to PD0~2
             // scroll lock
             if(rxed & 0x01){
-                LEDstate |= LED_SCROLL;
+                gLEDstate |= LED_SCROLL;
             }else{          
-                LEDstate &= ~LED_SCROLL;
+                gLEDstate &= ~LED_SCROLL;
             }
     
             // num lock
             if(rxed & 0x02){
-                LEDstate |= LED_NUM;
+                gLEDstate |= LED_NUM;
             }else{
-                LEDstate &= ~LED_NUM;
+                gLEDstate &= ~LED_NUM;
             }
             
             // capslock
             if(rxed & 0x04)
             {
-                LEDstate |= LED_CAPS;
+                gLEDstate |= LED_CAPS;
             }
             else
             {
-                LEDstate &= ~LED_CAPS;
+                gLEDstate &= ~LED_CAPS;
             }
     
-            led_3lockupdate(LEDstate);
+            led_3lockupdate(gLEDstate);
             tx_state(0xFA, STA_NORMAL);
             break;
 
@@ -382,23 +388,23 @@ uint8_t ps2main(void)
 	 m_state = STA_WAIT_RESET;
     cli();
 
-    DEBUG_PRINT(("PS/2\n"));
  
-
-	kbd_init();
+   kbd_init_ps2();
     
     wdt_enable(WDTO_2S);
     sei();
 
-	while(1) {
-        
+   while(1)
+   {
         wdt_reset();
 													// check that every key code for single keys are transmitted
-		if ((kbd_flags & FLA_RX_BYTE) && (keyval==SPLIT || isEmpty())) {     // pokud nastaveny flag prijmu bytu, vezmi ho a zanalyzuj
+      if ((kbd_flags & FLA_RX_BYTE) && (keyval==SPLIT || isEmpty())) 
+      {     // pokud nastaveny flag prijmu bytu, vezmi ho a zanalyzuj
 			// pokud law, the flag setting apart, take it and zanalyzuj
             processRX();
 		}
-		if (kbd_flags & FLA_TX_OK) {   // pokud flag odesilani ok -> if the flag sent ok
+      if (kbd_flags & FLA_TX_OK)
+      {   // pokud flag odesilani ok -> if the flag sent ok
             keyval = processTX();
 		}
 	}
